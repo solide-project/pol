@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import { NavBar } from "@/components/core/nav/nav-bar";
+import { aeonik } from "@/lib/fonts";
+import { Provider } from "@/components/provider";
+import { Toaster } from 'react-hot-toast';
+import { ThemeProvider } from "@/components/theme/theme-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,9 +16,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
-  );
+  return <html lang="en">
+    <body className={`${aeonik.variable} font-sans`}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <Provider>
+          <NavBar />
+          {children}
+          <Toaster />
+        </Provider>
+      </ThemeProvider>
+    </body>
+  </html>
 }

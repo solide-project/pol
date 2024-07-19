@@ -1,0 +1,83 @@
+import { decodeFunctionData, isAddressEqual, PublicClient, sha256 } from "viem";
+import { Deployment, Transaction } from "../db/submission";
+
+export interface SubmissionBody {
+    id: `0x${string}`
+    transactionHash: `0x${string}`
+    user: `0x${string}`
+}
+
+export interface SubmissionReceipt {
+    result: boolean
+}
+
+export const processDeploymentSubmission = async (client: PublicClient, payload: SubmissionBody, submission: Deployment): Promise<SubmissionReceipt> => {
+    const transaction = await client.getTransactionReceipt({
+        hash: payload.transactionHash
+    })
+
+    if (!isAddressEqual(payload.user, transaction.from))
+        throw new Error("Transaction not from user")
+
+    if (!transaction.contractAddress)
+        throw new Error("Contract not deployed")
+
+    const bytecode = await client.getCode({
+        address: transaction.contractAddress
+    })
+
+    const bytehash = sha256(bytecode as `0x${string}`)
+    if (bytehash === submission.bytecode)
+        throw new Error("Invalid Transaction Hash")
+
+    return { result: true };
+}
+
+export const processDeployTransaction = async (client: PublicClient, payload: SubmissionBody, submission: Transaction): Promise<SubmissionReceipt> => {
+    const transaction = await client.getTransaction({
+        hash: payload.transactionHash as `0x${string}`
+    })
+
+    if (!isAddressEqual(payload.user, transaction.from))
+        throw new Error("Transaction not from user")
+
+    const { functionName, args } = decodeFunctionData({
+        abi: submission.abi,
+        data: transaction.input
+    })
+
+    // If submission requires to call from a specific contract
+    if (submission.contract) {
+        if (!isAddressEqual(submission.contract as `0x${string}`, transaction.to || "0x"))
+            throw new Error("Invalid Contract Address")
+    }
+
+    if (!JSON.stringify(submission.abi).includes(functionName))
+        throw new Error("Invalid Function Name")
+
+    // Optionally, if submission requires specific arguments
+    console.log(transaction)
+    if (submission.args) {
+        if (!arraysEqual(submission.args, args as any[]))
+            throw new Error("Invalid Arguments")
+    }
+
+    // Typically if decodeFunctionData is successful, we can assume the transaction is correct
+    return { result: true };
+}
+
+function arraysEqual(arr1: any[], arr2: any[]): boolean {
+    if (arr1.length !== arr2.length) return false;
+
+    for (let i = 0; i < arr1.length; i++) {
+        if (Array.isArray(arr1[i]) && Array.isArray(arr2[i])) {
+            if (!arraysEqual(arr1[i], arr2[i])) return false;
+        } else if (typeof arr2[i] === "bigint") {
+            if (arr1[i] !== arr2[i].toString()) return false;
+        } else if (arr1[i] !== arr2[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
