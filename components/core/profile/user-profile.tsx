@@ -19,7 +19,7 @@ export function UserProfile({
 }: UserProfileProps) {
 
 
-    return <div>
+    return <div className="mt-8">
         <div className="flex items-center justify-center">
             <div>
                 <div className="flex items-center justify-center">

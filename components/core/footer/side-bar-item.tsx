@@ -22,14 +22,9 @@ export function SideBarItem({ quest, isExpanded = false, depth = 1 }: SideBarIte
         handleSetQuestStructure(item)
     }
 
-    // if (!quest.children || Object.keys(quest.children).length === 0) {
-    //     return <div className={`hover:cursor-pointer ml-4`} onClick={(e) => handleOnClick(quest)}>
-    //         {quest.name.number} - {quest.name.title}
-    //     </div>
-    // }
     return <Collapsible>
         <CollapsibleTrigger className="flex items-center justify-between">
-            <div className="hover:cursor-pointer" onClick={(e) => handleOnClick(quest)}>
+            <div className="hover:cursor-pointer hover:text-primary" onClick={(e) => handleOnClick(quest)}>
                 {quest.name.number} - {quest.name.title}
             </div>
             {quest.children && <div>

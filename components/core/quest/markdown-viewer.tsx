@@ -9,6 +9,7 @@ import { useQuest } from "@/components/providers/quest-provider";
 import { cn } from "@/lib/utils";
 import { GithubResolver } from "@resolver-engine/imports/build/resolvers/githubresolver"
 import { joinUri } from "@/lib/quest";
+import { CodeSnippet } from "../shared/code-snippet";
 
 interface MarkdownViewerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -147,15 +148,21 @@ export function MarkdownViewer({ className }: MarkdownViewerProps) {
                             {...props}
                         />
                     ),
-                    code: ({ className, ...props }) => (
-                        <code
-                            className={cn(
-                                "relative rounded border px-[0.3rem] py-[0.2rem] font-mono text-sm",
-                                className
-                            )}
-                            {...props}
-                        />
-                    ),
+                    code: ({ className, ...props }) => {
+                        const { children, node, ...rest } = props
+                        const match = /language-(\w+)/.exec(className || "")
+                        return match
+                            ? <CodeSnippet language={match[1]}>
+                                {String(children).replace(/\n$/, "")}
+                            </CodeSnippet>
+                            : (<code
+                                className={cn(
+                                    "relative rounded border px-[0.3rem] py-[0.2rem] font-mono text-sm",
+                                    className
+                                )}
+                                {...props}
+                            />)
+                    },
                 }}>
                 {content}
             </Markdown>

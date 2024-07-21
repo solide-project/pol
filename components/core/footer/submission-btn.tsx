@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useQuest } from "@/components/providers/quest-provider";
 import {
@@ -16,18 +16,21 @@ import { Input } from "@/components/ui/input";
 import { useAccount } from "wagmi";
 import toast from 'react-hot-toast';
 import { Pickaxe } from "lucide-react";
-import { cn } from "@/lib/utils";
+import confetti from "canvas-confetti";
 
 interface SubmissionButtonProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function SubmissionButton({ className }: SubmissionButtonProps) {
     const { selectedQuest } = useQuest()
-    const [submissionResponse, setSubmissionResponse] = React.useState<SubmissionResponse>({} as SubmissionResponse)
-    const [userSubmissionResponse, setUserSubmissionResponse] = React.useState<UserSubmissionResponse>({} as UserSubmissionResponse)
     const { address } = useAccount()
 
-    const [data, setData] = React.useState<string>("0x2776655a8d810840286d75abfae2c083107bdc1978712ec0c8cb4aadcbc6968c")
+    const [submissionResponse, setSubmissionResponse] = useState<SubmissionResponse>({} as SubmissionResponse)
+    const [userSubmissionResponse, setUserSubmissionResponse] = useState<UserSubmissionResponse>({} as UserSubmissionResponse)
+    const [open, setOpen] = useState(false);
+
+    // Sample: 0x2776655a8d810840286d75abfae2c083107bdc1978712ec0c8cb4aadcbc6968c
+    const [data, setData] = useState<string>("")
 
     useEffect(() => {
         (async () => {
@@ -48,32 +51,84 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
         })()
     }, [selectedQuest, address])
 
+    const [isSubmitting, setIsSubmitting] = useState(false)
+
     const handleSubmission = async () => {
-        console.log("Submission", selectedQuest?.name.id)
-        if (selectedQuest?.name.id === undefined) return
-        // const submission = getSubmission(selectedQuest?.name.id)
-
-        const response = await fetch("/api/db/submission/submit", {
-            method: "POST",
-            body: JSON.stringify({ id: selectedQuest?.name.id, payload: data, address }),
-        })
-
-        if (!response.ok) {
-            const { message } = await response.json()
-            toast.error(message)
+        if (selectedQuest?.name.id === undefined) {
+            toast.error("Couldn't find the quest. How did you get here?")
             return
         }
 
-        const result = await response.json()
+        if (!data) {
+            toast.error("Please enter a transaction hash")
+            return
+        }
 
-        console.log(result)
+        setIsSubmitting(true)
+        try {
+            const response = await fetch("/api/db/submission/submit", {
+                method: "POST",
+                body: JSON.stringify({ id: selectedQuest?.name.id, payload: data, address }),
+            })
+
+            if (!response.ok) {
+                const { message } = await response.json()
+                toast.error(message)
+                return
+            }
+
+            const result = await response.json()
+            console.log(result)
+
+            triggerConfetti()
+            triggerConfetti()
+            triggerConfetti()
+            setOpen(false)
+            toast.success("Completed")
+        } catch (error: any) {
+            console.error(error)
+            toast.error(error.message)
+        } finally {
+            setIsSubmitting(false)
+        }
     }
+
+    const triggerConfetti = () => {
+        const defaults = {
+            spread: 360,
+            ticks: 50,
+            gravity: 0,
+            decay: 0.94,
+            startVelocity: 30,
+            colors: ["#FFE400", "#FFBD00", "#E89400", "#FFCA6C", "#FDFFB8"],
+        };
+
+        const shoot = () => {
+            confetti({
+                ...defaults,
+                particleCount: 40,
+                scalar: 1.2,
+                shapes: ["star"],
+            });
+
+            confetti({
+                ...defaults,
+                particleCount: 10,
+                scalar: 0.75,
+                shapes: ["circle"],
+            });
+        };
+
+        setTimeout(shoot, 0);
+        setTimeout(shoot, 100);
+        setTimeout(shoot, 200);
+    };
 
     if (!address) return <Button disabled={true} size="sm" variant="ghost">Connect Wallet to Submit Quest</Button>
     if (!submissionResponse.result) return <></>
 
     if (userSubmissionResponse.result?.completed) return <Button disabled={true} size="sm" variant="ghost">Quest Completed 🎉</Button>
-    return <Dialog>
+    return <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className={buttonVariants({ variant: "default" })}>
             <div className="hidden md:block">Submit Quest</div>
             <Pickaxe />
@@ -87,10 +142,14 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
                 </DialogDescription>
             </DialogHeader>
 
-            <Button onClick={handleSubmission}>
-                <div className="hidden md:block">Submit Quest</div>
-                <Pickaxe />
+            <Button onClick={handleSubmission} disabled={isSubmitting}>
+                {!isSubmitting
+                    ? <>
+                        <div className="hidden md:block">Submit Quest</div>
+                        <Pickaxe />
+                    </>
+                    : <div>Validating...</div>}
             </Button>
         </DialogContent>
-    </Dialog>
+    </Dialog >
 }

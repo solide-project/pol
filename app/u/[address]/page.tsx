@@ -1,4 +1,5 @@
 import { UserProfile } from "@/components/core/profile/user-profile";
+import { Footer } from "@/components/core/shared/footer";
 import { POLPoapContract } from "@/lib/poap/contract";
 import { Poap, PoapMetadata } from "@/lib/poap/interface";
 import { getIPFSJson } from "@/lib/poap/ipfs";
@@ -41,5 +42,8 @@ export default async function Page({ params, }: SearchParams) {
         })
     }
 
-    return <UserProfile address={params.address} poaps={addressPoap} />
+    return <>
+        <UserProfile address={params.address} poaps={addressPoap} />
+        <Footer />
+    </>
 }

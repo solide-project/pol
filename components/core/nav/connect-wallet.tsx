@@ -6,11 +6,13 @@ import {
     useAccountModal,
     useChainModal,
 } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
+import Identicon from '@/components/core/shared/identicon';
+import { ProfileMenu } from './profile-menu';
 
 export const ConnectWallet = () => {
     const { openConnectModal } = useConnectModal();
-    const { openAccountModal } = useAccountModal();
-    const { openChainModal } = useChainModal();
+    const { address } = useAccount();
     return (
         <>
             {openConnectModal && (
@@ -18,16 +20,8 @@ export const ConnectWallet = () => {
                     Sign In
                 </Button>
             )}
-            {openAccountModal && (
-                <Button onClick={openAccountModal} type="button">
-                    Open Account Modal
-                </Button>
-            )}
-            {openChainModal && (
-                <Button onClick={openChainModal} type="button">
-                    Open Chain Modal
-                </Button>
-            )}
+
+            {address && <ProfileMenu address={address} />}
         </>
     );
 };

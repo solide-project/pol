@@ -35,7 +35,7 @@ export const processDeploymentSubmission = async (client: PublicClient, payload:
 
 export const processDeployTransaction = async (client: PublicClient, payload: SubmissionBody, submission: Transaction): Promise<SubmissionReceipt> => {
     const transaction = await client.getTransaction({
-        hash: payload.transactionHash as `0x${string}`
+        hash: payload.transactionHash
     })
 
     if (!isAddressEqual(payload.user, transaction.from))
@@ -56,7 +56,6 @@ export const processDeployTransaction = async (client: PublicClient, payload: Su
         throw new Error("Invalid Function Name")
 
     // Optionally, if submission requires specific arguments
-    console.log(transaction)
     if (submission.args) {
         if (!arraysEqual(submission.args, args as any[]))
             throw new Error("Invalid Arguments")

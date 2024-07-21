@@ -48,6 +48,10 @@ export class POLPoapContract {
     }
 
     async mintTracker(tokenId: string, account: string) {
-        return this.contract.read.mintTracker([tokenId, account]) as unknown as BigInt;
+        return this.contract.read.mintTracker([account, tokenId]) as unknown as BigInt;
+    }
+
+    async mint(account: string, tokenId: string, data: `0x${string}` = "0x") {
+        return this.contract.write.mint([account, tokenId, data]);
     }
 } 

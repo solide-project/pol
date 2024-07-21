@@ -29,10 +29,8 @@ export default async function Page({ params, }: SearchParams) {
     let quest = await service.quests?.getByRepo(owner, name) || undefined
 
     if (quest) {
-        console.log("Quest", quest)
-        const poap = new POLPoapContract({})
-        const poapData = await poap.uri(quest.tokenId.toString())
-        console.log("Poap", poapData)
+        const contract = new POLPoapContract({})
+        const poapData = await contract.uri(quest.tokenId.toString())
     }
 
     return <QuestProvider>

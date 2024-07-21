@@ -7,7 +7,7 @@ interface BadgeListProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function BadgeList({ poaps = [] }: BadgeListProps) {
     return <>
-        <div className="mt-10 scroll-m-20 border-b pb-1 text-3xl font-semibold tracking-tight first:mt-0">Collection</div>
+        <div className="my-10 scroll-m-20 border-b pb-1 text-3xl font-semibold tracking-tight first:mt-0">Collection</div>
 
         {(poaps && poaps.length > 0)
             ? <div className="grid grid-cols-12">

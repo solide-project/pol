@@ -1,11 +1,10 @@
 import { Homepage } from "@/components/core/home/homepage";
+import { Footer } from "@/components/core/shared/footer";
 
-interface SearchParams {
-  params: { slug: string }
-  searchParams?: { [key: string]: string | undefined }
-}
-export default async function Home({ searchParams }: SearchParams) {
-
+export default async function Home() {
   // Here we are letting the client query the quests
-  return <Homepage />
+  return <>
+    <Homepage />
+    <Footer />
+  </>
 }

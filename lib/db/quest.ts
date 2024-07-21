@@ -3,6 +3,7 @@ import { Collection, Document, ObjectId } from 'mongodb'
 export interface QuestSchema {
     owner: string
     name: string
+    title: string
     image: string
     description: string
     tokenId: number     // Token ID used for minting NFT
@@ -15,7 +16,7 @@ export class QuestCollection {
         this.collection = collection
     }
 
-    async get(id: string): Promise<QuestSchema | null> {
+    async get(id: number): Promise<QuestSchema | null> {
         const item = (await this.collection.findOne({ "tokenId": id }) as unknown) as QuestSchema | null
         if (!item) return null
 

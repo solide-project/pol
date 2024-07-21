@@ -5,6 +5,7 @@ import { aeonik } from "@/lib/fonts";
 import { Provider } from "@/components/provider";
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,11 +25,13 @@ export default function RootLayout({
         enableSystem
         disableTransitionOnChange
       >
-        <Provider>
-          <NavBar />
-          {children}
-          <Toaster />
-        </Provider>
+        <TooltipProvider delayDuration={0}>
+          <Provider>
+            <NavBar />
+            {children}
+            <Toaster />
+          </Provider>
+        </TooltipProvider>
       </ThemeProvider>
     </body>
   </html>

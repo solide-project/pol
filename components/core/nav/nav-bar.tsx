@@ -1,16 +1,23 @@
 "use client";
 
 import { ThemeToggle } from '@/components/theme/theme-toggle';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { ConnectWallet } from './connect-wallet';
-
+import { useRouter } from 'next/navigation';
+import { Ribbon } from 'lucide-react';
 
 interface NavBarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function NavBar({ children }: NavBarProps) {
-    return <div className="flex items-center sticky top-2 mx-4 h-12 z-50 rounded-lg bg-grayscale-025">
-        <ThemeToggle />
-        <ConnectWallet />
+    const router = useRouter();
+    return <div className="flex items-center justify-between sticky top-2 mx-4 px-8 h-12 z-50 rounded-lg bg-grayscale-025">
+        <div className="flex items-center gap-1 hover:cursor-pointer hover:text-primary" onClick={() => router.push("/")}>
+            <Ribbon size={36} className="text-primary" />
+            <div className="text-2xl font-bold hidden sm:block">Proof of Learn</div>
+        </div>
+        <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <ConnectWallet />
+        </div>
     </div>
 };

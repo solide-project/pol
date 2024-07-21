@@ -5,6 +5,9 @@ import { QuestSchema } from "@/lib/db/quest";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface HomePageProps extends React.HTMLAttributes<HTMLDivElement> { }
 
@@ -43,18 +46,28 @@ export function Homepage({ children }: HomePageProps) {
         })();
     }, [page]);
 
-    return <div className="">
-        {quests.map((quest, index) => (
-            <div key={index} className="bg-white p-4 rounded-lg shadow-md">
-                <img src={quest.image} alt="badge" width={270} height={270} />
+    return <div className="container my-16">
+        <div className="text-xl leading-[1.1] sm:text-2xl md:text-4xl text-center font-bold">Learn from any chian, protocol, ecosystem. Earn on Open Campus</div>
 
-                <h1>{quest.name}</h1>
-                <p>{quest.description}</p>
-                <Link href={`/q/${quest.owner}/${quest.name}`}>
-                    Start Learning
-                </Link>
-            </div>
-        ))}
+
+        <div className="text-xl leading-[1.1] sm:text-2xl md:text-4xl text-center font-bold">Explore</div>
+        <div className="grid grid-cols-12">
+            {quests.map((quest, index) => (
+                <div key={index} className="col-span-12 md:col-span:6 lg:col-span-3 bg-grayscale-025 rounded-lg cursor-pointer hover:shadow-lg">
+                    <img src={quest.image} alt="badge"
+                        className="rounded-lg object-cover h-48" />
+
+                    <div className="py-4 px-3">
+                        <h1 className="font-semibold leading-none tracking-tight">{quest.title}</h1>
+                        <p className="my-2">{quest.description}</p>
+                        <Link className={cn(buttonVariants({ variant: "default" }), "flex items-center gap-2")} href={`/q/${quest.owner}/${quest.name}`}>
+                            <div>Start Learning</div>
+                            <ArrowUpRight />
+                        </Link>
+                    </div>
+                </div>
+            ))}
+        </div>
 
         {page > 1 && <button onClick={() => setPage(page - 1)}>Previous</button>}
         {canNext && <button onClick={() => setPage(page + 1)}>Next</button>}
