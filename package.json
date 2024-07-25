@@ -31,6 +31,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "encoding": "^0.1.13",
+    "framer-motion": "^11.3.8",
     "git-url-parse": "^14.0.0",
     "lucide-react": "^0.400.0",
     "mongo": "^0.1.0",
