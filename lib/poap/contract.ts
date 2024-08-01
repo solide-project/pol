@@ -40,6 +40,7 @@ export class POLPoapContract {
     }
 
     async getOwnedTokenIds(account: `0x${string}`) {
+        // return [BigInt(0), BigInt(1)]   // For testing purpose
         return this.contract.read.getOwnedTokenIds([account]) as unknown as BigInt[];
     }
 

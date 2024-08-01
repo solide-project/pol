@@ -6,10 +6,10 @@ import { ProjectBeam } from "./project-beam";
 
 interface HeroProps extends React.HTMLAttributes<HTMLDivElement> { }
 
-export function Hero({ children }: HeroProps) {
+export function Hero({ }: HeroProps) {
     return <div className="h-[100vh]">
         <div>
-            <a href="" rel="noopener noreferrer" target="_blank"
+            <a href="https://dorahacks.io/buidl/14531" rel="noopener noreferrer" target="_blank"
                 className="flex items-center justify-center my-4">
                 <div className="border border-gray py-1 md:py-[4px] px-3 rounded-full bg-grayscale-025 text-center flex items-center space-x-2">
                     <span>🎖️ Participating in EDU Chain</span>
@@ -25,7 +25,7 @@ export function Hero({ children }: HeroProps) {
             <div className="col-span-12 md:col-span-4">
                 <div className="flex items-center justify-center gap-2 my-8 md:my-0 h-[100%]" >
                     <a href="#explore" className={buttonVariants({ variant: "default" })}>Start Learning</a>
-                    <Button variant="secondary">View Poaps</Button>
+                    <Button className={buttonVariants({ variant: "outline" })}>View Poaps</Button>
                 </div>
             </div>
             <div className="col-span-12 md:col-span-8">

@@ -54,7 +54,9 @@ export function QuestViewer({ tree, owner, name, metadata }: QuestViewerProps) {
                 }
             })
 
-            // console.log("Structure", structure)
+            // console.log("structure", structure)
+            // console.log("metadata", metadata)
+
             const nav = flatten(structure)
             quest.manualSetQuestStructure({ name: nav[0].name })
 
@@ -62,7 +64,6 @@ export function QuestViewer({ tree, owner, name, metadata }: QuestViewerProps) {
             quest.setQuestStructure(structure)
             quest.setQuestOwner(owner)
             quest.setQuestName(name)
-            console.log("Metadata", metadata)
             quest.setQuestPoap(metadata)
         })()
     }, [])

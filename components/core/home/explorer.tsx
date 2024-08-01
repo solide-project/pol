@@ -48,7 +48,7 @@ export function Explorer({ children }: ExplorerProps) {
 
     return <>
         <div className="text-xl leading-[1.1] sm:text-2xl md:text-4xl text-center font-bold my-8">Explore</div>
-        <div id="explore" className="grid grid-cols-12">
+        <div id="explore" className="grid grid-cols-12 gap-4">
             {quests.map((quest, index) => (
                 <div key={index} className="col-span-12 md:col-span-6 lg:col-span-3 bg-grayscale-025 rounded-lg cursor-pointer hover:shadow-lg">
                     <img src={quest.image} alt="badge"
@@ -56,7 +56,7 @@ export function Explorer({ children }: ExplorerProps) {
 
                     <div className="py-4 px-3">
                         <h1 className="font-semibold leading-none tracking-tight">{quest.title}</h1>
-                        <p className="my-2">{quest.description}</p>
+                        <p className="my-2 h-32 overflow-hidden">{quest.description}</p>
                         <Link className={cn(buttonVariants({ variant: "default" }), "flex items-center gap-2")} href={`/q/${quest.owner}/${quest.name}`}>
                             <div>Start Learning</div>
                             <ArrowUpRight />

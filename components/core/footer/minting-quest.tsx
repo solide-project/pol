@@ -12,11 +12,12 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Award } from "lucide-react";
-import { POLPoapContract } from "@/lib/poap";
+import { PoapMetadata, POLPoapContract } from "@/lib/poap";
 import toast from "react-hot-toast";
-
+import Image from 'next/image';
 import { createWalletClient, custom } from 'viem'
 import confetti from "canvas-confetti";
+import { getIPFSJson, ipfsGateway } from "@/lib/poap/ipfs";
 
 const getWallet = async () => {
     const [account] = await window.ethereum.request({
@@ -36,6 +37,8 @@ export function MintingQuest({ className }: MintingQuestProps) {
     const { questPoap } = useQuest()
 
     const [metadata, setMetadata] = useState("")
+    const [poapMetadata, setPoapMetadata] = useState<PoapMetadata | undefined>()
+
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -44,7 +47,13 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 const contract = new POLPoapContract({})
                 const metadata = await contract.uri(questPoap.tokenId.toString())
 
-                console.log(metadata)
+                if (!metadata) {
+                    toast.error("Error getting metadata for POAP")
+                    return;
+                }
+
+                const data: PoapMetadata = await getIPFSJson(metadata)
+                setPoapMetadata(data)
                 setMetadata(metadata)
             }
         })()
@@ -147,10 +156,18 @@ export function MintingQuest({ className }: MintingQuestProps) {
                     Earn yourself a POL Poap for completing all the quests in this resource.
                 </DialogDescription>
                 <div>
-                    {/* {JSON.stringify(questPoap)} */}
-                    {metadata}
+                    {/* {questPoap.tokenId}
+                    {metadata} */}
+                    {poapMetadata && <>
+                        <div className="text-2xl font-extrabold text-center">{poapMetadata.name}</div>
+                        <div className="my-2">{poapMetadata.description}</div>
+                        <div className="flex items-center justify-center">
+                            <Image src={`${poapMetadata.image.replace("ipfs://", ipfsGateway)}`} alt="badge"
+                                width={245} height={245} />
+                        </div>
+                    </>}
                 </div>
-                <Button onClick={handleMinting} disabled={isMinting}>
+                <Button onClick={handleMinting} disabled={isMinting} className="my-2">
                     {!isMinting
                         ? <>
                             <div className="hidden md:block">Mint POL Poap</div>

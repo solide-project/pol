@@ -7,15 +7,15 @@ interface FeatureProps extends React.HTMLAttributes<HTMLDivElement> { }
 const icons = [{
     icon: <GraduationCap />,
     title: "On chain",
-    description: "Anyone can deploy an onchain quest as long as they hold tokens in their wallet"
+    description: "Hands on experience learning with the blockchain is the best way to learn"
 }, {
     icon: <PartyPopper />,
     title: "Rewarded for Learning",
-    description: "Anyone can deploy an onchain quest as long as they hold tokens in their wallet"
+    description: "Get rewarded with POL POAP NFT for completing quests and activities"
 }, {
     icon: <Box />,
     title: "Free Open Source Learning",
-    description: "Anyone can deploy an onchain quest as long as they hold tokens in their wallet"
+    description: "Anyone can deploy an onchain quest and support over 100+ chains and protocols"
 }]
 
 export function Feature({ children }: FeatureProps) {
