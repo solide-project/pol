@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,
@@ -13,8 +13,9 @@ import { QuestSchema } from "@/lib/db/quest"
 import { Poap } from "@/lib/poap"
 import { ipfsGateway } from "@/lib/poap/ipfs"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
+import { useAccount } from "wagmi";
 
 interface BadgeCardProps extends React.HTMLAttributes<HTMLDivElement> {
     poap: Poap
@@ -22,9 +23,15 @@ interface BadgeCardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function BadgeCard({ poap }: BadgeCardProps) {
     const router = useRouter()
+    const params = useParams<{ address: string }>()
+    const { address } = useAccount()
 
     const [isRedirecting, setIsRedirecting] = useState(false)
     const [canRedirect, setCanDirect] = useState(true)
+
+    const generateTweet = (title: string) => {
+        return `I completed the ${title} on Proof of Learn and earn a Poap! 🎉🎉🎉 \n Learn about it here: https://proof-of-learn.vercel.app/ \n #ProofOfLearn #Poap #NFT `
+    }
 
     const redirectToQuest = async () => {
         setIsRedirecting(true)
@@ -41,7 +48,6 @@ export function BadgeCard({ poap }: BadgeCardProps) {
         const data = await response.json()
 
         const quest: QuestSchema = data.result
-        console.log(quest)
 
         router.push(`/q/${quest.owner}/${quest.name}`)
         setIsRedirecting(false)
@@ -64,10 +70,14 @@ export function BadgeCard({ poap }: BadgeCardProps) {
                 <DialogTitle>POL POAP: {poap.metadata.name}</DialogTitle>
             </DialogHeader>
             <Details text="Earned on" value={poap.timestamp.toString() || "0"} />
-            <DialogFooter>
+            <DialogFooter className="flex gap-2">
                 {canRedirect && <Button onClick={redirectToQuest}>
                     {isRedirecting ? "Loading ..." : "Start Learning"}
                 </Button>}
+                {address && address === params.address && <a className={buttonVariants({ variant: "outline" })}
+                    target="_blank" rel="noopener noreferrer"
+                    href={`https://twitter.com/intent/tweet?text=${generateTweet(poap.metadata.name)}`}>
+                    Tweet</a>}
             </DialogFooter>
         </DialogContent>
     </Dialog>
