@@ -3,10 +3,14 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MoveRight } from "lucide-react";
 import { ProjectBeam } from "./project-beam";
+import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface HeroProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function Hero({ }: HeroProps) {
+    const router = useRouter()
+
     return <div className="h-[100vh]">
         <div>
             <a href="https://dorahacks.io/buidl/14531" rel="noopener noreferrer" target="_blank"
@@ -25,7 +29,8 @@ export function Hero({ }: HeroProps) {
             <div className="col-span-12 md:col-span-4">
                 <div className="flex items-center justify-center gap-2 my-8 md:my-0 h-[100%]" >
                     <a href="#explore" className={buttonVariants({ variant: "default" })}>Start Learning</a>
-                    <Button className={buttonVariants({ variant: "outline" })}>View Poaps</Button>
+                    <a className={cn(buttonVariants({ variant: "default" }), "cursor-pointer")}
+                        onClick={() => router.push("/p")}>View Poaps</a>
                 </div>
             </div>
             <div className="col-span-12 md:col-span-8">
