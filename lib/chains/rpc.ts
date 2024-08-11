@@ -138,14 +138,14 @@ const data: { [key: string]: string } = {
     [ChainID.ARBITRUM_SEPOLIA]: "https://arbitrum-sepolia.drpc.org",
     [ChainID.KROMA_MAINNET]: "https://api.kroma.network",
     [ChainID.KROMA_SEPOLIA]: "https://api.sepolia.kroma.network",
-    [ChainID.POLYGON_AMOY]: "https://lb.drpc.org/ogrpc?network=polygon-amoy&dkey=AhZypp7lFkktkODpT5QNbpkrCwMFFXkR77iXsvbGyHm5",
+    [ChainID.POLYGON_AMOY]: "https://lb.drpc.org/ogrpc?network=polygon-amoy",
     [ChainID.GNOSIS_CHIADO]: "https://gnosis-chiado-rpc.publicnode.com/",
     [ChainID.COTI_DEVNET]: "https://devnet.coti.io/rpc",
     [ChainID.LISK_MAINNET]: "https://rpc.api.lisk.com",
     [ChainID.LISK_SEPOLIA]: "https://rpc.sepolia-api.lisk.com",
     [ChainID.REDSTONE_MAINNET]: "https://rpc.redstonechain.com",
     [ChainID.REDSTONE_GARNET_TESTNET]: "wss://rpc.garnetchain.com",
-    [ChainID.OPEN_CAMPUS_CODEX]: "https://open-campus-codex-sepolia.drpc.org",
+    [ChainID.OPEN_CAMPUS_CODEX]: "https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia",
 }
 
 export const getRPC = (network: string): string => {
