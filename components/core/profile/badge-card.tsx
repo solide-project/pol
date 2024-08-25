@@ -12,6 +12,7 @@ import {
 import { QuestSchema } from "@/lib/db/quest"
 import { Poap } from "@/lib/poap"
 import { ipfsGateway } from "@/lib/poap/ipfs"
+import { useOCAuth } from "@opencampus/ocid-connect-js";
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
@@ -25,6 +26,7 @@ export function BadgeCard({ poap }: BadgeCardProps) {
     const router = useRouter()
     const params = useParams<{ address: string }>()
     const { address } = useAccount()
+    const { authState, ocAuth, updateAuthState } = useOCAuth();
 
     const [isRedirecting, setIsRedirecting] = useState(false)
     const [canRedirect, setCanDirect] = useState(true)
@@ -74,7 +76,11 @@ export function BadgeCard({ poap }: BadgeCardProps) {
                 {canRedirect && <Button onClick={redirectToQuest}>
                     {isRedirecting ? "Loading ..." : "Start Learning"}
                 </Button>}
-                {address && address === params.address && <a className={buttonVariants({ variant: "outline" })}
+                {/* {address && address === params.address && <a className={buttonVariants({ variant: "outline" })}
+                    target="_blank" rel="noopener noreferrer"
+                    href={`https://twitter.com/intent/tweet?text=${generateTweet(poap.metadata.name)}`}>
+                    Tweet</a>} */}
+                {authState.isAuthenticated && ocAuth?.getAuthInfo()?.eth_address === params.address && <a className={buttonVariants({ variant: "outline" })}
                     target="_blank" rel="noopener noreferrer"
                     href={`https://twitter.com/intent/tweet?text=${generateTweet(poap.metadata.name)}`}>
                     Tweet</a>}

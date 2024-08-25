@@ -36,7 +36,6 @@ export function QuestTest({ }: QuestTestProps) {
             transport: http(rpc),
         })
 
-
         let reciept: SubmissionReceipt = {
             result: false
         }
@@ -61,6 +60,7 @@ export function QuestTest({ }: QuestTestProps) {
     }
 
     return <>
+        <div>Notes: This accounts uses Metamask address as user (NOT OCID)</div>
         <Textarea onChange={(e) => setQuestInfo(e.target.value)} value={questInfo} placeholder="value"
             className="h-[256px]" />
 

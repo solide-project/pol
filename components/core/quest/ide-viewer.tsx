@@ -9,7 +9,6 @@ interface IDEViewerProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function IDEViewer({ uri, className }: IDEViewerProps) {
     return <div className={cn("container", className)}>
-        {uri}
         <iframe
             className="rounded-lg"
             src={uri}

@@ -17,13 +17,15 @@ import { useAccount } from "wagmi";
 import toast from 'react-hot-toast';
 import { Pickaxe } from "lucide-react";
 import confetti from "canvas-confetti";
+import { useOCAuth } from "@opencampus/ocid-connect-js";
 
 interface SubmissionButtonProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function SubmissionButton({ className }: SubmissionButtonProps) {
     const { selectedQuest } = useQuest()
-    const { address } = useAccount()
+    // const { address } = useAccount()    
+    const { ocAuth, authState } = useOCAuth();
 
     const [submissionResponse, setSubmissionResponse] = useState<SubmissionResponse>({} as SubmissionResponse)
     const [userSubmissionResponse, setUserSubmissionResponse] = useState<UserSubmissionResponse>({} as UserSubmissionResponse)
@@ -35,24 +37,24 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
     useEffect(() => {
         (async () => {
             // Only fetch if connected wallet and selected quest
-            if (!address) return
+            if (!ocAuth?.getAuthInfo()?.eth_address) return
             if (selectedQuest?.name.id === undefined) return
             try {
+                const userSubmission = await fetchUserSubmission(selectedQuest?.name.id, ocAuth.getAuthInfo().eth_address)
+                setUserSubmissionResponse(userSubmission)
+                console.log(userSubmission)
+
                 setSubmissionResponse({} as SubmissionResponse)
                 const submission = await fetchSubmission(selectedQuest?.name.id)
                 setSubmissionResponse(submission)
-
-                const userSubmission = await fetchUserSubmission(selectedQuest?.name.id, address)
-                setUserSubmissionResponse(userSubmission)
-                console.log(userSubmission)
             } catch (error: any) {
                 console.error(error)
             }
         })()
-    }, [selectedQuest, address])
+    }, [selectedQuest, authState.isAuthenticated])
 
     const [isSubmitting, setIsSubmitting] = useState(false)
-
+    const [justSubmitted, setJustSubmitted] = useState(false)
     const handleSubmission = async () => {
         if (selectedQuest?.name.id === undefined) {
             toast.error("Couldn't find the quest. How did you get here?")
@@ -68,7 +70,7 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
         try {
             const response = await fetch("/api/db/submission/submit", {
                 method: "POST",
-                body: JSON.stringify({ id: selectedQuest?.name.id, payload: data, address }),
+                body: JSON.stringify({ id: selectedQuest?.name.id, payload: data, address: ocAuth.getAuthInfo().eth_address }),
             })
 
             if (!response.ok) {
@@ -84,6 +86,7 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
             triggerConfetti()
             triggerConfetti()
             setOpen(false)
+            setJustSubmitted(true)
             toast.success("Completed")
         } catch (error: any) {
             console.error(error)
@@ -124,32 +127,36 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
         setTimeout(shoot, 200);
     };
 
-    if (!address) return <Button disabled={true} size="sm" variant="ghost">Connect Wallet to Submit Quest</Button>
+    if (!authState.isAuthenticated || !ocAuth.getAuthInfo().eth_address)
+        return <Button disabled={true} size="sm" variant="ghost">Connect Wallet to Submit Quest</Button>
     if (!submissionResponse.result) return <></>
 
-    if (userSubmissionResponse.result?.completed) return <Button disabled={true} size="sm" variant="ghost">Quest Completed 🎉</Button>
-    return <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger className={buttonVariants({ variant: "default" })}>
-            <div className="hidden md:block">Submit Quest</div>
-            <Pickaxe />
-        </DialogTrigger>
-        <DialogContent>
-            <DialogHeader>
-                <DialogTitle>Enter the transaction hash for validate the deployment and contract execution</DialogTitle>
-                <DialogDescription>
-                    <Input placeholder={submissionResponse?.result.type}
-                        onChange={(e) => setData(e.target.value)} value={data} />
-                </DialogDescription>
-            </DialogHeader>
+    if (userSubmissionResponse.result?.completed || justSubmitted) return <Button disabled={true} size="sm" variant="ghost">Quest Completed 🎉</Button>
+    return <>
+        {submissionResponse && <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger className={buttonVariants({ variant: "default" })}>
+                <div className="hidden md:block">Submit Quest</div>
+                <Pickaxe />
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Enter the transaction hash for validate the deployment and contract execution</DialogTitle>
+                    <DialogDescription>
+                        <Input placeholder={submissionResponse?.result.type}
+                            onChange={(e) => setData(e.target.value)} value={data} />
+                    </DialogDescription>
+                </DialogHeader>
 
-            <Button onClick={handleSubmission} disabled={isSubmitting}>
-                {!isSubmitting
-                    ? <>
-                        <div className="hidden md:block">Submit Quest</div>
-                        <Pickaxe />
-                    </>
-                    : <div>Validating...</div>}
-            </Button>
-        </DialogContent>
-    </Dialog >
+                <Button onClick={handleSubmission} disabled={isSubmitting}>
+                    {!isSubmitting
+                        ? <>
+                            <div className="hidden md:block">Submit Quest</div>
+                            <Pickaxe />
+                        </>
+                        : <div>Validating...</div>}
+                </Button>
+            </DialogContent>
+        </Dialog >
+        }
+    </>
 }
