@@ -53,9 +53,9 @@ export function ProjectBeam() {
                     <Circle ref={div2Ref} className="bg-grayscale-025">
                         <Image src="icons/uniswap.svg" alt="uniswap" width={40} height={40} />
                     </Circle>
-                    <Circle ref={div4Ref} className="size-18 gap-2">
+                    <Circle ref={div4Ref} className="size-18 gap-3">
                         <Image src="icons/open-campus.svg" alt="open-campus" width={40} height={40} />
-                        <Image src="icons/pol.svg" alt="pol" width={40} height={40} />
+                        <Image src="/badge.svg" alt="pol" width={32} height={32} />
                     </Circle>
                     <Circle ref={div6Ref} className="bg-grayscale-025">
                         <Image src="icons/apecoin.svg" alt="apecoin" style={{ scale: "1.3" }} width={49} height={49} />

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useOCAuth } from '@opencampus/ocid-connect-js';
 import { Button } from '../../ui/button';
 import { ProfileMenu } from './profile-menu';
+import Image from 'next/image';
 
 interface OCIDConnectProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -30,6 +31,10 @@ export function OCIDConnect({ children }: OCIDConnectProps) {
     return <>
         {authState.isAuthenticated
             ? <ProfileMenu address="0x" />
-            : <Button onClick={handleLogin}>Connect OCID</Button>}
+            : <Button onClick={handleLogin}
+                className="flex items-center gay-2">
+                <Image src="icons/open-campus.svg" alt="logo" height={32} width={32} />
+                Connect OCID
+            </Button>}
     </>
 }
