@@ -7,7 +7,7 @@ interface ProviderProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const opts: any = {
-    redirectUri: 'http://localhost:3000/redirect',
+    redirectUri: 'https://proof-of-learn.vercel.app/redirect',
 }
 
 export function Provider({ children }: ProviderProps) {
