@@ -34,15 +34,26 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
     // Sample: 0x2776655a8d810840286d75abfae2c083107bdc1978712ec0c8cb4aadcbc6968c
     const [data, setData] = useState<string>("")
 
+    // We can cache the response for submission as we will be getting from API every time
     useEffect(() => {
         (async () => {
             // Only fetch if connected wallet and selected quest
-            if (!ocAuth?.getAuthInfo()?.eth_address) return
+            setUserSubmissionResponse({} as UserSubmissionResponse)
+            setSubmissionResponse({} as SubmissionResponse)
+
+            if (!authState.isAuthenticated) return;
+            const address = ocAuth?.getAuthInfo()?.eth_address
+
+            if (!address) return
             if (selectedQuest?.name.id === undefined) return
+
             try {
-                const userSubmission = await fetchUserSubmission(selectedQuest?.name.id, ocAuth.getAuthInfo().eth_address)
-                setUserSubmissionResponse(userSubmission)
-                console.log(userSubmission)
+                const userSubmission = await fetchUserSubmission(selectedQuest?.name.id, address)
+                if (userSubmission) {
+                    // console.log("User already submitted", userSubmission)
+                    setUserSubmissionResponse(userSubmission)
+                    return
+                }
 
                 setSubmissionResponse({} as SubmissionResponse)
                 const submission = await fetchSubmission(selectedQuest?.name.id)
@@ -127,11 +138,12 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
         setTimeout(shoot, 200);
     };
 
-    if (!authState.isAuthenticated || !ocAuth.getAuthInfo().eth_address)
+    if (!authState.isAuthenticated)
         return <Button disabled={true} size="sm" variant="ghost">Connect Wallet to Submit Quest</Button>
-    if (!submissionResponse.result) return <></>
 
     if (userSubmissionResponse.result?.completed || justSubmitted) return <Button disabled={true} size="sm" variant="ghost">Quest Completed 🎉</Button>
+    if (!submissionResponse.result) return <></>
+
     return <>
         {submissionResponse && <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger className={buttonVariants({ variant: "default" })}>

@@ -18,6 +18,8 @@ import Image from 'next/image';
 import { createWalletClient, custom } from 'viem'
 import confetti from "canvas-confetti";
 import { getIPFSJson, ipfsGateway } from "@/lib/poap/ipfs";
+import { useOCAuth } from "@opencampus/ocid-connect-js";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 
 const getWallet = async () => {
     const [account] = await window.ethereum.request({
@@ -35,6 +37,7 @@ interface MintingQuestProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function MintingQuest({ className }: MintingQuestProps) {
     const { questPoap } = useQuest()
+    const { ocAuth, authState } = useOCAuth();
 
     const [metadata, setMetadata] = useState("")
     const [poapMetadata, setPoapMetadata] = useState<PoapMetadata | undefined>()
@@ -55,11 +58,20 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 const data: PoapMetadata = await getIPFSJson(metadata)
                 setPoapMetadata(data)
                 setMetadata(metadata)
+
+                if (authState.isAuthenticated) {
+                    const address = ocAuth?.getAuthInfo()?.eth_address
+                    const timeStamp = await contract.mintTracker(questPoap.tokenId.toString(), address)
+                    if (timeStamp !== BigInt(0)) {
+                        setHasMinted(true)
+                    }
+                }
             }
         })()
     }, [questPoap])
 
     const [isMinting, setIsMinting] = useState(false)
+    const [hasMinted, setHasMinted] = useState(false)
     const handleMinting = async () => {
         console.log("Minting")
         setIsMinting(true)
@@ -69,21 +81,27 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 return;
             }
 
+            if (!authState.isAuthenticated) {
+                toast.error("Not logged to OCID")
+            }
+
+            const account = ocAuth.getAuthInfo().eth_address
+
             // Sign message
-            const [account] = await window.ethereum.request({
-                method: 'eth_requestAccounts'
-            })
+            // const [account] = await window.ethereum.request({
+            //     method: 'eth_requestAccounts'
+            // })
 
-            const client = createWalletClient({
-                account,
-                transport: custom(window.ethereum!)
-            })
-            const signature = await client.signMessage({
-                account,
-                message: "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54",
-            })
+            // const client = createWalletClient({
+            //     account,
+            //     transport: custom(window.ethereum!)
+            // })
+            // const signature = await client.signMessage({
+            //     account,
+            //     message: "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54",
+            // })
+            const signature = ""
 
-            console.log(signature, account)
             const response = await fetch("/api/mint", {
                 method: "POST",
                 body: JSON.stringify({
@@ -105,6 +123,8 @@ export function MintingQuest({ className }: MintingQuestProps) {
 
             // setOpen(false)
             toast.success("Poap minted successfully")
+
+            setHasMinted(true)
         } catch (e) {
             console.error(e)
         } finally {
@@ -151,10 +171,16 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 <Award />
             </DialogTrigger>
             <DialogContent>
-                <DialogTitle>Complete all the quests for this resource?</DialogTitle>
-                <DialogDescription>
-                    Earn yourself a POL Poap for completing all the quests in this resource.
-                </DialogDescription>
+                {hasMinted ? <VisuallyHidden>
+                    <DialogTitle></DialogTitle>
+                    <DialogDescription></DialogDescription>
+                </VisuallyHidden>
+                    : <>
+                        <DialogTitle>Complete all the quests for this resource?</DialogTitle>
+                        <DialogDescription>
+                            Earn yourself a POL Poap for completing all the quests in this resource.
+                        </DialogDescription>
+                    </>}
                 <div>
                     {/* {questPoap.tokenId}
                     {metadata} */}
@@ -167,14 +193,16 @@ export function MintingQuest({ className }: MintingQuestProps) {
                         </div>
                     </>}
                 </div>
-                <Button onClick={handleMinting} disabled={isMinting} className="my-2">
-                    {!isMinting
-                        ? <>
-                            <div className="hidden md:block">Mint POL Poap</div>
-                            <Award />
-                        </>
-                        : <div>Minting...</div>}
-                </Button>
+                {hasMinted
+                    ? <Button disabled={true}>Congratz! You completed this course</Button>
+                    : <Button onClick={handleMinting} disabled={isMinting} className="my-2">
+                        {!isMinting
+                            ? <>
+                                <div className="hidden md:block">Mint POL Poap</div>
+                                <Award />
+                            </>
+                            : <div>Minting...</div>}
+                    </Button>}
             </DialogContent>
         </Dialog>}
     </>

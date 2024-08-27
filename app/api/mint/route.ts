@@ -15,9 +15,9 @@ import { mainnet } from "viem/chains";
 export async function POST(request: NextRequest) {
     const body = await request.json()
 
-    if (!body.signature) {
-        return generateErrorResponse("Failed Validation: signature")
-    }
+    // if (!body.signature) {
+    //     return generateErrorResponse("Failed Validation: signature")
+    // }
 
     if (!body.address) {
         return generateErrorResponse("Failed Validation: address")

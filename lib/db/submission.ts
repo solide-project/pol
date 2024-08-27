@@ -1,4 +1,5 @@
 import { Collection, Document } from 'mongodb'
+import { AbiFunction } from 'viem'
 
 export interface Submission {
     path?: string   // Path is not important, but is used adding to db
@@ -15,7 +16,7 @@ export interface Deployment extends Submission {
 
 export interface Transaction extends Submission {
     type: "transaction"
-    abi: string[]
+    abi: AbiFunction[]
     contract?: string
     args: any[]
 }

@@ -22,13 +22,17 @@ export interface UserSubmissionResponse {
     }
 }
 
-export const fetchUserSubmission = async (id: string, address: `0x${string}`): Promise<UserSubmissionResponse> => {
+export const fetchUserSubmission = async (id: string, address: `0x${string}`): Promise<UserSubmissionResponse | null> => {
     const response = await fetch(`/api/db/user-submission?id=${id}&address=${address}`)
     if (!response.ok) {
         console.error("Failed to fetch", response.statusText)
-        throw new Error("Failed to fetch")
+        return null
     }
 
-    const data = await response.json()
+    const data: UserSubmissionResponse = await response.json()
+    if (!data.result.completed) {
+        return null
+    }
+
     return data;
 }

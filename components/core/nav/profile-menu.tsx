@@ -52,7 +52,7 @@ export function ProfileMenu({ address }: ProfileMenuProps) {
                     <div className="truncate">
                         {mask(ocAuth?.getAuthInfo()?.eth_address)}
                     </div>
-                    <CopyText payload={address} />
+                    <CopyText payload={ocAuth?.getAuthInfo()?.eth_address} />
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="hover:cursor-pointer" onClick={() => router.replace(`/u/${ocAuth?.getAuthInfo()?.eth_address}`)} >

@@ -1,4 +1,4 @@
-import { decodeFunctionData, isAddressEqual, PublicClient, sha256 } from "viem";
+import { decodeFunctionData, encodeFunctionData, isAddressEqual, PublicClient, sha256 } from "viem";
 import { Deployment, Transaction } from "../db/submission";
 
 export interface SubmissionBody {
@@ -27,7 +27,7 @@ export const processDeploymentSubmission = async (client: PublicClient, payload:
     })
 
     const bytehash = sha256(bytecode as `0x${string}`)
-    if (bytehash === submission.bytecode)
+    if (bytehash !== submission.bytecode)
         throw new Error("Invalid Transaction Hash")
 
     return { result: true };
@@ -41,24 +41,38 @@ export const processDeployTransaction = async (client: PublicClient, payload: Su
     if (!isAddressEqual(payload.user, transaction.from))
         throw new Error("Transaction not from user")
 
-    const { functionName, args } = decodeFunctionData({
-        abi: submission.abi,
-        data: transaction.input
-    })
+    /** 
+     * We can Decode but there is possible that the signature is not found
+     * Hence we'll encode what given, as this is a requirement and just compare to transaction input
+     */
+    // const { functionName, args } = decodeFunctionData({
+    //     abi: submission.abi,
+    //     data: transaction.input
+    // })
 
     // If submission requires to call from a specific contract
-    if (submission.contract) {
-        if (!isAddressEqual(submission.contract as `0x${string}`, transaction.to || "0x"))
-            throw new Error("Invalid Contract Address")
-    }
+    // if (submission.contract) {
+    //     if (!isAddressEqual(submission.contract as `0x${string}`, transaction.to || "0x"))
+    //         throw new Error("Invalid Contract Address")
+    // }
 
-    if (!JSON.stringify(submission.abi).includes(functionName))
-        throw new Error("Invalid Function Name")
+    // if (!JSON.stringify(submission.abi).includes(functionName))
+    //     throw new Error("Invalid Function Name")
 
-    // Optionally, if submission requires specific arguments
-    if (submission.args) {
-        if (!arraysEqual(submission.args, args as any[]))
-            throw new Error("Invalid Arguments")
+    // // Optionally, if submission requires specific arguments
+    // if (submission.args) {
+    //     if (!arraysEqual(submission.args, args as any[]))
+    //         throw new Error("Invalid Arguments")
+    // }
+
+    const data = encodeFunctionData({
+        abi: [submission.abi[0]],
+        // functionName: submission.abi[0].name,
+        args: submission.args
+    })
+
+    if (data !== transaction.input) {
+        throw new Error("Incorrect Transaction")
     }
 
     // Typically if decodeFunctionData is successful, we can assume the transaction is correct

@@ -11,12 +11,11 @@ interface OCIDConnectProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function OCIDConnect({ children }: OCIDConnectProps) {
     const { ocAuth, authState } = useOCAuth();
-    const router = useRouter();
 
     useEffect(() => {
         if (authState.isAuthenticated) {
-            console.log(ocAuth)
-            console.log(authState)
+            // console.log(ocAuth)
+            // console.log(authState)
         }
     }, [authState.isAuthenticated]);
 
