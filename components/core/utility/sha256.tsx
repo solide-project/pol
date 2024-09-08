@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { sha256 } from "viem";
+import { UtilHeader } from "./util-header";
 
 interface Sha256UtilityProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -21,6 +22,9 @@ export function Sha256Utility({ }: Sha256UtilityProps) {
         }
     }
     return <div>
+        <UtilHeader title="Bytecode Hash"
+            description="Generate the Bytecode Hash for Deployment Quest" />
+
         <Input onChange={handleMethod} value={value} placeholder="0x" />
         {output && <div>{output}</div>}
     </div>

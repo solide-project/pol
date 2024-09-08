@@ -3,9 +3,11 @@ import { Collection, Document, ObjectId } from 'mongodb'
 export interface QuestSchema {
     owner: string
     name: string
+    
     title: string
     image: string
     description: string
+
     tokenId: number     // Token ID used for minting NFT
     quests: string[]    // List of quest IDs
 }
