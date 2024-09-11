@@ -63,7 +63,7 @@ export function MintingQuest({ className }: MintingQuestProps) {
                     const address = ocAuth?.getAuthInfo()?.eth_address
                     const timeStamp = await contract.mintTracker(questPoap.tokenId.toString(), address)
                     if (timeStamp !== BigInt(0)) {
-                        setHasMinted(true)
+                        setHasMinted(Number(timeStamp) * 1000)
                     }
                 }
             }
@@ -71,7 +71,7 @@ export function MintingQuest({ className }: MintingQuestProps) {
     }, [questPoap])
 
     const [isMinting, setIsMinting] = useState(false)
-    const [hasMinted, setHasMinted] = useState(false)
+    const [hasMinted, setHasMinted] = useState(0)
     const handleMinting = async () => {
         console.log("Minting")
         setIsMinting(true)
@@ -124,7 +124,7 @@ export function MintingQuest({ className }: MintingQuestProps) {
             // setOpen(false)
             toast.success("Poap minted successfully")
 
-            setHasMinted(true)
+            setHasMinted(Date.now())
         } catch (e) {
             console.error(e)
         } finally {
@@ -194,7 +194,7 @@ export function MintingQuest({ className }: MintingQuestProps) {
                     </>}
                 </div>
                 {hasMinted
-                    ? <Button disabled={true}>Congratz! You completed this course</Button>
+                    ? <Button disabled={true}>Congratz! You completed this course {new Date(hasMinted).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} </Button>
                     : <Button onClick={handleMinting} disabled={isMinting} className="my-2">
                         {!isMinting
                             ? <>

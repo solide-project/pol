@@ -46,7 +46,6 @@ export const generateQuestPath = (item: QuestTitle, owner: string, name: string,
 export const generateQuestId = (uri: string): string => {
     const parsed = GitUrlParse(uri)
     const questPath = path.join(parsed.full_name, parsed.filepath)
-    console.log("Quest Path", questPath)
     return hashMessage(questPath.replace(/\\/g, "/"))
 }
 

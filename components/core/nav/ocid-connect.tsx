@@ -32,9 +32,9 @@ export function OCIDConnect({ children }: OCIDConnectProps) {
         {authState.isAuthenticated
             ? <ProfileMenu address="0x" />
             : <Button onClick={handleLogin}
-                className="flex items-center gay-2">
+                className="flex items-center space-x-2">
                 <Image src="icons/open-campus.svg" alt="logo" height={32} width={32} />
-                Connect OCID
+                <div className="font-semibold">Connect OCID</div>
             </Button>}
     </>
 }

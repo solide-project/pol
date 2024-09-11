@@ -4,5 +4,12 @@ export interface QuestPagination {
     page: number
     pageSize: number
     total: number
-    result: QuestSchema[]
+    result: QuestInformation[]
+}
+
+export interface QuestInformation {
+    result: QuestSchema
+    user: {
+        image: string
+    }
 }

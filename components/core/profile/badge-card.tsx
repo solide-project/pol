@@ -17,6 +17,7 @@ import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { useAccount } from "wagmi";
+import { Icons } from "../shared/icons";
 
 interface BadgeCardProps extends React.HTMLAttributes<HTMLDivElement> {
     poap: Poap
@@ -32,7 +33,10 @@ export function BadgeCard({ poap }: BadgeCardProps) {
     const [canRedirect, setCanDirect] = useState(true)
 
     const generateTweet = (title: string) => {
-        return `I completed the ${title} on Proof of Learn and earn a Poap! 🎉🎉🎉 \n Learn about it here: https://proof-of-learn.vercel.app/ \n #ProofOfLearn #Poap #NFT `
+        const uri = "https://twitter.com/intent/tweet"
+        const text = `I completed the ${title} on Proof of Learn and earn a Poap!`
+        const url = `https://opencampus-codex.blockscout.com/token/0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54/instance/${poap.tokenId.toString()}`
+        return `${uri}?text=${text}&url=${url}`
     }
 
     const redirectToQuest = async () => {
@@ -71,19 +75,21 @@ export function BadgeCard({ poap }: BadgeCardProps) {
             <DialogHeader>
                 <DialogTitle>POL POAP: {poap.metadata.name}</DialogTitle>
             </DialogHeader>
-            <Details text="Earned on" value={poap.timestamp.toString() || "0"} />
+            <Details text="Token ID" value={poap.tokenId.toString()} />
+            {poap.timestamp &&
+                <Details text="Earned on" value={new Date(Number(poap.timestamp) * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} />}
+            <Details text="Metadata" value={poap.uri.toString()} />
             <DialogFooter className="flex gap-2">
                 {canRedirect && <Button onClick={redirectToQuest}>
                     {isRedirecting ? "Loading ..." : "Start Learning"}
                 </Button>}
-                {/* {address && address === params.address && <a className={buttonVariants({ variant: "outline" })}
-                    target="_blank" rel="noopener noreferrer"
-                    href={`https://twitter.com/intent/tweet?text=${generateTweet(poap.metadata.name)}`}>
-                    Tweet</a>} */}
-                {authState.isAuthenticated && ocAuth?.getAuthInfo()?.eth_address === params.address && <a className={buttonVariants({ variant: "outline" })}
-                    target="_blank" rel="noopener noreferrer"
-                    href={`https://twitter.com/intent/tweet?text=${generateTweet(poap.metadata.name)}`}>
-                    Tweet</a>}
+                {authState.isAuthenticated && ocAuth?.getAuthInfo()?.eth_address === params.address &&
+                    <a className={`${buttonVariants({ variant: "outline" })} flex items-center gap-2`}
+                        target="_blank" rel="noopener noreferrer"
+                        href={generateTweet(poap.metadata.name)}>
+                        <div>Share</div>
+                        <Icons.x className="h-4 w-4" />
+                    </a>}
             </DialogFooter>
         </DialogContent>
     </Dialog>
@@ -91,7 +97,7 @@ export function BadgeCard({ poap }: BadgeCardProps) {
 
 
 const Details = ({ text, value }: { text: string, value: string }) => {
-    return <div className="flex px-5 py-1 gap-x-1 text-sm">
+    return <div className="flex gap-x-1 text-sm">
         <div className="w-48 text-gray-400">{text}</div>
         <div className="break-all flex-1 leading-5 flex items-center gap-1">
             <div>{value}</div>

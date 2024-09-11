@@ -1,41 +1,88 @@
 "use client";
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import { MoveRight } from "lucide-react";
-import { ProjectBeam } from "./project-beam";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+
+import React, { useState, useEffect } from 'react';
+import Image from "next/image";
+import RetroGrid from "@/components/ui/retro-grid";
+import { Button } from "@/components/ui/button";
+
+const texts: TextSwitcher[] = [
+    {
+        text: "Open Campus",
+        colour: "#00edbe",
+        icon: "icons/open-campus.svg"
+    },
+    {
+        text: "Ape Coin",
+        colour: "#002687",
+        icon: "icons/apecoin.svg"
+    },
+    {
+        text: "Ethereum",
+        colour: "#156fee",
+        icon: "icons/eth.svg"
+    },
+    {
+        text: "Uniswap",
+        colour: "#FF007A",
+        icon: "icons/uniswap.svg"
+    },
+]
 
 interface HeroProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function Hero({ }: HeroProps) {
-    const router = useRouter()
+    return <div className="relative h-[750px] [@media(max-height:600px)]:h-[500px] flex items-center justify-center text-center">
+        <RetroGrid />
 
-    return <div className="h-[100vh]">
-        <div>
-            <a href="https://dorahacks.io/buidl/14531" rel="noopener noreferrer" target="_blank"
-                className="flex items-center justify-center my-4">
-                <div className="border border-gray py-1 md:py-[4px] px-3 rounded-full bg-grayscale-025 text-center flex items-center space-x-2">
-                    <span>🎖️ Participating in EDU Chain</span>
-                    <MoveRight />
-                </div>
-            </a>
-
-            <div className="font-heading text-5xl md:text-6xl lg:text-7xl mb-8 md:mb-16">
-                Learn from any chain, protocol, ecosystem. Earn on Open Campus</div>
-        </div>
-
-        <div className="grid grid-cols-12">
-            <div className="col-span-12 md:col-span-4">
-                <div className="flex items-center justify-center gap-2 my-8 md:my-0 h-[100%]" >
-                    <a href="#explore" className={buttonVariants({ variant: "default" })}>Start Learning</a>
-                    <a className={cn(buttonVariants({ variant: "default" }), "cursor-pointer")}
-                        onClick={() => router.push("/p")}>View Poaps</a>
-                </div>
+        <div className="-m-8 z-10">
+            <div className="flex-col sm:flex">
+                <div className="font-bold text-5xl md:text-6xl lg:text-7xl">Learn on {"\t"}</div>
+                <BouncingTextSwitcher items={texts} />
             </div>
-            <div className="col-span-12 md:col-span-8">
-                <ProjectBeam />
+            <div className="flex items-center justify-center gap-2">
+                <Button variant="secondary">For Learners</Button>
+                <Button>For Creators</Button>
             </div>
         </div>
     </div>
 }
+
+interface TextSwitcher {
+    text: string
+    colour?: string
+    icon?: string
+}
+
+interface BouncingTextSwitcherProps extends React.HTMLAttributes<HTMLDivElement> {
+    items: TextSwitcher[]
+    interval?: number
+}
+
+const BouncingTextSwitcher = ({ items, interval = 2000 }: BouncingTextSwitcherProps) => {
+    const [index, setIndex] = useState(0);
+    const [animationClass, setAnimationClass] = useState('');
+
+    useEffect(() => {
+        const switcher = setInterval(() => {
+            setAnimationClass('slide-out'); // Trigger slide-out animation
+
+            setTimeout(() => {
+                setIndex((prevIndex) => (prevIndex + 1) % items.length);
+                setAnimationClass('slide-in'); // Trigger slide-in animation
+            }, 500); // Match with the CSS animation duration
+        }, interval);
+
+        return () => clearInterval(switcher);
+    }, [items, interval]);
+
+    return (
+        <div className={`flex items-center space-x-4 mb-8 md:mb-16 sliding-text ${animationClass}`}>
+            <div className={cn("font-bold text-5xl md:text-6xl lg:text-7xl",
+                items[index].colour ? `text-[${items[index].colour}]` : "")}>{items[index].text}</div>
+            {items[index].icon &&
+                <Image src={items[index].icon} alt="icon" width={64} height={64} />}
+        </div>
+    );
+};
