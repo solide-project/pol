@@ -1,9 +1,9 @@
-interface UtilHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
     title: string
     description?: string
 }
 
-export function UtilHeader({ title, description = "" }: UtilHeaderProps) {
+export function Header({ title, description = "" }: HeaderProps) {
     return <div className="mx-auto flex flex-col items-start gap-2 w-full">
         <div className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl lg:leading-[1.1] hidden md:block">
             {title}

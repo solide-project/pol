@@ -14,7 +14,7 @@ import { Tag } from "./create/tag";
 import { Plus, ReceiptText, Save, ScanLine, Share, Trash } from "lucide-react";
 import { IconBtn } from "./create/icon-btn";
 import { SubmissionInput } from "./create/submission-input";
-import { UtilHeader } from "./util-header";
+import { Header } from "./components/header";
 
 interface CreateQuestProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -203,7 +203,7 @@ export function CreateQuest({ }: CreateQuestProps) {
     }
 
     return <div>
-        <UtilHeader title="Quest Builder (Beta)"
+        <Header title="Quest Builder (Beta)"
             description="Design and structure a POL resource and configure quests" />
 
         <div className="grid grid-cols-1 lg:grid-cols-4">

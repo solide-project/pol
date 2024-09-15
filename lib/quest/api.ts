@@ -1,6 +1,17 @@
 import { decodeFunctionData, encodeFunctionData, isAddressEqual, PublicClient, sha256 } from "viem";
 import { Deployment, Transaction } from "../db/submission";
 
+export interface SubmissionOpt {
+    /**
+     * Note for testing the quest, we ignore the owner of submission 
+     * */
+    testing?: boolean
+}
+
+export const defaultOpts: SubmissionOpt = {
+    testing: false
+}
+
 export interface SubmissionBody {
     id: `0x${string}`
     transactionHash: `0x${string}`
@@ -11,12 +22,16 @@ export interface SubmissionReceipt {
     result: boolean
 }
 
-export const processDeploymentSubmission = async (client: PublicClient, payload: SubmissionBody, submission: Deployment): Promise<SubmissionReceipt> => {
+export const processDeploymentSubmission = async (
+    client: PublicClient,
+    payload: SubmissionBody,
+    submission: Deployment,
+    opts: SubmissionOpt = defaultOpts): Promise<SubmissionReceipt> => {
     const transaction = await client.getTransactionReceipt({
         hash: payload.transactionHash
     })
 
-    if (!isAddressEqual(payload.user, transaction.from))
+    if (!opts.testing && !isAddressEqual(payload.user, transaction.from))
         throw new Error("Transaction not from user")
 
     if (!transaction.contractAddress)
@@ -33,12 +48,15 @@ export const processDeploymentSubmission = async (client: PublicClient, payload:
     return { result: true };
 }
 
-export const processDeployTransaction = async (client: PublicClient, payload: SubmissionBody, submission: Transaction): Promise<SubmissionReceipt> => {
+export const processDeployTransaction = async (client: PublicClient,
+    payload: SubmissionBody,
+    submission: Transaction,
+    opts: SubmissionOpt = defaultOpts): Promise<SubmissionReceipt> => {
     const transaction = await client.getTransaction({
         hash: payload.transactionHash
     })
 
-    if (!isAddressEqual(payload.user, transaction.from))
+    if (!opts.testing && !isAddressEqual(payload.user, transaction.from))
         throw new Error("Transaction not from user")
 
     /** 

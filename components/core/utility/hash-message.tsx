@@ -2,12 +2,15 @@ import { Input } from "@/components/ui/input";
 import { generateQuestId } from "@/lib/quest";
 import { useState } from "react";
 import { hashMessage } from "viem";
-import { UtilHeader } from "./util-header";
+import { Header } from "./components/header";
+import { ChainTypeProps } from "./components/select-type";
 
-interface HashMessageProps extends React.HTMLAttributes<HTMLDivElement> {
+
+
+interface HashMessageProps extends React.HTMLAttributes<HTMLDivElement>, ChainTypeProps {
 }
 
-export function HashMessage({ }: HashMessageProps) {
+export function HashMessage({ type }: HashMessageProps) {
     const [value, setValue] = useState<string>("")
     const [output, setOutput] = useState<string>("")
 
@@ -23,9 +26,9 @@ export function HashMessage({ }: HashMessageProps) {
         }
     }
     return <div>
-        <UtilHeader title="Quest ID"
+        <Header title="Quest ID"
             description="Generate the ID for a given resource" />
-            
+
         <div className="my-2">
             <Input onChange={handleMethod} value={value} placeholder="value" />
             {output && <div>{output}</div>}

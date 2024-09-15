@@ -4,7 +4,7 @@ const data: { [key: string]: string } = {
     [ChainID.ETHEREUM_MAINNET]: "https://eth.drpc.org",
     [ChainID.ETHEREUM_GOERLI]: "wss://goerli.gateway.tenderly.co",
     [ChainID.ETHEREUM_SEPOLIA]: "https://ethereum-sepolia-rpc.publicnode.com",
-    [ChainID.ETHEREUM_HOLESKY]: "https://holesky.drpc.org",
+    [ChainID.ETHEREUM_HOLESKY]: "https://1rpc.io/holesky",
     [ChainID.METIS_ANDROMEDA]: "https://metis.drpc.org",
     [ChainID.METIS_SEPOLIA]: "https://sepolia.metisdevops.link",
     [ChainID.ARBITRUM_ONE]: "https://arb1.arbitrum.io/rpc",

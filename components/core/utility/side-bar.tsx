@@ -4,6 +4,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Fingerprint, Hash, LayoutTemplate, TestTubeDiagonal, TicketCheck } from "lucide-react";
+import { useState } from "react";
 
 interface SideBarProps extends React.HTMLAttributes<HTMLDivElement> {
     handleOnSelect: (e: string) => void
@@ -32,11 +33,18 @@ export const toTitleCase = (str: string) => {
 }
 
 export function SideBar({ className, handleOnSelect }: SideBarProps) {
-    return <aside className="w-14 py-4 flex-col justify-between rounded-lg bg-grayscale-025">
-        <div className="flex flex-col items-center space-y-4">
+    const [selectedValue, setSelectedValue] = useState("")
+    const handleOnClick = (value: string) => {
+        handleOnSelect(value)
+        setSelectedValue(value)
+    }
+
+    return <aside className="w-full h-14 py-0 sm:w-14 sm:h-max sm:py-4 flex-col justify-between rounded-lg bg-grayscale-025">
+        <div className="flex flex-row sm:flex-col justify-center items-center gap-2">
             {Object.entries(SideBarItems).map(([key, value], index) => {
                 return <Tooltip key={index}>
-                    <TooltipTrigger onClick={() => handleOnSelect(value)}>
+                    <TooltipTrigger onClick={() => handleOnClick(value)}
+                        className={`${selectedValue && selectedValue === value ? "bg-secondary rounded-lg p-2" : "p-2"}`}>
                         {icons[value]}
                     </TooltipTrigger>
                     <TooltipContent side="right">
