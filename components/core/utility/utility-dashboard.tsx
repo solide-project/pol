@@ -42,7 +42,7 @@ export function UtilityDashboard({ className }: UtilityDashboardProps) {
             <SideBar handleOnSelect={(value: string) => setTab(value)} />
             <div className="relative flex-1 p-8">
                 <div className="flex items-center justify-between mb-4">
-                    <a href="https://docs.solide0x.tech/" target="_blank"
+                    <a href="https://docs.solide0x.tech/docs/pol/intro" target="_blank"
                         className={buttonVariants({ variant: "default" })}>
                         Full Documentation
                     </a>
