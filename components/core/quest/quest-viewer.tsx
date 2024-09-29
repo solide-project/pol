@@ -73,7 +73,7 @@ export function QuestViewer({ tree, owner, name, metadata }: QuestViewerProps) {
             <div className={cn("col-span-12 mt-8", quest.showIDE ? "lg:col-span-5" : "")}>
                 <MarkdownViewer />
             </div>
-            <div className={cn(quest.showIDE ? "sticky top-0 col-span-12 lg:col-span-7 h-screen flex items-center justify-between" : "")}>
+            <div className={cn(quest.showIDE ? "sticky top-0 col-span-12 lg:col-span-7 h-screen flex items-center justify-between" : "invisible")}>
                 {owner && name &&
                     <IDEViewer uri={`https://solide0x.tech?url=https://github.com/${owner}/${name}/blob/master/contracts/Import.sol`} />}
             </div>

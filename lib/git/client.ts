@@ -64,12 +64,12 @@ export const content = async (url: string): Promise<GitHubFileInfo[]> => {
     return await response.json()
 }
 
-export const header = (method: string = "GET"): any => {
+export const header = (method: string = "GET") => {
     var headers = new Headers()
     headers.append("Authorization", `Bearer ${process.env.GITHUB_API_KEY}`)
 
     return {
         method,
         headers
-    } as any
+    }
 }

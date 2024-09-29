@@ -11,13 +11,13 @@ import {
 } from "@/components/ui/sheet"
 import { useQuest } from "@/components/providers/quest-provider";
 import { SideBarItem } from "@/components/core/footer/side-bar-item";
-import { Menu } from "lucide-react";
+import { BookOpen, Github, Menu } from "lucide-react";
 
 interface QuestSideBarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function QuestSideBar({ }: QuestSideBarProps) {
-    const { questName, selectedQuest, questStructure } = useQuest()
+    const { questOwner, questName, selectedQuest, questStructure } = useQuest()
     const [sheetOpen, setSheetOpen] = useState(false);
 
     useEffect(() => {
@@ -34,15 +34,28 @@ export function QuestSideBar({ }: QuestSideBarProps) {
                 {selectedQuest?.name.title || "No Quest Selected"}
             </div>
         </SheetTrigger>
-        <SheetContent side="left" className="w-[400px] sm:w-[540px] rounded-r-lg">
-            <SheetHeader>
-                <SheetTitle className="mb-4">{questName || "Menu"}</SheetTitle>
-            </SheetHeader>
-            <ol className="relative border-s border-gray-200 dark:border-gray-700 ml-2">
-                {Object.keys(questStructure).map((key, index) => {
-                    return <SideBarItem key={index} quest={questStructure[key]} isExpanded={sheetOpen} />
-                })}
-            </ol>
+        <SheetContent side="left" className="w-[400px] sm:w-[540px] rounded-r-lg flex flex-col justify-between">
+            <div>
+                <SheetHeader>
+                    <SheetTitle className="mb-4">{questName || "Menu"}</SheetTitle>
+                </SheetHeader>
+                <ol className="relative border-s border-gray-200 dark:border-gray-700 ml-2">
+                    {Object.keys(questStructure).map((key, index) => {
+                        return <SideBarItem key={index} quest={questStructure[key]} isExpanded={sheetOpen} />
+                    })}
+                </ol>
+            </div>
+
+            <div className="flex items-center gap-2">
+                <a className="flex items-center gap-2 cursor-pointer hover:text-primary"
+                    target="_blank" href={selectedQuest?.name.path}>
+                    <BookOpen /> Resource
+                </a>
+                <a className="flex items-center gap-2 cursor-pointer hover:text-primary"
+                    target="_blank" href={`https://github.com/${questOwner}/${questName}/discussions`}>
+                    <Github /> Discussion
+                </a>
+            </div>
         </SheetContent>
     </Sheet>
 }
