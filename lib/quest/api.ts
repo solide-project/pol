@@ -43,7 +43,6 @@ export const processDeploymentSubmission = async (
     }) as `0x${string}`)
 
     const bytehash = sha256(bytecode as `0x${string}`)
-    console.log(bytehash, submission.bytecode)
     if (bytehash !== submission.bytecode)
         throw new Error("Invalid Transaction Hash")
 
