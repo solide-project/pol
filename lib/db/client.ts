@@ -1,33 +1,42 @@
-import { MongoClient } from 'mongodb'
-import { SubmissionCollection } from './submission';
-import { UserSubmissionCollection } from './user-submission';
-import { QuestCollection } from './quest';
+import { MongoClient, } from 'mongodb'
+import { Course, CourseCollection } from './course';
+import { Deployment, Transaction, SubmissionCollection } from './submission';
+import { UserSubmission, UserSubmissionCollection } from './user-submission';
+import { User, UserCollection } from './user';
 
-export const uri = process.env.MONGO_URI || "";
-export const dbName = process.env.DB_NAME || "";
-export const submissionCollectionName = process.env.SUBMISSION_COLLECTION_NAME || "";
-export const userSubmissionCollectionName = process.env.USER_SUBMISSION_COLLECTION_NAME || "";
-export const questCollectionName = process.env.QUEST_COLLECTION_NAME || "";
+export interface POLMongoConfig {
+    connectionString: string
+    database: string
+    collections: {
+        submission: string
+        userSubmission: string
+        course: string
+        user: string
+    }
+}
 
-export class MongoService {
-    private client: MongoClient;
+export class POLMongo {
+    private client: MongoClient
+    private config: POLMongoConfig
+
+    public courses?: CourseCollection
     public submissions?: SubmissionCollection
     public userSubmissions?: UserSubmissionCollection
-    public quests?: QuestCollection
+    public users?: UserCollection
 
-    constructor() {
-        this.client = new MongoClient(uri);
+    constructor(config: POLMongoConfig = {} as POLMongoConfig) {
+        this.config = config;
+        this.client = new MongoClient(config.connectionString);
     }
+
+    db(dbName: string = this.config.database) { return this.client.db(dbName) }
 
     async connect() {
-        await this.client.connect();
-        this.submissions = new SubmissionCollection(await this.getSubmissionCollection());
-        this.userSubmissions = new UserSubmissionCollection(await this.getUserSubmissionCollection());
-        this.quests = new QuestCollection(await this.getQuestCollection());
-    }
-
-    async close() {
-        await this.client.close();
+        this.client.connect();
+        this.connectSubmission();
+        this.connectUserSubmission();
+        this.connectCourse();
+        this.connectUser();
     }
 
     async disconnect() {
@@ -36,39 +45,43 @@ export class MongoService {
 
     async ping() {
         try {
-            await this.client.db(dbName).command({ ping: 1 });
+            await this.client.db(this.config.database).command({ ping: 1 });
             return true;
         } catch (e: any) {
             return false;
         } finally {
             await this.client.close();
         }
-
     }
 
-    private async getDb(dbName: string) {
-        return this.client.db(dbName);
-    }
-
-    private async getCollection(dbName: string, collectionName: string) {
-        return this.client.db(dbName).collection(collectionName);
-    }
-
-    async getSubmissionCollection() {
-        const collection = this.client.db(dbName).collection(submissionCollectionName);
-        // Makes sure the id field is unique
+    async connectSubmission() {
+        const collection = this.db()
+            .collection<Deployment | Transaction>(this.config.collections.submission);
         await collection.createIndex({ id: 1 }, { unique: true });
-        return collection
+
+        this.submissions = new SubmissionCollection(collection)
     }
 
-    async getUserSubmissionCollection() {
-        const collection = this.client.db(dbName).collection(userSubmissionCollectionName);
-        return collection
+    async connectUserSubmission() {
+        const collection = this.db()
+            .collection<UserSubmission>(this.config.collections.userSubmission);
+
+        this.userSubmissions = new UserSubmissionCollection(collection)
     }
 
-    async getQuestCollection() {
-        const collection = this.client.db(dbName).collection(questCollectionName);
-        collection.createIndex({ tokenId: 1 }, { unique: true })
-        return collection
+    async connectCourse() {
+        const collection = this.db()
+            .collection<Course>(this.config.collections.course);
+
+        this.courses = new CourseCollection(collection)
+    }
+
+    async connectUser() {
+        const collection = this.db()
+            .collection<User>(this.config.collections.course);
+        await collection.createIndex({ evmAddress: 1 }, { unique: true });
+        await collection.createIndex({ suiAddress: 1 }, { unique: true });
+
+        this.users = new UserCollection(collection)
     }
 }

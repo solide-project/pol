@@ -1,7 +1,6 @@
 
 import { generateErrorResponse } from "@/lib/api";
-import { QuestPagination } from "@/lib/api/pagination";
-import { MongoService } from "@/lib/db/client";
+import { POLMongoService } from "@/lib/util/mongo";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -14,12 +13,11 @@ export async function GET(
     if (isNaN(tokenId)) return generateErrorResponse("Invalid Token Id")
 
 
-    const service = new MongoService();
-    await service.connect();
+    const service = new POLMongoService();
+    await service.connectCourse();
 
     try {
-        const quest = await service.quests?.get(tokenId);
-        console.log("Quest", tokenId, quest)
+        const quest = await service.courses?.getByTokenId(tokenId);
         if (!quest) return generateErrorResponse("Error fetching quests")
 
         return NextResponse.json({
@@ -29,6 +27,6 @@ export async function GET(
         console.error(error.message)
         return NextResponse.json({ message: error.message }, { status: 400 })
     } finally {
-        await service.close();
+        await service.disconnect();
     }
 }

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mysten/dapp-kit": "^0.14.24",
     "@mysten/sui": "^1.9.0",
     "@opencampus/ocid-connect-js": "^1.0.1",
     "@radix-ui/react-checkbox": "^1.0.4",

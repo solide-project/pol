@@ -1,25 +1,36 @@
-import { Collection, Document } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 
+/**
+ * Note address is EVM address. If quest is non evm related, then 
+ * the user will be linked
+ */
 export interface UserSubmission {
-    id: string  // Id of quest
-    address: string // Id of user
-    txHash: string // Transaction hash of submission
+    id: string
+    address: string
+    txHash: string
 }
 
-export class UserSubmissionCollection {
-    collection: Collection<Document>
-    constructor(collection: Collection<Document>) {
-        this.collection = collection
-    }
+type UserSubmissionNullable = UserSubmission | null
 
-    async getUserSubmission(id: string, address: string): Promise<UserSubmission | null> {
+export class UserSubmissionCollection {
+    constructor(public collection: Collection<UserSubmission>) { }
+
+    async getUserSubmission(id: string, address: string): Promise<UserSubmissionNullable> {
         const submission = (await this.collection.findOne({ "$and": [{ "id": id }, { "address": address }] }) as unknown) as UserSubmission | null
         if (!submission) return null
 
         return submission
     }
 
-    async save(data: UserSubmission) {
-        return await this.collection.insertOne(data);
+    async find(query: any) {
+        return await this.collection.find(query) || []
+    }
+
+    async insert(data: UserSubmission) {
+        this.collection.insertOne(data);
+    }
+
+    async update(id: ObjectId, data: UserSubmission) {
+        return this.collection.updateOne({ _id: id }, { $set: data });
     }
 }

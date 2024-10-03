@@ -9,9 +9,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { QuestSchema } from "@/lib/db/quest"
+import { Course } from "@/lib/db/course"
 import { Poap } from "@/lib/poap"
-import { ipfsGateway } from "@/lib/poap/ipfs"
+import { ipfsGateway } from "@/lib/util/ipfs"
 import { useOCAuth } from "@opencampus/ocid-connect-js";
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
@@ -53,7 +53,7 @@ export function BadgeCard({ poap }: BadgeCardProps) {
 
         const data = await response.json()
 
-        const quest: QuestSchema = data.result
+        const quest: Course = data.result
 
         router.push(`/q/${quest.owner}/${quest.name}`)
         setIsRedirecting(false)

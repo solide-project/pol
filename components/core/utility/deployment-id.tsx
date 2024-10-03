@@ -10,6 +10,7 @@ import { getNetworkNameFromChainID as getMoveNetworkNameFromChainID } from "@/li
 import { getIconByChainId as getMoveIconByChainId } from "@/lib/chains/move/icon";
 import { getCode } from "@/lib/move/sui";
 import { Button } from "@/components/ui/button";
+import { removeMetadata } from "@/lib/quest/utils";
 
 interface DeploymentIDProps extends React.HTMLAttributes<HTMLDivElement>, ChainTypeProps {
 }
@@ -47,6 +48,8 @@ export function DeploymentID({ type }: DeploymentIDProps) {
 
             bytecode = await client.getCode(
                 { address: value as `0x${string}` }) as `0x${string}`
+
+            bytecode = removeMetadata(bytecode)
         } else if (type === ChainType.MOVE) {
             bytecode = await getCode(selectedChain, value);
         }

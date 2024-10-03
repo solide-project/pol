@@ -1,7 +1,7 @@
 
 import { generateErrorResponse } from "@/lib/api";
-import { MongoService } from "@/lib/db/client";
-import { UserSubmissionResponse } from "@/lib/db/mongo-service";
+import { POLMongoService } from "@/lib/util/mongo";
+import { UserSubmissionResponse } from "@/lib/util/mongo-service";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -11,8 +11,8 @@ export async function GET(request: NextRequest) {
     const address = request.nextUrl.searchParams.get("address")
     if (!address) return generateErrorResponse("Missing address")
 
-    const service = new MongoService();
-    await service.connect();
+    const service = new POLMongoService();
+    await service.connectUserSubmission();
 
     try {
         const submission = await service.userSubmissions?.getUserSubmission(id, address);
@@ -28,6 +28,6 @@ export async function GET(request: NextRequest) {
         console.error(error.message)
         return generateErrorResponse(error.message.toString())
     } finally {
-        await service.close();
+        await service.disconnect();
     }
 }

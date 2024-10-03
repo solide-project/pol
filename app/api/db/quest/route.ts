@@ -1,7 +1,7 @@
 
 import { generateErrorResponse } from "@/lib/api";
 import { QuestInformation, QuestPagination } from "@/lib/api/pagination";
-import { MongoService } from "@/lib/db/client";
+import { POLMongoService } from "@/lib/util/mongo";
 import { getUserInfo } from "@/lib/git/user";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -13,11 +13,11 @@ export async function GET(request: NextRequest) {
     if (isNaN(pageNumber)) return generateErrorResponse("Invalid page")
 
 
-    const service = new MongoService();
-    await service.connect();
+    const service = new POLMongoService();
+    await service.connectCourse();
 
     try {
-        const total = await service.quests?.collection.countDocuments()
+        const total = await service.courses?.collection.countDocuments()
         // const quests = await service.quests?.getQuests(pageNumber) || [];
         const quests = [{
             owner: '5208980',
@@ -69,6 +69,6 @@ export async function GET(request: NextRequest) {
         console.error(error.message)
         return NextResponse.json({ message: error.message }, { status: 400 })
     } finally {
-        await service.close();
+        await service.disconnect();
     }
 }

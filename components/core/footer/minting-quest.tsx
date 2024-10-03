@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 import Image from 'next/image';
 import { createWalletClient, custom } from 'viem'
 import confetti from "canvas-confetti";
-import { getIPFSJson, ipfsGateway } from "@/lib/poap/ipfs";
+import { getIPFSJson, ipfsGateway } from "@/lib/util/ipfs";
 import { useOCAuth } from "@opencampus/ocid-connect-js";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 

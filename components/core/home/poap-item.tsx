@@ -1,7 +1,7 @@
 "use client"
 
 import { PoapMetadata } from "@/lib/poap";
-import { ipfsGateway } from "@/lib/poap/ipfs";
+import { ipfsGateway } from "@/lib/util/ipfs";
 import {
     Dialog,
     DialogContent,
@@ -10,7 +10,7 @@ import {
 import { Award } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Image from 'next/image';
-import { QuestSchema } from "@/lib/db/quest";
+import { Course } from "@/lib/db/course";
 import { useRouter } from "next/navigation"
 import { useState } from "react";
 
@@ -36,7 +36,7 @@ export function PoapItem({ tokenId, poap, supply, className }: PoapItemProps) {
 
         const data = await response.json()
 
-        const quest: QuestSchema = data.result
+        const quest: Course = data.result
 
         router.push(`/q/${quest.owner}/${quest.name}`)
         setIsRedirecting(false)

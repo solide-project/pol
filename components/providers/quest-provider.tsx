@@ -1,6 +1,6 @@
 "use client"
 
-import { QuestSchema } from "@/lib/db/quest"
+import { Course } from "@/lib/db/course"
 import { flatten, QuestStructure, QuestStructureItem } from "@/lib/quest"
 import { createContext, useContext, useState } from "react"
 
@@ -9,7 +9,7 @@ export function QuestProvider({ children }: QuestProviderProps) {
     const [questName, setQuestName] = useState<string>("")
 
     const [questStructure, setQuestStructure] = useState<QuestStructure>({} as QuestStructure)
-    const [questPoap, setQuestPoap] = useState<QuestSchema | undefined>()
+    const [questPoap, setQuestPoap] = useState<Course | undefined>()
 
     const [selectedQuest, setSelectedQuest] = useState<QuestStructureItem | null>(null)
 
@@ -67,8 +67,8 @@ export const QuestContext = createContext({
     setQuestOwner: (owner: string) => { },
     questName: "",
     setQuestName: (name: string) => { },
-    questPoap: undefined as QuestSchema | undefined,
-    setQuestPoap: (poap: QuestSchema | undefined) => { },
+    questPoap: undefined as Course | undefined,
+    setQuestPoap: (poap: Course | undefined) => { },
     questStructure: {} as QuestStructure,
     setQuestStructure: (structure: QuestStructure) => { },
     selectedQuest: null as QuestStructureItem | null,

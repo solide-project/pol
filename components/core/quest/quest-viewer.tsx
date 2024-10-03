@@ -8,13 +8,13 @@ import { QuestFooter } from "@/components/core/footer/quest-footer";
 import { flatten, folderItems, generateQuestContractPath, generateQuestId, generateQuestIdByQuestStructureItem, generateQuestPath, joinUri, QuestStructure, QuestTitle, stripBase } from "@/lib/quest";
 import { IDEViewer } from "./ide-viewer";
 import { cn } from "@/lib/utils";
-import { QuestSchema } from "@/lib/db/quest";
+import { Course } from "@/lib/db/course";
 
 interface QuestViewerProps extends React.HTMLAttributes<HTMLDivElement> {
     owner: string,
     name: string,
     tree: GithubTreeInfo
-    metadata?: QuestSchema
+    metadata?: Course
 }
 
 export function QuestViewer({ tree, owner, name, metadata }: QuestViewerProps) {

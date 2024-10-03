@@ -132,11 +132,11 @@ export function QuestTester({ type }: QuestTesterProps) {
     const loadMoveQuest = () => {
         setQuestInfo(JSON.stringify({
             "path": "01_deploy_your_first_token/05_deploy",
-            "type": "deployment",
+            "type": "",
             "chain": "1282977196",
-            "bytecode": "0x19591c2edf0208fa1ecde3994a1d9f1148251a6646b7b81575b8f12c26e2f418"
+            "bytecode": "0xab1e7fe48a2491a5f6932f8d78b10809f1d70f029a964aa0870daf563748afe7"
         }, null, 2))
-        setValue("DzfV56V6NoKUm3FLxSV2zkfF5M4nVHLBjx5YkN1PDiMA")
+        setValue("J83un887QYEidTptqwgVEzWEKzL3zyMw4UBR7ocWsu6G")
     }
 
     return <>

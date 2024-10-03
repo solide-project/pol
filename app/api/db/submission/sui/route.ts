@@ -1,5 +1,5 @@
 import { generateErrorResponse } from '@/lib/api/error';
-import { MongoService } from '@/lib/db/client';
+import { POLMongoService } from "@/lib/util/mongo";
 import { getFullnodeUrl, SuiClient } from '@mysten/sui/client';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     // Validate body
     const body = await request.json()
 
-    const service = new MongoService();
+    const service = new POLMongoService();
     await service.connect();
 
     try {
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
         console.error(error.message)
         return generateErrorResponse(error.message.toString())
     } finally {
-        await service.close();
+        await service.disconnect();
     }
 }
 

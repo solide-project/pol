@@ -2,7 +2,7 @@ import { UserProfile } from "@/components/core/profile/user-profile";
 import { Footer } from "@/components/core/shared/footer";
 import { POLPoapContract } from "@/lib/poap/contract";
 import { Poap, PoapMetadata } from "@/lib/poap/interface";
-import { getIPFSJson } from "@/lib/poap/ipfs";
+import { getIPFSJson } from "@/lib/util/ipfs";
 import { isAddress } from "viem";
 
 interface SearchParams {

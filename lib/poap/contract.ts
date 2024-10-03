@@ -1,14 +1,19 @@
-import { getContract, GetContractReturnType, PublicClient, Client, WalletClient, createPublicClient, http } from "viem";
+import { getContract, GetContractReturnType, PublicClient, WalletClient, createPublicClient, http } from "viem";
 import { ChainID, getRPC } from "../chains";
 import { abi } from "./abi";
 
-export const getContractAddress = (chain: string): `0x${string}` => {
-    switch (chain) {
-        case ChainID.OPEN_CAMPUS_CODEX:
-            return "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54";
-        default:
-            return "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54";
-    }
+/**
+ * Currently in testnet, but will be added to mainnet
+ */
+const contracts: Record<string, `0x${string}`> = {
+    [ChainID.OPEN_CAMPUS_CODEX]: "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54",
+}
+
+export const getContractAddress = (chain: string) => contracts[chain] || "0x"
+
+interface POLPoapContractConfig {
+    chain?: string;
+    client?: WalletClient;
 }
 
 export class POLPoapContract {
@@ -16,12 +21,7 @@ export class POLPoapContract {
     client: PublicClient | WalletClient;
     chain: string = ChainID.OPEN_CAMPUS_CODEX;
 
-    constructor({
-        client,
-    }: {
-        chain?: string;
-        client?: WalletClient;
-    }) {
+    constructor({ client }: POLPoapContractConfig) {
         const rpc = getRPC(this.chain)
         const publicClient = createPublicClient({
             transport: http(rpc),

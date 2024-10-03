@@ -1,4 +1,4 @@
-import { QuestSchema } from "../db/quest"
+import { Course } from "../db/course"
 
 export interface QuestPagination {
     page: number
@@ -8,7 +8,7 @@ export interface QuestPagination {
 }
 
 export interface QuestInformation {
-    result: QuestSchema
+    result: Course
     user: {
         image: string
     }

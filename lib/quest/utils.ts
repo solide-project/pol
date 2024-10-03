@@ -3,6 +3,8 @@ import { QuestStructure, QuestStructureItem, QuestTitle } from "./interface"
 import path from "path";
 import GitUrlParse from "git-url-parse";
 
+export const ACCOUNT_LINK_MESSAGE = "Sign this message to connect to Proof of Learn."
+
 export const parseTitle = (name: string): QuestTitle | null => {
     const match = name.match(/^(\d+)_([a-zA-Z_]+)$/);
 
@@ -76,4 +78,13 @@ function sortStringNumbers(arr: string[]): string[] {
 
 export const mask = (address: string): string => {
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
+}
+
+export const removeMetadata = (bytecode: `0x${string}`): `0x${string}` => {
+    const metadataMarker = "a2646970667358";        // hex of "ipfs"
+    const lastIndex = bytecode.lastIndexOf(metadataMarker);
+    if (lastIndex !== -1) {
+        return bytecode.slice(0, lastIndex) as `0x${string}`;
+    }
+    return bytecode;
 }

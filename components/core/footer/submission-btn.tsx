@@ -11,7 +11,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { fetchSubmission, fetchUserSubmission, SubmissionResponse, UserSubmissionResponse } from "@/lib/db/mongo-service";
+import { fetchSubmission, fetchUserSubmission, SubmissionResponse, UserSubmissionResponse } from "@/lib/util/mongo-service";
 import { Input } from "@/components/ui/input";
 import { useAccount } from "wagmi";
 import toast from 'react-hot-toast';

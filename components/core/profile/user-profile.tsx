@@ -6,6 +6,10 @@ import { BadgeList } from "./badge-list";
 import { Poap } from "@/lib/poap/interface";
 import { mask } from "@/lib/quest";
 import { CopyText } from "../shared/copy-text";
+import { SuiLink } from "./sui-link";
+import { useOCAuth } from "@opencampus/ocid-connect-js";
+import { useParams } from "next/navigation";
+import { SuiProvider } from "@/components/sui-provider";
 
 interface UserProfileProps extends React.HTMLAttributes<HTMLDivElement> {
     address: string
@@ -17,7 +21,8 @@ export function UserProfile({
     poaps = [],
     className
 }: UserProfileProps) {
-
+    const params = useParams<{ address: string }>()
+    const { authState, ocAuth, updateAuthState } = useOCAuth();
 
     return <div className="mt-8">
         <div className="flex items-center justify-center">
@@ -30,6 +35,12 @@ export function UserProfile({
                         {mask(address)}
                     </div>
                     <CopyText payload={address} />
+
+                    {authState.isAuthenticated && ocAuth?.getAuthInfo()?.eth_address === params.address &&
+                        <SuiProvider>
+                            <SuiLink />
+                        </SuiProvider>
+                    }
                 </div>
             </div>
         </div>

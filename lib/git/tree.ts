@@ -29,7 +29,7 @@ export const trees = async (url: string): Promise<GithubTreeInfo> => {
     const options = header()
     const response = await fetch(url, {
         ...options,
-        // cache: "no-store",
+        cache: "no-store",
     })
     return await response.json()
 }

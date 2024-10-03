@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
+import '@mysten/dapp-kit/dist/index.css';
 
 export const metadata: Metadata = {
   title: "Proof of Learn",
