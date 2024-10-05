@@ -38,6 +38,7 @@ export const processDeploymentSubmission = async (
     if (!transaction.contractAddress)
         throw new Error("Contract not deployed")
 
+    console.log(transaction)
     const bytecode = removeMetadata(await client.getCode({
         address: transaction.contractAddress
     }) as `0x${string}`)

@@ -10,7 +10,7 @@ import { getNetworkNameFromChainID as getMoveNetworkNameFromChainID } from "@/li
 import { getIconByChainId as getMoveIconByChainId } from "@/lib/chains/move/icon";
 import { getCode } from "@/lib/move/sui";
 import { Button } from "@/components/ui/button";
-import { removeMetadata } from "@/lib/quest/utils";
+import { removeMetadata, replaceAddresses, replacePushData } from "@/lib/quest/utils";
 
 interface DeploymentIDProps extends React.HTMLAttributes<HTMLDivElement>, ChainTypeProps {
 }
@@ -50,12 +50,28 @@ export function DeploymentID({ type }: DeploymentIDProps) {
                 { address: value as `0x${string}` }) as `0x${string}`
 
             bytecode = removeMetadata(bytecode)
+            bytecode = replaceAddresses(bytecode)
+            bytecode = replacePushData(bytecode)
+
+            console.log(bytecode)
+            const PUSH32_ADDRESS_PLACEHOLDERCount = countPlaceholders(bytecode, 'PUSH32_ADDRESS_PLACEHOLDER');
+            console.log(`Count of PUSH32_ADDRESS_PLACEHOLDER: ${PUSH32_ADDRESS_PLACEHOLDERCount}`);
+            const PUSH32_DATACount = countPlaceholders(bytecode, 'PUSH32_DATA');
+            console.log(`Count of PUSH32_DATA: ${PUSH32_DATACount}`);
+            
         } else if (type === ChainType.MOVE) {
             bytecode = await getCode(selectedChain, value);
         }
 
         return sha256(bytecode)
     }
+
+    function countPlaceholders(bytecode: string, placeholder: string): number {
+        const regex = new RegExp(placeholder, 'g');  // Create a global regular expression for the placeholder
+        const matches = bytecode.match(regex);       // Find all matches
+        return matches ? matches.length : 0;         // Return the count of matches or 0 if none found
+    }
+
 
     return <div>
         <Header title="Bytecode Hash"

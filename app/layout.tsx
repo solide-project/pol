@@ -5,6 +5,9 @@ import { Provider } from "@/components/provider";
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { GoogleAnalytics } from '@next/third-parties/google'
+import { Analytics } from "@vercel/analytics/react"
+
 import "./globals.css";
 import '@mysten/dapp-kit/dist/index.css';
 
@@ -35,6 +38,8 @@ export default function RootLayout({
           </Provider>
         </TooltipProvider>
       </ThemeProvider>
+      <Analytics />
     </body>
+    <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS || ""} />
   </html>
 }

@@ -19,6 +19,8 @@ export async function GET(request: NextRequest) {
     try {
         const total = await service.courses?.collection.countDocuments()
         // const quests = await service.quests?.getQuests(pageNumber) || [];
+
+        // As POC, just hardcode values, they are stored in but to avoid DB hits for now
         const quests = [{
             owner: '5208980',
             name: 'pol-template',
@@ -45,6 +47,16 @@ export async function GET(request: NextRequest) {
                 '0xd7e2cebda5690fccecaef11846198c8bd137402f9640c602d68b2e405235a38f',
                 '0x7be6d377226459aba5d18642d761dd8f5ed7a7a40d95aaef4def9be3fe9395f6',
                 '0x2bf2dbe86a36d1dfbf11d6b42c0f66ed362d55111de4e6e8d178adf929030415'
+            ]
+        },
+        {
+            owner: 'POLearn',
+            name: 'victionary-everything-about-viction',
+            title: 'Victionary - Everything about Viction',
+            image: 'https://raw.githubusercontent.com/solide-project/awesome-learn-solidity/master/main/exploring-viction-ecosystem/assets/cover.png',
+            description: 'A comphresive knowledge hub to learning all about Viction',
+            tokenId: 2,
+            quests: [
             ]
         }]
 

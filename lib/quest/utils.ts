@@ -6,7 +6,7 @@ import GitUrlParse from "git-url-parse";
 export const ACCOUNT_LINK_MESSAGE = "Sign this message to connect to Proof of Learn."
 
 export const parseTitle = (name: string): QuestTitle | null => {
-    const match = name.match(/^(\d+)_([a-zA-Z_]+)$/);
+    const match = name.match(/^(\d+)_([a-zA-Z0-9_]+)$/);
 
     if (!match) {
         return null
@@ -87,4 +87,34 @@ export const removeMetadata = (bytecode: `0x${string}`): `0x${string}` => {
         return bytecode.slice(0, lastIndex) as `0x${string}`;
     }
     return bytecode;
+}
+
+/**
+ * 7f is bytecode for PUSH32
+ * @param bytecode 
+ * @returns 
+ */
+export const replaceAddresses = (bytecode: `0x${string}`) => {
+    // Regular expression to match 12 zero bytes followed by 20 non-zero bytes (Ethereum addresses)
+    const addressPattern = /7f000000000000000000000000([a-fA-F0-9]{40})/g;
+
+    // Replace matched addresses with the placeholder
+    const replacedBytecode = bytecode.replace(addressPattern, 'PUSH32_ADDRESS_PLACEHOLDER');
+
+    return replacedBytecode as `0x${string}`;
+}
+
+/**
+ * 7f is bytecode for PUSH32
+ * @param bytecode 
+ * @returns 
+ */
+export const replacePushData = (bytecode: `0x${string}`) => {
+    // Regular expression to match 12 zero bytes followed by 20 non-zero bytes (Ethereum addresses)
+    const addressPattern = /7f[a-fA-F0-9]{64}/g
+
+    // Replace matched addresses with the placeholder
+    const replacedBytecode = bytecode.replace(addressPattern, 'PUSH32_DATA');
+
+    return replacedBytecode as `0x${string}`;
 }

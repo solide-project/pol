@@ -55,6 +55,9 @@ export function QuestSideBar({ }: QuestSideBarProps) {
                     target="_blank" href={`https://github.com/${questOwner}/${questName}/discussions`}>
                     <Github /> Discussion
                 </a>
+                <div>
+                    {selectedQuest?.name.id || "Unknown"}
+                </div>
             </div>
         </SheetContent>
     </Sheet>

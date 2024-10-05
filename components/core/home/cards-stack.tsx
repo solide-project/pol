@@ -15,8 +15,8 @@ export default function CardsStack() {
             image: "https://api.universalprofile.cloud/ipfs/QmaFtQ4LTHcCb1BhPRTrKe1gVnsK9tZiXrLnzUwxB6Piag",
         },
         {
-            title: 'Coming Soon!',
-            image: "./icons/eth.svg",
+            title: 'Victionary - Everything about Viction',
+            image: "https://api.universalprofile.cloud/ipfs/QmeuovPSUK2JpK6SYnCSkGsQ9Pduo1U4ZMvEwRELbjzPgw",
         },
         {
             title: 'Coming Soon!',
