@@ -63,38 +63,46 @@ export const processDeployTransaction = async (client: PublicClient,
     if (!opts.testing && !isAddressEqual(payload.user, transaction.from))
         throw new Error("Transaction not from user")
 
+    let errMsg = ""
     /** 
      * We can Decode but there is possible that the signature is not found
      * Hence we'll encode what given, as this is a requirement and just compare to transaction input
      */
-    // const { functionName, args } = decodeFunctionData({
-    //     abi: submission.abi,
-    //     data: transaction.input
-    // })
+    try {
+        const { functionName, args } = decodeFunctionData({
+            abi: submission.abi,
+            data: transaction.input
+        })
+
+        if (!JSON.stringify(submission.abi).includes(functionName))
+            errMsg = "Invalid Function Name"
+
+        // Optionally, if submission requires specific arguments
+        if (submission.args) {
+            if (!arraysEqual(submission.args, args as any[]))
+                errMsg = "Invalid Arguments"
+        }
+    } catch (e: any) {
+        errMsg = ""
+        console.log(e)
+        const data = encodeFunctionData({
+            abi: [submission.abi[0]],
+            functionName: submission.abi[0].name,
+            args: submission.args
+        })
+
+        if (data !== transaction.input) {
+            throw new Error("Incorrect Transaction")
+        }
+    }
+
+    if (errMsg)
+        throw new Error(errMsg)
 
     // If submission requires to call from a specific contract
-    // if (submission.contract) {
-    //     if (!isAddressEqual(submission.contract as `0x${string}`, transaction.to || "0x"))
-    //         throw new Error("Invalid Contract Address")
-    // }
-
-    // if (!JSON.stringify(submission.abi).includes(functionName))
-    //     throw new Error("Invalid Function Name")
-
-    // // Optionally, if submission requires specific arguments
-    // if (submission.args) {
-    //     if (!arraysEqual(submission.args, args as any[]))
-    //         throw new Error("Invalid Arguments")
-    // }
-
-    const data = encodeFunctionData({
-        abi: [submission.abi[0]],
-        // functionName: submission.abi[0].name,
-        args: submission.args
-    })
-
-    if (data !== transaction.input) {
-        throw new Error("Incorrect Transaction")
+    if (submission.contract) {
+        if (!isAddressEqual(submission.contract as `0x${string}`, transaction.to || "0x"))
+            errMsg = "Invalid Contract Address"
     }
 
     // Typically if decodeFunctionData is successful, we can assume the transaction is correct
