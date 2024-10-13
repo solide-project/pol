@@ -1,6 +1,6 @@
 import { decodeFunctionData, encodeFunctionData, isAddressEqual, PublicClient, sha256 } from "viem";
 import { Deployment, Transaction } from "../db/submission";
-import { removeMetadata } from "./utils";
+import { removeMetadata, replaceAddresses, replacePushData } from "./utils";
 
 export interface SubmissionOpt {
     /**
@@ -38,10 +38,12 @@ export const processDeploymentSubmission = async (
     if (!transaction.contractAddress)
         throw new Error("Contract not deployed")
 
-    console.log(transaction)
-    const bytecode = removeMetadata(await client.getCode({
+    let bytecode = await client.getCode({
         address: transaction.contractAddress
-    }) as `0x${string}`)
+    }) as `0x${string}`
+    bytecode = removeMetadata(bytecode)
+    bytecode = replaceAddresses(bytecode)
+    bytecode = replacePushData(bytecode)
 
     const bytehash = sha256(bytecode as `0x${string}`)
     if (bytehash !== submission.bytecode)

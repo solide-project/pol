@@ -7,6 +7,7 @@ import Image from "next/image";
 import RetroGrid from "@/components/ui/retro-grid";
 import { Button } from "@/components/ui/button";
 import { MoveRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const texts: TextSwitcher[] = [
     {
@@ -34,6 +35,8 @@ const texts: TextSwitcher[] = [
 interface HeroProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function Hero({ }: HeroProps) {
+    const router = useRouter()
+
     return <div className="relative h-[750px] [@media(max-height:600px)]:h-[500px] flex items-center justify-center text-center">
         <RetroGrid />
 
@@ -50,8 +53,8 @@ export function Hero({ }: HeroProps) {
                 <BouncingTextSwitcher items={texts} />
             </div>
             <div className="flex items-center justify-center gap-2">
-                <Button variant="secondary">For Learners</Button>
-                <Button>For Creators</Button>
+                <Button variant="secondary" onClick={() => router.push(`/p`)} >For Learners</Button>
+                <Button onClick={() => router.push(`/utility`)}>For Creators</Button>
             </div>
         </div>
     </div>

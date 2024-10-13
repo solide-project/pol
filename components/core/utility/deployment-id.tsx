@@ -51,14 +51,7 @@ export function DeploymentID({ type }: DeploymentIDProps) {
 
             bytecode = removeMetadata(bytecode)
             bytecode = replaceAddresses(bytecode)
-            bytecode = replacePushData(bytecode)
-
-            console.log(bytecode)
-            const PUSH32_ADDRESS_PLACEHOLDERCount = countPlaceholders(bytecode, 'PUSH32_ADDRESS_PLACEHOLDER');
-            console.log(`Count of PUSH32_ADDRESS_PLACEHOLDER: ${PUSH32_ADDRESS_PLACEHOLDERCount}`);
-            const PUSH32_DATACount = countPlaceholders(bytecode, 'PUSH32_DATA');
-            console.log(`Count of PUSH32_DATA: ${PUSH32_DATACount}`);
-            
+            bytecode = replacePushData(bytecode)            
         } else if (type === ChainType.MOVE) {
             bytecode = await getCode(selectedChain, value);
         }

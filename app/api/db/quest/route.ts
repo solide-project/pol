@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
             owner: '5208980',
             name: 'staking-ape-coin',
             title: 'Pratical guide to staking BAYC and Ape Coin',
-            image: 'https://global.discourse-cdn.com/apecoin/original/2X/0/0e5af9557297fdc250b3a34b8162c0a9f1366a68.jpeg',
+            image: 'https://raw.githubusercontent.com/POLearn/staking-ape-coin/refs/heads/master/content/assets/cover.png',
             description: 'A comprehensive guide on how to stake your BAYC and ApeCoin, unlocking rewards and enhancing your participation in the ApeCoin ecosystem.',
             tokenId: 1,
             quests: [
@@ -56,6 +56,16 @@ export async function GET(request: NextRequest) {
             image: 'https://raw.githubusercontent.com/solide-project/awesome-learn-solidity/master/main/exploring-viction-ecosystem/assets/cover.png',
             description: 'A comphresive knowledge hub to learning all about Viction',
             tokenId: 2,
+            quests: [
+            ]
+        },
+        {
+            owner: 'POLearn',
+            name: 'liquidity-pool-on-unichain',
+            title: 'Create your own liquidity pool on Unichain',
+            image: 'https://raw.githubusercontent.com/POLearn/liquidity-pool-on-unichain/refs/heads/master/content/assets/cover.png',
+            "description": "Step-by-step instructions designed to guide users through the process of creating a trading pool on Unichain",
+            tokenId: 3,
             quests: [
             ]
         }]
