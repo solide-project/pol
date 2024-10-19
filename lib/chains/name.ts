@@ -144,11 +144,14 @@ const data: { [key: string]: string } = {
   [ChainID.POLYGON_AMOY]: "Polygon Amoy",
   [ChainID.GNOSIS_CHIADO]: "Gnosis Chiado",
   [ChainID.COTI_DEVNET]: "Coti Devnet",
+  [ChainID.COTI_TESTNET]: "Coti Testnet",
   [ChainID.LISK_MAINNET]: "Lisk Mainnet",
   [ChainID.LISK_SEPOLIA]: "Lisk Seoplia",
   [ChainID.REDSTONE_MAINNET]: "Redstone Mainnet",
   [ChainID.REDSTONE_GARNET_TESTNET]: "Redstone Garnet Testnet",
   [ChainID.OPEN_CAMPUS_CODEX]: "Open Campus Codex",
+  [ChainID.UNICHAIN_SEPOLIA]: "Unichain Sepolia",
+  [ChainID.MOVEMENT_IMOLA]: "Movement Imola",
 }
 
 export const getNetworkNameFromChainID = (network: string): string =>

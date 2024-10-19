@@ -4,7 +4,7 @@ const data: { [key: string]: string } = {
     [ChainID.ETHEREUM_MAINNET]: "https://eth.drpc.org",
     [ChainID.ETHEREUM_GOERLI]: "wss://goerli.gateway.tenderly.co",
     [ChainID.ETHEREUM_SEPOLIA]: "https://ethereum-sepolia-rpc.publicnode.com",
-    [ChainID.ETHEREUM_HOLESKY]: "https://1rpc.io/holesky",
+    [ChainID.ETHEREUM_HOLESKY]: "https://holesky.drpc.org",
     [ChainID.METIS_ANDROMEDA]: "https://metis.drpc.org",
     [ChainID.METIS_SEPOLIA]: "https://sepolia.metisdevops.link",
     [ChainID.ARBITRUM_ONE]: "https://arb1.arbitrum.io/rpc",
@@ -138,21 +138,18 @@ const data: { [key: string]: string } = {
     [ChainID.ARBITRUM_SEPOLIA]: "https://arbitrum-sepolia.drpc.org",
     [ChainID.KROMA_MAINNET]: "https://api.kroma.network",
     [ChainID.KROMA_SEPOLIA]: "https://api.sepolia.kroma.network",
-    [ChainID.POLYGON_AMOY]: "https://polygon-amoy.drpc.org",
+    [ChainID.POLYGON_AMOY]: "https://rpc-amoy.polygon.technology",
     [ChainID.GNOSIS_CHIADO]: "https://gnosis-chiado-rpc.publicnode.com/",
     [ChainID.COTI_DEVNET]: "https://devnet.coti.io/rpc",
+    [ChainID.COTI_TESTNET]: "https://testnet.coti.io/rpc",
     [ChainID.LISK_MAINNET]: "https://rpc.api.lisk.com",
     [ChainID.LISK_SEPOLIA]: "https://rpc.sepolia-api.lisk.com",
     [ChainID.REDSTONE_MAINNET]: "https://rpc.redstonechain.com",
     [ChainID.REDSTONE_GARNET_TESTNET]: "wss://rpc.garnetchain.com",
-    [ChainID.OPEN_CAMPUS_CODEX]: "https://open-campus-codex-sepolia.drpc.org",
+    [ChainID.OPEN_CAMPUS_CODEX]: "https://rpc.open-campus-codex.gelato.digital",
+    [ChainID.UNICHAIN_SEPOLIA]: "https://sepolia.unichain.org",
+    [ChainID.MOVEMENT_IMOLA]: "	https://mevm.devnet.imola.movementnetwork.xyz",
 }
 
-export const getRPC = (network: string): string => {
-    let rpc = data[network] || ""
-    if (rpc.startsWith("https://lb.drpc.org/ogrpc") && process.env.DRPC_KEY) {
-        rpc = `${rpc}&dkey=${process.env.DRPC_KEY}`
-    }
-
-    return rpc
-}
+export const getRPC = (network: string): string =>
+    data[network] || ""
