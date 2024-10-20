@@ -1,6 +1,6 @@
 import { ChainID } from "./chain-id"
 
-const data: { [key: string]: string } = {
+export const data: { [key: string]: string } = {
   [ChainID.ETHEREUM_MAINNET]: "https://etherscan.io",
   [ChainID.ETHEREUM_GOERLI]: "https://goerli.etherscan.io",
   [ChainID.ETHEREUM_SEPOLIA]: "https://sepolia.etherscan.io",
@@ -60,7 +60,7 @@ const data: { [key: string]: string } = {
   [ChainID.ASTAR_MAINNET]: "https://astar.blockscout.com",
   [ChainID.SHIDEN_MAINNET]: "https://shiden.blockscout.com",
   [ChainID.SHUBIYA_TESTNET]: "https://shibuya.blockscout.com",
-  [ChainID.ZETACHAIN_MAINNET]: "https://zetachain.blockscout.com",
+  [ChainID.ZETACHAIN_MAINNET]: "",
   [ChainID.ZETACHAIN_TESTNET]: "https://zetachain-athens-3.blockscout.com",
   [ChainID.FLARE_MAINNET]: "https://flare-explorer.flare.network",
   [ChainID.FLARE_COSTON]: "https://coston-explorer.flare.network",
@@ -113,8 +113,7 @@ const data: { [key: string]: string } = {
   [ChainID.ROOTSTOCK_TESTNET]: "https://rootstock-testnet.blockscout.com",
   [ChainID.LIGHTLINK_PHOENIX_MAINNET]: "https://phoenix.lightlink.io",
   [ChainID.LIGHTLINK_PEGASUS_TESTNET]: "https://pegasus.lightlink.io",
-  [ChainID.ETHERLINK_MAINNET]: "https://explorer.etherlink.com",
-  [ChainID.ETHERLINK_TESTNET]: "https://testnet.explorer.etherlink.com",
+  [ChainID.ETHERLINK_TESTNET]: "https://testnet-explorer.etherlink.com",
   [ChainID.SHARDEUM_SPHINX_1_X]: "https://explorer-sphinx.shardeum.org",
   [ChainID.VELAS_MAINNET]: "https://evmexplorer.velas.com",
   [ChainID.MODE_MAINNET]: "https://explorer.mode.network",
@@ -126,8 +125,7 @@ const data: { [key: string]: string } = {
   [ChainID.DOS_MAINNET]: "https://doscan.io",
   [ChainID.DOS_TESTNET]: "https://test.doscan.io",
   [ChainID.DEGEN_MAINNET]: "https://explorer.degen.tips",
-  [ChainID.TAIKO_MAINNET]: "https://taikoscan.io",
-  [ChainID.TAIKO_KATLA_TESTNET]: "https://hekla.taikoscan.io",
+  [ChainID.TAIKO_KATLA_TESTNET]: "https://explorer.katla.taiko.xyz",
   [ChainID.SHIMMER_MAINNET]: "https://explorer.evm.shimmer.network",
   [ChainID.SHIMMER_TESTNET]: "https://explorer.evm.testnet.shimmer.network",
   [ChainID.FRAXSCAN_MAINNET]: "https://fraxscan.com",
@@ -161,55 +159,6 @@ const data: { [key: string]: string } = {
   [ChainID.SONEIUM_TESTNET]: "https://explorer-testnet.soneium.org",
   [ChainID.BLACKFORT_MAINNET]: "https://blackfort.blockscout.com",
   [ChainID.BLACKFORT_TESTNET]: "https://blackfort-testnet.blockscout.com",
-}
-
-export const getExplorer = (network: string): string => data[network] || ""
-
-export const getContractExplorer = (network: string, contract: string): string => {
-  const explorer = getExplorer(network)
-  let addressPath = ""
-
-  switch (network) {
-    case ChainID.TRON_MAINNET:
-    case ChainID.TRON_SHASTA_TESTNET:
-    case ChainID.COTI_DEVNET:
-      addressPath = `contract/${contract}`
-    case ChainID.PALM_MAINNET:
-    case ChainID.PALM_TESTNET:
-      addressPath = `contracts/${contract}`
-      break
-    case ChainID.SHARDEUM_SPHINX_1_X:
-      addressPath = `account/${contract}`
-      break
-    case ChainID.MOVEMENT_IMOLA:
-      addressPath = `#/txn/${contract}`
-      break
-    default:
-      addressPath = `address/${contract}`
-      break
-  }
-
-  return `${explorer}/${addressPath}`
-}
-
-export const getTransactionExplorer = (network: string, tx: string): string => {
-  const explorer = getExplorer(network)
-  if (!explorer) {
-    return ""
-  }
-
-  let path = ""
-
-  switch (network) {
-    case ChainID.TRON_MAINNET:
-    case ChainID.TRON_SHASTA_TESTNET:
-    case ChainID.COTI_DEVNET:
-    case ChainID.COTI_TESTNET:
-      path = `transaction/${tx}`
-    default:
-      path = `tx/${tx}`
-      break
-  }
-
-  return `${explorer}/${path}`
+  [ChainID.APECHAIN_MAINNET]: "https://apescan.io",
+  [ChainID.APECHAIN_CURTIS_TESTNET]: "https://curtis.apescan.io"
 }
