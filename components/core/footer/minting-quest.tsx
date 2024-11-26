@@ -50,7 +50,8 @@ export function MintingQuest({ className }: MintingQuestProps) {
             if (questPoap) {
                 const contract = new POLPoapContract({})
                 const metadata = await contract.uri(questPoap.tokenId.toString())
-
+                setHasMinted(0)
+                
                 if (!metadata) {
                     toast.error("Error getting metadata for POAP")
                     return;
