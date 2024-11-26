@@ -9,6 +9,8 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 
 import "./globals.css";
 import '@mysten/dapp-kit/dist/index.css';
+import { ArrowUpRight, Cross } from "lucide-react";
+import { Banner } from "@/components/core/home/banner";
 
 export const metadata: Metadata = {
   title: "Proof of Learn",
@@ -31,9 +33,7 @@ export default function RootLayout({
       >
         <TooltipProvider delayDuration={0}>
           <Provider>
-            <div className="bg-primary">
-              Live on Mainet
-            </div>
+            <Banner />
             <NavBar />
             {children}
             <Toaster />
