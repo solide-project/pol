@@ -15,7 +15,7 @@ export function Banner({ }: BannerCardProps) {
             <div className="font-bold text-white">
                 Live on Mainnet 🎉. Earn Yuzu rewards and contribute to the PoL and EduChain. ₍ᐢ-(ｪ)-ᐢ₎
             </div>
-            <a className="underline flex items-center hover:text-secondary" href="/POLearn/pol-template">
+            <a className="underline flex items-center hover:text-secondary" href="/q/polearn/pol-template">
                 Start Learning <ArrowUpRight />
             </a>
 
