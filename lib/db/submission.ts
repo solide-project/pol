@@ -47,7 +47,7 @@ export class SubmissionCollection {
     }
 
     async insert(data: Deployment | Transaction) {
-        this.collection.insertOne(data);
+        await this.collection.insertOne(data);
     }
 
     async update(id: ObjectId, data: Deployment | Transaction) {

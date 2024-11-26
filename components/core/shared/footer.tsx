@@ -7,15 +7,19 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { getContractAddress } from "@/lib/poap"
+import { selectedNetwork } from "@/lib/poap/chain"
+import { getExplorer } from "@/lib/chains"
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
+
 const iconClassName = "h-4 w-6 shrink-0 hover:cursor-pointer hover:text-primary"
 const items = [{
     icon: <Icons.globe className={iconClassName} />,
-    href: "https://opencampus-codex.blockscout.com/token/0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54",
-    text: "POL Poap Contract (testnet)"
+    href: `${getExplorer(selectedNetwork.id.toString())}/address/${getContractAddress(selectedNetwork.id.toString())}`,
+    text: "POL Poap"
 },
 {
     icon: <Icons.x className={iconClassName} />,

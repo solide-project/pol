@@ -6,7 +6,6 @@ import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { GoogleAnalytics } from '@next/third-parties/google'
-import { Analytics } from "@vercel/analytics/react"
 
 import "./globals.css";
 import '@mysten/dapp-kit/dist/index.css';
@@ -32,13 +31,15 @@ export default function RootLayout({
       >
         <TooltipProvider delayDuration={0}>
           <Provider>
+            <div className="bg-primary">
+              Live on Mainet
+            </div>
             <NavBar />
             {children}
             <Toaster />
           </Provider>
         </TooltipProvider>
       </ThemeProvider>
-      <Analytics />
     </body>
     <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS || ""} />
   </html>

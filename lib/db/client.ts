@@ -32,11 +32,11 @@ export class POLMongo {
     db(dbName: string = this.config.database) { return this.client.db(dbName) }
 
     async connect() {
-        this.client.connect();
-        this.connectSubmission();
-        this.connectUserSubmission();
-        this.connectCourse();
-        this.connectUser();
+        await this.client.connect();
+        await this.connectSubmission();
+        await this.connectUserSubmission();
+        await this.connectCourse();
+        // await this.connectUser();
     }
 
     async disconnect() {
@@ -72,13 +72,14 @@ export class POLMongo {
     async connectCourse() {
         const collection = this.db()
             .collection<Course>(this.config.collections.course);
+        await collection.createIndex({ owner: 1, name: 1 }, { unique: true });
 
         this.courses = new CourseCollection(collection)
     }
 
     async connectUser() {
         const collection = this.db()
-            .collection<User>(this.config.collections.course);
+            .collection<User>(this.config.collections.user);
         await collection.createIndex({ evmAddress: 1 }, { unique: true });
         await collection.createIndex({ suiAddress: 1 }, { unique: true });
 

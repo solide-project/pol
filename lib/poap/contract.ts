@@ -6,7 +6,12 @@ import { abi } from "./abi";
  * Currently in testnet, but will be added to mainnet
  */
 const contracts: Record<string, `0x${string}`> = {
-    [ChainID.OPEN_CAMPUS_CODEX]: "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54",
+    [ChainID.EDUCHAIN]: "0x7aEb202a1568a80d78A68aA51211cFE3BCD315F9",
+
+    // [ChainID.OPEN_CAMPUS_CODEX]: "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54",
+    // [ChainID.OPEN_CAMPUS_CODEX]: "0x4DB78091c718F7a3E2683c2D730Fc86DfF322235",
+    [ChainID.OPEN_CAMPUS_CODEX]: "0x1a8e24D6B3D51d630599E6539462A085CF3375dD",
+
 }
 
 export const getContractAddress = (chain: string) => contracts[chain] || "0x"
@@ -56,7 +61,11 @@ export class POLPoapContract {
         return this.contract.read.totalSupply([tokenId]) as unknown as BigInt;
     }
 
-    async mint(account: string, tokenId: string, data: `0x${string}` = "0x") {
-        return this.contract.write.mint([account, tokenId, data]);
+    // async mint(account: string, tokenId: string, signature: `0x${string}`, data: `0x${string}` = "0x") {
+    //     return this.contract.write.mint([account, tokenId, data, signature]);
+    // }
+
+    async mint(account: string, tokenId: string, data: `0x${string}` = "0x", verification: string = "", signature: string = "") {
+        return this.contract.write.mint([account, tokenId, data, verification, signature]);
     }
 } 

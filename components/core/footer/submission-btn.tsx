@@ -40,6 +40,7 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
             // Only fetch if connected wallet and selected quest
             setUserSubmissionResponse({} as UserSubmissionResponse)
             setSubmissionResponse({} as SubmissionResponse)
+            setJustSubmitted(false)
 
             if (!authState.isAuthenticated) return;
             const address = ocAuth?.getAuthInfo()?.eth_address

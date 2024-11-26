@@ -20,6 +20,7 @@ import confetti from "canvas-confetti";
 import { getIPFSJson, ipfsGateway } from "@/lib/util/ipfs";
 import { useOCAuth } from "@opencampus/ocid-connect-js";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
+import { selectedNetwork } from "@/lib/poap/chain";
 
 const getWallet = async () => {
     const [account] = await window.ethereum.request({
@@ -70,11 +71,11 @@ export function MintingQuest({ className }: MintingQuestProps) {
         })()
     }, [questPoap])
 
-    const [isMinting, setIsMinting] = useState(false)
+    const [isMinting, setIsMinting] = useState("")
     const [hasMinted, setHasMinted] = useState(0)
     const handleMinting = async () => {
         console.log("Minting")
-        setIsMinting(true)
+        setIsMinting("Validating ...")
 
         try {
             if (!questPoap) {
@@ -85,28 +86,13 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 toast.error("Not logged to OCID")
             }
 
-            const account = ocAuth.getAuthInfo().eth_address
+            const address = ocAuth.getAuthInfo().eth_address
 
-            // Sign message
-            // const [account] = await window.ethereum.request({
-            //     method: 'eth_requestAccounts'
-            // })
-
-            // const client = createWalletClient({
-            //     account,
-            //     transport: custom(window.ethereum!)
-            // })
-            // const signature = await client.signMessage({
-            //     account,
-            //     message: "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54",
-            // })
-            const signature = ""
-
-            const response = await fetch("/api/mint", {
+            const response = await fetch("/api/mint-v2", {
                 method: "POST",
                 body: JSON.stringify({
                     owner: questPoap.owner, name: questPoap.name,
-                    signature: signature, address: account
+                    address,
                 }),
             })
 
@@ -117,18 +103,47 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 return
             }
 
+            console.log(result)
+            if (!result.signature) {
+                toast.error("API Error, please contact the PoL team")
+                return
+            }
+
+            if (!result.verificationHash) {
+                toast.error("Verification, please contact the PoL team")
+                return
+            }
+
+            const [account] = await window.ethereum.request({
+                method: 'eth_requestAccounts'
+            })
+
+            const client = createWalletClient({
+                account,
+                chain: selectedNetwork,
+                transport: custom(window.ethereum!)
+            })
+
+            await client.switchChain({ id: selectedNetwork.id }) 
+
+            setIsMinting("Minting ...")
+
+            const poapContract = new POLPoapContract({ client })
+            const hash = await poapContract.mint(address, result.tokenId, "0x", result.verificationHash, result.signature)
+
             triggerConfetti()
             triggerConfetti()
             triggerConfetti()
 
             // setOpen(false)
-            toast.success("Poap minted successfully")
+            console.log("transactionHash", hash)
+            toast.success(`Poap minted successfully. Hash ${hash}`)
 
             setHasMinted(Date.now())
         } catch (e) {
             console.error(e)
         } finally {
-            setIsMinting(false)
+            setIsMinting("")
         }
     }
 
@@ -195,13 +210,13 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 </div>
                 {hasMinted
                     ? <Button disabled={true}>Congratz! You completed this course {new Date(hasMinted).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} </Button>
-                    : <Button onClick={handleMinting} disabled={isMinting} className="my-2">
+                    : <Button onClick={handleMinting} disabled={!!isMinting} className="my-2">
                         {!isMinting
                             ? <>
                                 <div className="hidden md:block">Mint POL Poap</div>
                                 <Award />
                             </>
-                            : <div>Minting...</div>}
+                            : <div>{isMinting ? isMinting : ""}</div>}
                     </Button>}
             </DialogContent>
         </Dialog>}
