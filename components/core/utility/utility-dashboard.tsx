@@ -1,41 +1,55 @@
 "use client"
 
 import React, { useState } from "react";
-import { SideBar, SideBarItems, toTitleCase } from "@/components/core/utility/side-bar";
+import { SideBar, SideBarItems } from "@/components/core/utility/side-bar";
 import { HashMessage } from "./hash-message";
-import { Sha256Utility } from "./sha256";
-import { SideBarHeader } from "@/components/core/utility/side-bar-header";
+import { DeploymentID } from "./deployment-id";
 import { QuestValidator } from "./quest-validator";
-import { QuestTest } from "./quest-test";
+import { QuestTester } from "./quest-tester";
+import { CreateQuest } from "./create-quest";
+import { SelectType } from "./components/select-type";
+import { buttonVariants } from "@/components/ui/button";
+
+enum ChainType {
+    EVM,
+    MOVE,
+}
 
 interface UtilityDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function UtilityDashboard({ className }: UtilityDashboardProps) {
+    const [type, setType] = useState<ChainType>(ChainType.EVM)
     const [tab, setTab] = useState<string>("")
 
     const generateSelectedTab = (tab: string) => {
         switch (tab) {
             case SideBarItems.QUEST_ID:
-                return <HashMessage />
+                return <HashMessage type={type} />
             case SideBarItems.BYTECODE_HASH:
-                return <Sha256Utility />
+                return <DeploymentID type={type} />
             case SideBarItems.QUEST_VALIDATOR:
                 return <QuestValidator />
             case SideBarItems.QUEST_TESTER:
-                return <QuestTest />
+                return <QuestTester type={type} />
             default:
-                return <HashMessage />
+                return <CreateQuest />
         }
     }
 
-    return <div className="grid grid-cols-12">
-        <div className="col-span-12 lg:col-span-4">
+    return <div className="p-4">
+        <div className="h-[87vh] max-h-[87vh] flex w-full flex-col sm:flex-row">
             <SideBar handleOnSelect={(value: string) => setTab(value)} />
-        </div>
-        <div className="col-span-12 lg:col-span-8">
-            <SideBarHeader className="my-4">{toTitleCase(tab)}</SideBarHeader>
-            {generateSelectedTab(tab)}
+            <div className="relative flex-1 p-8">
+                <div className="flex items-center justify-between mb-4">
+                    <a href="https://docs.solide0x.tech/docs/pol/intro" target="_blank"
+                        className={buttonVariants({ variant: "default" })}>
+                        Full Documentation
+                    </a>
+                    <SelectType onValueChange={setType} />
+                </div>
+                {generateSelectedTab(tab)}
+            </div>
         </div>
     </div>
 }

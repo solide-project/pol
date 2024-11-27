@@ -1,23 +1,31 @@
 "use client";
 
-import { QuestPagination } from "@/lib/api/pagination";
-import { QuestSchema } from "@/lib/db/quest";
+import { QuestInformation, QuestPagination } from "@/lib/api/pagination";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { ArrowUpRight, Box, GraduationCap, MoveRight, PartyPopper } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ProjectBeam } from "./project-beam";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton";
+import { ResourceCard, ResourceCardSkeleton } from "./resource-cards";
 
 interface ExplorerProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function Explorer({ children }: ExplorerProps) {
     const [page, setPage] = useState(1);
     const [canNext, setCanNext] = useState(false);
-    const [quests, setQuests] = useState<QuestSchema[]>([]);
+    const [quests, setQuests] = useState<QuestInformation[]>([]);
 
     // Cache the pages we have already searched
-    const [data, setData] = useState<{ [key: number]: QuestSchema[] }>({});
+    const [data, setData] = useState<{ [key: number]: QuestInformation[] }>({});
 
     useEffect(() => {
         (async () => {
@@ -47,21 +55,17 @@ export function Explorer({ children }: ExplorerProps) {
     }, [page]);
 
     return <>
-        <div className="text-xl leading-[1.1] sm:text-2xl md:text-4xl text-center font-bold my-8">Explore</div>
-        <div id="explore" className="grid grid-cols-12 gap-4">
+        <div className="text-2xl font-bold leading-tight tracking-tighter md:text-3xl lg:leading-[1.1] my-4">Available & Upcoming Resource</div>
+        <div id="explore" className="grid grid-cols-12 gap-8">
             {quests.map((quest, index) => (
-                <div key={index} className="col-span-12 md:col-span-6 lg:col-span-3 bg-grayscale-025 rounded-lg cursor-pointer hover:shadow-lg">
-                    <img src={quest.image} alt="badge"
-                        className="rounded-lg object-cover h-48 w-[100%]" />
+                <div key={index} className="col-span-12 md:col-span-6 lg:col-span-4 bg-grayscale-025 rounded-lg cursor-pointer group">
+                    <ResourceCard quest={quest} />
+                </div>
+            ))}
 
-                    <div className="py-4 px-3">
-                        <h1 className="font-semibold leading-none tracking-tight">{quest.title}</h1>
-                        <p className="my-2 h-32 overflow-hidden">{quest.description}</p>
-                        <Link className={cn(buttonVariants({ variant: "default" }), "flex items-center gap-2")} href={`/q/${quest.owner}/${quest.name}`}>
-                            <div>Start Learning</div>
-                            <ArrowUpRight />
-                        </Link>
-                    </div>
+            {quests.length <= 0 && [1, 2, 3].map((quest) => (
+                <div key={quest} className="col-span-12 md:col-span-6 lg:col-span-4 bg-grayscale-025 rounded-lg cursor-pointer group">
+                    <ResourceCardSkeleton />
                 </div>
             ))}
         </div>

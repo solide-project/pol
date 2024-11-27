@@ -1,18 +1,18 @@
 import { generateErrorResponse, validateSubmitRequest } from "@/lib/api";
 import { getRPC } from "@/lib/chains";
-import { MongoService } from "@/lib/db/client";
+import { POLMongoService } from "@/lib/util/mongo";
 import { processDeploymentSubmission, processDeployTransaction, SubmissionBody, SubmissionReceipt } from "@/lib/quest/api";
 import { NextRequest, NextResponse } from "next/server";
 import { createPublicClient, http } from "viem";
-import { resourceLimits } from "worker_threads";
 
 export async function POST(request: NextRequest) {
     // Validate body
     const body = await validateSubmitRequest(await request.json())
     if (typeof body === "string") return generateErrorResponse(body)
 
-    const service = new MongoService();
-    await service.connect();
+    const service = new POLMongoService();
+    await service.connectSubmission();
+    await service.connectUserSubmission();
 
     try {
         // First check if user has already completed this quest
@@ -44,11 +44,10 @@ export async function POST(request: NextRequest) {
                 break;
         }
 
-        // I don't, just do a san
         if (!reciept.result) throw new Error("Invalid Submission")
 
         // Save information as UserSubmission
-        const result = await service.userSubmissions?.save({
+        const result = await service.userSubmissions?.insert({
             id: body.id,
             address: body.user,
             txHash: body.transactionHash,
@@ -60,7 +59,7 @@ export async function POST(request: NextRequest) {
         console.error(error.message)
         return generateErrorResponse(error.message.toString())
     } finally {
-        await service.close();
+        await service.disconnect();
     }
 }
 

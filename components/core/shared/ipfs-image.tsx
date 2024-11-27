@@ -1,4 +1,4 @@
-import { ipfsGateway } from "@/lib/poap/ipfs";
+import { ipfsGateway } from "@/lib/util/ipfs";
 import Image from "next/image"
 
 interface IPFSImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {

@@ -178,6 +178,7 @@ const getIcon = (chainId: string): string => {
     case ChainID.LIGHTLINK_PHOENIX_MAINNET:
     case ChainID.LIGHTLINK_PEGASUS_TESTNET:
       return "lightlink.svg"
+    case ChainID.ETHERLINK_MAINNET:
     case ChainID.ETHERLINK_TESTNET:
       return "etherlink.svg"
     case ChainID.SHARDEUM_SPHINX_1_X:
@@ -199,6 +200,8 @@ const getIcon = (chainId: string): string => {
       return "dos.svg"
     case ChainID.DEGEN_MAINNET:
       return "degen.svg"
+    case ChainID.TAIKO_MAINNET:
+    case ChainID.TAIKO_HEKLA_TESTNET:
     case ChainID.TAIKO_KATLA_TESTNET:
       return "taiko.svg"
     case ChainID.SHIMMER_MAINNET:
@@ -224,6 +227,7 @@ const getIcon = (chainId: string): string => {
     case ChainID.KROMA_SEPOLIA:
       return "kroma.svg"
     case ChainID.COTI_DEVNET:
+    case ChainID.COTI_TESTNET:
       return "coti.svg"
     case ChainID.LISK_MAINNET:
     case ChainID.LISK_SEPOLIA:
@@ -232,7 +236,31 @@ const getIcon = (chainId: string): string => {
     case ChainID.REDSTONE_GARNET_TESTNET:
       return "redstone.svg"
     case ChainID.OPEN_CAMPUS_CODEX:
+    case ChainID.EDUCHAIN:
       return "opencampus.svg"
+    case ChainID.UNICHAIN_SEPOLIA:
+      return "unichain.svg"
+    case ChainID.MOVEMENT_IMOLA:
+      return "movement.svg"
+    case ChainID.XAI_GAMES_MAINNET:
+    case ChainID.XAI_ARB_TESTNET:
+      return "xai.svg"
+    case ChainID.SONEIUM_TESTNET:
+      return "soneium.svg"
+    case ChainID.BLACKFORT_MAINNET:
+    case ChainID.BLACKFORT_TESTNET:
+      return "bxn.svg"
+    case ChainID.APECHAIN_MAINNET:
+    case ChainID.APECHAIN_CURTIS_TESTNET:
+      return "ape.svg"
+    case ChainID.SHAPE_MAINNET:
+    case ChainID.SHAPE_SEPOLIA:
+      return "shape.svg"
+    case ChainID.INK_SEPOLIA:
+      return "ink.svg"
+    case ChainID.WORLD_MAINNET:
+    case ChainID.WORLD_SEPOLIA:
+      return "world.svg"
     default:
       return ""
   }

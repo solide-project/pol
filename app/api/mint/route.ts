@@ -1,15 +1,14 @@
 
 import { generateErrorResponse } from "@/lib/api";
 import { ChainID, getRPC } from "@/lib/chains";
-import { MongoService } from "@/lib/db/client";
 import { githubTrees } from "@/lib/git";
 import { POLPoapContract } from "@/lib/poap";
-import { openCampusCodex } from "@/lib/poap/chain";
-import { folderItems, generateQuestId, generateQuestIdByQuestStructureItem, generateQuestPath, stripBase, validateTree } from "@/lib/quest";
+import { selectedNetwork } from "@/lib/poap/chain";
+import { folderItems, generateQuestIdByQuestStructureItem, generateQuestPath, stripBase, validateTree } from "@/lib/quest";
+import { POLMongoService } from "@/lib/util/mongo";
 import { NextRequest, NextResponse } from "next/server";
 import { createPublicClient, createWalletClient, http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
-import { mainnet } from "viem/chains";
 
 // Requires Github owner and name
 export async function POST(request: NextRequest) {
@@ -89,11 +88,11 @@ export async function POST(request: NextRequest) {
     })
 
 
-    const service = new MongoService();
+    const service = new POLMongoService();
     await service.connect();
 
     try {
-        const quest = await service.quests?.getByRepo(owner, name);
+        const quest = await service.courses?.getByRepo(owner, name);
         if (!quest) return generateErrorResponse("Error fetching quests")
 
         // console.log("Quest", quest.quests)
@@ -112,11 +111,10 @@ export async function POST(request: NextRequest) {
         const minter = privateKeyToAccount(process.env.MINTER_SK || "0x" as any)
         const client = createWalletClient({
             account: minter,
-            chain: openCampusCodex,
+            chain: selectedNetwork,
             transport: http(rpc)
         })
         const poapContract = new POLPoapContract({ client })
-
 
         const { result } = await publicClient.simulateContract({
             address: poapContract.contract.address,
@@ -126,7 +124,7 @@ export async function POST(request: NextRequest) {
             account: minter,
         })
 
-        const hash = await poapContract.mint(address, quest.tokenId.toString())
+        const hash = await poapContract.mint(address, quest.tokenId.toString(), "0x")
         console.log("transactionHash", hash)
 
         return NextResponse.json({
@@ -136,6 +134,6 @@ export async function POST(request: NextRequest) {
         console.error(error.message)
         return NextResponse.json({ message: "Failed to mint for user. If you are sure you completed the all of the quest, then do a PR" }, { status: 400 })
     } finally {
-        await service.close();
+        await service.disconnect();
     }
 }

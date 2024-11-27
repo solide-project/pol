@@ -1,6 +1,6 @@
 import { validateStoreRequest, generateErrorResponse } from "@/lib/api";
 import { convertImportToMongo } from "@/lib/quest/converter";
-import { MongoService } from "@/lib/db/client";
+import { POLMongoService } from "@/lib/util/mongo";
 import { validate } from "@/lib/quest/validate";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,11 +10,10 @@ export async function POST(request: NextRequest) {
     if (typeof body === "string") return generateErrorResponse(body)
 
 
-    const service = new MongoService();
+    const service = new POLMongoService();
     await service.connect();
 
     try {
-        //
         const submissionItems = convertImportToMongo(validate(body.data))
 
         const questIds = submissionItems.map((item) => item.id);
@@ -52,6 +51,6 @@ export async function POST(request: NextRequest) {
         console.error(error.message)
         return generateErrorResponse(error.message.toString())
     } finally {
-        await service.close();
+        await service.disconnect();
     }
 }

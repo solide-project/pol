@@ -8,6 +8,12 @@ const nextConfig = {
                 port: '',
                 pathname: '/ipfs/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'raw.githubusercontent.com',
+                port: '',
+                pathname: '/**',
+            },
         ],
     },
 };

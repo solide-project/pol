@@ -1,5 +1,5 @@
-import { Submission } from "./submission"
-import { UserSubmission } from "./user-submission"
+import { Submission } from "../db/submission"
+import { UserSubmission } from "../db/user-submission"
 
 export interface SubmissionResponse {
     result: Submission

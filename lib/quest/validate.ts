@@ -79,8 +79,23 @@ export const validate = (value: string): QuestImport => {
                         type: { type: "string", enum: ["deployment", "transaction"] },
                         chain: { type: "string" },
                         bytecode: { type: "string" },
+                        contract: { type: "string" }
                     },
-                    required: ["path", "type"]
+                    required: ["path", "type"],
+                    if: {
+                        properties: { type: { const: "deployment" } }
+                    },
+                    then: {
+                        required: ["bytecode"]
+                    },
+                    else: {
+                        if: {
+                            properties: { type: { const: "transaction" } }
+                        },
+                        then: {
+                            required: ["contract"]
+                        }
+                    }
                 }
             }
         },

@@ -8,13 +8,13 @@ import { QuestFooter } from "@/components/core/footer/quest-footer";
 import { flatten, folderItems, generateQuestContractPath, generateQuestId, generateQuestIdByQuestStructureItem, generateQuestPath, joinUri, QuestStructure, QuestTitle, stripBase } from "@/lib/quest";
 import { IDEViewer } from "./ide-viewer";
 import { cn } from "@/lib/utils";
-import { QuestSchema } from "@/lib/db/quest";
+import { Course } from "@/lib/db/course";
 
 interface QuestViewerProps extends React.HTMLAttributes<HTMLDivElement> {
     owner: string,
     name: string,
     tree: GithubTreeInfo
-    metadata?: QuestSchema
+    metadata?: Course
 }
 
 export function QuestViewer({ tree, owner, name, metadata }: QuestViewerProps) {
@@ -73,7 +73,7 @@ export function QuestViewer({ tree, owner, name, metadata }: QuestViewerProps) {
             <div className={cn("col-span-12 mt-8", quest.showIDE ? "lg:col-span-5" : "")}>
                 <MarkdownViewer />
             </div>
-            <div className={cn(quest.showIDE ? "sticky top-0 col-span-12 lg:col-span-7 h-screen flex items-center justify-between" : "")}>
+            <div className={cn(quest.showIDE ? "sticky top-0 col-span-12 lg:col-span-7 h-screen flex items-center justify-between" : "invisible")}>
                 {owner && name &&
                     <IDEViewer uri={`https://solide0x.tech?url=https://github.com/${owner}/${name}/blob/master/contracts/Import.sol`} />}
             </div>

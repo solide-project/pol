@@ -1,6 +1,6 @@
 import { PoapMetadata } from "@/lib/poap";
 import { POLPoapContract } from "@/lib/poap/contract"
-import { getIPFSJson } from "@/lib/poap/ipfs";
+import { getIPFSJson } from "@/lib/util/ipfs";
 import { PoapItem } from "@/components/core/home/poap-item";
 
 export default async function Page() {
