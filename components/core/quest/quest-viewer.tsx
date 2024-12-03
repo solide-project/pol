@@ -14,10 +14,11 @@ interface QuestViewerProps extends React.HTMLAttributes<HTMLDivElement> {
     owner: string,
     name: string,
     tree: GithubTreeInfo
-    metadata?: Course
+    metadata?: Course,
+    locales?: string[]
 }
 
-export function QuestViewer({ tree, owner, name, metadata }: QuestViewerProps) {
+export function QuestViewer({ tree, owner, name, metadata, locales = [] }: QuestViewerProps) {
     const quest = useQuest()
 
     const generateQuest = (item: QuestTitle, owner: string, name: string, parent?: QuestTitle) => {

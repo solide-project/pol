@@ -10,11 +10,14 @@ import { cn } from "@/lib/utils";
 import { GithubResolver } from "@resolver-engine/imports/build/resolvers/githubresolver"
 import { joinUri } from "@/lib/quest";
 import { CodeSnippet } from "../shared/code-snippet";
+import { useSearchParams } from "next/navigation";
 
 interface MarkdownViewerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function MarkdownViewer({ className }: MarkdownViewerProps) {
+    const searchParams = useSearchParams();
+
     const [content, setContent] = useState<string>("")
     const { selectedQuest } = useQuest()
 
@@ -24,7 +27,12 @@ export function MarkdownViewer({ className }: MarkdownViewerProps) {
                 return
             }
 
-            const content = joinUri(selectedQuest?.name.path, "README.md")
+            let content = joinUri(selectedQuest?.name.path, "README.md")
+            const locale = searchParams.get("l")
+            if (locale) {
+                content = content.replace("/blob/master/", `/blob/locales/${locale}/`)
+            }
+            console.log(content)
             const resolver = GithubResolver()
             const raw = await resolver(content, { resolver: "" }) || ""
 
