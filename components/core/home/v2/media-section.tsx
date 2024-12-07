@@ -20,7 +20,7 @@ const items = [
         title: "PoL POAP",
         description: "Earn and check out the verified blockchain-verified Proof of Learn contract.",
         image: "icons/contract.svg",
-        link: "https://edu-chain-testnet.blockscout.com/address/0x1a8e24D6B3D51d630599E6539462A085CF3375dD",
+        link: "https://educhain.blockscout.com/address/0x7aEb202a1568a80d78A68aA51211cFE3BCD315F9",
         linkText: "Claim POAP"
     }
 ];

@@ -73,8 +73,9 @@ export async function GET(request: NextRequest) {
         const result: QuestInformation[] = []
         for (const quest of quests) {
             const user = await getUserInfo(quest.owner);
+            const { _id, ...rest } = quest as any; // Exclude _id from mongo
             result.push({
-                result: { ...quest },
+                result: { ...rest },
                 user: {
                     image: user?.avatar_url || ""
                 }
