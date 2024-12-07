@@ -5,6 +5,7 @@ import { githubTrees, isTree } from "@/lib/git";
 import { POLPoapContract } from "@/lib/poap";
 import { validateTree } from "@/lib/quest";
 import { branches } from "@/lib/git/branches";
+import { LocaleProvider } from "@/components/providers/locale-provider";
 
 const findLocales = (items: string[]) => {
     const r = /^locales\/([a-zA-Z]{2})$/i;
@@ -48,6 +49,8 @@ export default async function Page({ params, }: SearchParams) {
     const locales = findLocales(ghBranches.map(b => b.name))
 
     return <QuestProvider>
-        <QuestViewer tree={tree} owner={owner} name={name} metadata={course || undefined} locales={locales} />
+        <LocaleProvider>
+            <QuestViewer tree={tree} owner={owner} name={name} metadata={course || undefined} locales={locales} />
+        </LocaleProvider>
     </QuestProvider >
 }

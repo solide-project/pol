@@ -12,6 +12,8 @@ import {
 import { useQuest } from "@/components/providers/quest-provider";
 import { SideBarItem } from "@/components/core/footer/side-bar-item";
 import { BookOpen, Github, Menu } from "lucide-react";
+import { useLocale } from "@/components/providers/locale-provider";
+import { SelectLocale } from "./select-locale";
 
 interface QuestSideBarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -46,17 +48,20 @@ export function QuestSideBar({ }: QuestSideBarProps) {
                 </ol>
             </div>
 
-            <div className="flex items-center gap-2">
-                <a className="flex items-center gap-2 cursor-pointer hover:text-primary"
-                    target="_blank" href={selectedQuest?.name.path}>
-                    <BookOpen /> Resource
-                </a>
-                <a className="flex items-center gap-2 cursor-pointer hover:text-primary"
-                    target="_blank" href={`https://github.com/${questOwner}/${questName}/discussions`}>
-                    <Github /> Discussion
-                </a>
-                <div>
-                    {selectedQuest?.name.id || "Unknown"}
+            <div className="flex flex-col gap-4">
+                <SelectLocale callback={() => setSheetOpen(false)} />
+                <div className="flex items-center gap-2">
+                    <a className="flex items-center gap-2 cursor-pointer hover:text-primary"
+                        target="_blank" href={selectedQuest?.name.path}>
+                        <BookOpen /> Resource
+                    </a>
+                    <a className="flex items-center gap-2 cursor-pointer hover:text-primary"
+                        target="_blank" href={`https://github.com/${questOwner}/${questName}/discussions`}>
+                        <Github /> Discussion
+                    </a>
+                    {/* <div>
+                        {selectedQuest?.name.id || "No Quest Id"}
+                    </div> */}
                 </div>
             </div>
         </SheetContent>
