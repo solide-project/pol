@@ -7,8 +7,7 @@ interface ProviderProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const opts: any = {
-    // redirectUri: 'https://pol.solide0x.tech/redirect',
-    redirectUri: 'http://localhost:3000/redirect',
+    redirectUri: process.env.NEXT_PUBLIC_OC_CONNECT,
 }
 
 export function Provider({ children }: ProviderProps) {

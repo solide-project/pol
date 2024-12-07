@@ -31,14 +31,12 @@
     "@resolver-engine/imports": "^0.3.3",
     "@resolver-engine/imports-fs": "^0.3.3",
     "@tanstack/react-query": "^5.50.1",
-    "@vercel/analytics": "^1.3.1",
     "ajv": "^8.16.0",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "encoding": "^0.1.13",
-    "framer-motion": "^11.3.8",
     "git-url-parse": "^14.0.0",
     "lucide-react": "^0.400.0",
     "mongo": "^0.1.0",
@@ -56,7 +54,7 @@
     "remark-gfm": "^4.0.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "2.x",
+    "viem": "^2.21.54",
     "wagmi": "^2.10.9"
   },
   "devDependencies": {

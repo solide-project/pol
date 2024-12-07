@@ -9,14 +9,12 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 
 import "./globals.css";
 import '@mysten/dapp-kit/dist/index.css';
-import { ArrowUpRight, Cross } from "lucide-react";
 import { Banner } from "@/components/core/home/banner";
 
 export const metadata: Metadata = {
-  title: "Proof of Learn",
-  description: "Rewarding learning with NFTs",
+  title: "Proof of Learn | Earn NFTs by Mastering Blockchain Skills",
+  description: "Join Proof of Learn, the ultimate educational platform where you can learn about blockchain, smart contracts, and Web3, and earn valuable NFT rewards for your achievements.",
 };
-
 
 export default function RootLayout({
   children,
