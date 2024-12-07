@@ -1,52 +1,30 @@
 
 import { generateErrorResponse } from "@/lib/api";
-import { ChainID, getRPC } from "@/lib/chains";
 import { Deployment, Transaction } from "@/lib/db/submission";
 import { UserSubmission } from "@/lib/db/user-submission";
-import { selectedNetwork } from "@/lib/poap/chain";
+import { getRPC, selectedNetwork } from "@/lib/poap";
 import { POLMongoService } from "@/lib/util/mongo";
-import { uploadJSONToIPFS } from "@/lib/util/pinata";
+import { upload } from "@/lib/util/ipfs";
 import { NextRequest, NextResponse } from "next/server";
-import { createPublicClient, createWalletClient, http, keccak256, encodePacked, toBytes } from "viem";
+import { createWalletClient, http, keccak256, encodePacked, toBytes } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 
 // Requires Github owner and name
 export async function POST(request: NextRequest) {
-    const body = await request.json()
+    const body = await request.json();
 
-    if (!body.address) {
-        return generateErrorResponse("Failed Validation: address")
+    const requiredFields = ["address", "owner", "name"] as const;
+    for (const field of requiredFields) {
+        if (!body[field]) {
+            return generateErrorResponse(`Missing or invalid parameter: ${field}`);
+        }
     }
 
-    // Verify address,
-    // Set RPC for querying the chain
-    const address = body.address as `0x${string}`
-    const rpc = getRPC(ChainID.OPEN_CAMPUS_CODEX)
-    const publicClient = createPublicClient({
-        transport: http(rpc),
-    })
-    // console.log("Address", address)
-    // console.log("Signature", signature)
-    // const valid = await client.verifyMessage({
-    //     address,
-    //     message: "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54",
-    //     signature,
-    // })
-
-    // if (!valid) {
-    //     return generateErrorResponse("Failed Validation")
-    // }
-
-    if (!body.owner) {
-        return generateErrorResponse("Missing param: owner")
-    }
-
-    if (!body.name) {
-        return generateErrorResponse("Missing param: name")
-    }
-
-    const owner = body.owner
-    const name = body.name
+    let { address, owner, name } = body as {
+        address: `0x${string}`;
+        owner: string;
+        name: string;
+    };
 
     const service = new POLMongoService();
     await service.connect();
@@ -104,8 +82,8 @@ export async function POST(request: NextRequest) {
             })
         })
 
-        const verifcationResponse = await uploadJSONToIPFS({
-            data: verification, 
+        const verifcationResponse = await upload({
+            data: verification,
             name: "verification"
         });
         console.log(verifcationResponse.IpfsHash)
@@ -113,19 +91,8 @@ export async function POST(request: NextRequest) {
         if (!verifcationResponse.IpfsHash)
             return generateErrorResponse("Fail to publish verification, please open dicussion")
 
-        // Can mint the POAP
-        const encodedMessage = keccak256(encodePacked(['address', 'uint256'], [address, BigInt(quest.tokenId)]));
-        const message = toBytes(encodedMessage);
-
-        const minter = privateKeyToAccount(process.env.MINTER_SK || "0x" as any)
-        const client = createWalletClient({
-            account: minter,
-            chain: selectedNetwork,
-            transport: http(rpc)
-        })
-        const signature = await client.signMessage({
-            message: { raw: message },
-        });
+        // Create signature for address to sign for successful mint
+        const { signature } = await signMintingMessage(address, quest.tokenId);
 
         return NextResponse.json({
             signature,
@@ -138,4 +105,21 @@ export async function POST(request: NextRequest) {
     } finally {
         await service.disconnect();
     }
+}
+
+const signMintingMessage = async (address: `0x${string}`, tokenId: number) => {
+    const encodedMessage = keccak256(encodePacked(['address', 'uint256'], [address, BigInt(tokenId)]));
+    const message = toBytes(encodedMessage);
+
+    const minter = privateKeyToAccount(process.env.MINTER_SK || "0x" as any)
+    const client = createWalletClient({
+        account: minter,
+        chain: selectedNetwork,
+        transport: http(getRPC(selectedNetwork.id.toString()))
+    })
+    const signature = await client.signMessage({
+        message: { raw: message },
+    });
+
+    return { signature }
 }

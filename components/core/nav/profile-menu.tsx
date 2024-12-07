@@ -47,7 +47,7 @@ export function ProfileMenu({ address }: ProfileMenuProps) {
                     {ocAuth?.getAuthInfo()?.edu_username}
                 </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="rounded-[12px]">
                 <DropdownMenuLabel className="flex items-center gap-2">
                     <div className="truncate">
                         {mask(ocAuth?.getAuthInfo()?.eth_address)}

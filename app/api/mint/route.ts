@@ -2,15 +2,16 @@
 import { generateErrorResponse } from "@/lib/api";
 import { ChainID, getRPC } from "@/lib/chains";
 import { githubTrees } from "@/lib/git";
-import { POLPoapContract } from "@/lib/poap";
-import { selectedNetwork } from "@/lib/poap/chain";
+import { POLPoapContract, selectedNetwork } from "@/lib/poap";
 import { folderItems, generateQuestIdByQuestStructureItem, generateQuestPath, stripBase, validateTree } from "@/lib/quest";
 import { POLMongoService } from "@/lib/util/mongo";
 import { NextRequest, NextResponse } from "next/server";
 import { createPublicClient, createWalletClient, http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 
-// Requires Github owner and name
+/**
+ * DEPRECATED
+ */
 export async function POST(request: NextRequest) {
     const body = await request.json()
 
@@ -30,17 +31,6 @@ export async function POST(request: NextRequest) {
     const publicClient = createPublicClient({
         transport: http(rpc),
     })
-    // console.log("Address", address)
-    // console.log("Signature", signature)
-    // const valid = await client.verifyMessage({
-    //     address,
-    //     message: "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54",
-    //     signature,
-    // })
-
-    // if (!valid) {
-    //     return generateErrorResponse("Failed Validation")
-    // }
 
     if (!body.owner) {
         return generateErrorResponse("Missing param: owner")
@@ -109,12 +99,12 @@ export async function POST(request: NextRequest) {
 
         // Can mint the POAP
         const minter = privateKeyToAccount(process.env.MINTER_SK || "0x" as any)
-        const client = createWalletClient({
+        const wallet = createWalletClient({
             account: minter,
             chain: selectedNetwork,
             transport: http(rpc)
         })
-        const poapContract = new POLPoapContract({ client })
+        const poapContract = new POLPoapContract({ wallet })
 
         const { result } = await publicClient.simulateContract({
             address: poapContract.contract.address,
