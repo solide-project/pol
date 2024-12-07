@@ -7,8 +7,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { getContractAddress } from "@/lib/poap"
-import { selectedNetwork } from "@/lib/poap/chain"
+import { getContractAddress, selectedNetwork } from "@/lib/poap"
 import { getExplorer } from "@/lib/chains"
 
 interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {

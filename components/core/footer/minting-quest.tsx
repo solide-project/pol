@@ -12,15 +12,14 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Award } from "lucide-react";
-import { PoapMetadata, POLPoapContract } from "@/lib/poap";
+import { PoapMetadata, POLPoapContract, selectedNetwork } from "@/lib/poap";
 import toast from "react-hot-toast";
 import Image from 'next/image';
 import { createWalletClient, custom } from 'viem'
 import confetti from "canvas-confetti";
-import { getIPFSJson, ipfsGateway } from "@/lib/util/ipfs";
+import { retrieve, ipfsGateway } from "@/lib/util/ipfs";
 import { useOCAuth } from "@opencampus/ocid-connect-js";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
-import { selectedNetwork } from "@/lib/poap/chain";
 
 const getWallet = async () => {
     const [account] = await window.ethereum.request({
@@ -51,13 +50,13 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 const contract = new POLPoapContract({})
                 const metadata = await contract.uri(questPoap.tokenId.toString())
                 setHasMinted(0)
-                
+
                 if (!metadata) {
                     toast.error("Error getting metadata for POAP")
                     return;
                 }
 
-                const data: PoapMetadata = await getIPFSJson(metadata)
+                const data: PoapMetadata = await retrieve(metadata)
                 setPoapMetadata(data)
                 setMetadata(metadata)
 
@@ -119,17 +118,17 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 method: 'eth_requestAccounts'
             })
 
-            const client = createWalletClient({
+            const wallet = createWalletClient({
                 account,
                 chain: selectedNetwork,
                 transport: custom(window.ethereum!)
             })
 
-            await client.switchChain({ id: selectedNetwork.id }) 
+            await wallet.switchChain({ id: selectedNetwork.id })
 
             setIsMinting("Minting ...")
 
-            const poapContract = new POLPoapContract({ client })
+            const poapContract = new POLPoapContract({ wallet })
             const hash = await poapContract.mint(address, result.tokenId, "0x", result.verificationHash, result.signature)
 
             triggerConfetti()

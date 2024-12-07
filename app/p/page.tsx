@@ -1,6 +1,6 @@
 import { PoapMetadata } from "@/lib/poap";
 import { POLPoapContract } from "@/lib/poap/contract"
-import { getIPFSJson } from "@/lib/util/ipfs";
+import { retrieve } from "@/lib/util/ipfs";
 import { PoapItem } from "@/components/core/home/poap-item";
 
 export default async function Page() {
@@ -25,7 +25,7 @@ export default async function Page() {
 
     // Batch collect all Poap metadata from IPFS
     const metadataPromises = tokenPoapsUris
-        .map(poap => getIPFSJson(poap.uriHash) as Promise<PoapMetadata>)
+        .map(poap => retrieve(poap.uriHash) as Promise<PoapMetadata>)
     const poapUris = await Promise.all(metadataPromises)
 
     const totalSupplyPromises = tokenPoapsUris.map(poap => poapContract.totalSupply(poap.tokenId.toString()))

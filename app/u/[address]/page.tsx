@@ -2,7 +2,7 @@ import { UserProfile } from "@/components/core/profile/user-profile";
 import { Footer } from "@/components/core/shared/footer";
 import { POLPoapContract } from "@/lib/poap/contract";
 import { Poap, PoapMetadata } from "@/lib/poap/interface";
-import { getIPFSJson } from "@/lib/util/ipfs";
+import { retrieve } from "@/lib/util/ipfs";
 import { isAddress } from "viem";
 
 interface SearchParams {
@@ -29,7 +29,7 @@ export default async function Page({ params, }: SearchParams) {
     const timestamps = await Promise.all(mintTrackerPromises)
 
     // Batch collect all Poap metadata from IPFS
-    const metadataPromises = uriHashes.map(uriHash => getIPFSJson(uriHash) as Promise<PoapMetadata>)
+    const metadataPromises = uriHashes.map(uriHash => retrieve(uriHash) as Promise<PoapMetadata>)
     const poapUris = await Promise.all(metadataPromises)
 
     // Create the list of Poaps
