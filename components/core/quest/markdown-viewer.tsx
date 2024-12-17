@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { GithubResolver } from "@resolver-engine/imports/build/resolvers/githubresolver"
 import { joinUri } from "@/lib/quest";
 import { CodeSnippet } from "../shared/code-snippet";
+import { useLocale } from "@/components/providers/locale-provider";
 
 interface MarkdownViewerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -17,6 +18,7 @@ interface MarkdownViewerProps extends React.HTMLAttributes<HTMLDivElement> {
 export function MarkdownViewer({ className }: MarkdownViewerProps) {
     const [content, setContent] = useState<string>("")
     const { selectedQuest } = useQuest()
+    const { questlocales, selectedLocale } = useLocale()
 
     useEffect(() => {
         (async () => {
@@ -24,7 +26,11 @@ export function MarkdownViewer({ className }: MarkdownViewerProps) {
                 return
             }
 
-            const content = joinUri(selectedQuest?.name.path, "README.md")
+            let content = joinUri(selectedQuest?.name.path, "README.md")
+            if (selectedLocale && questlocales.includes(selectedLocale.toLocaleUpperCase())) {
+                content = content.replace("/blob/master/", `/blob/locales/${selectedLocale}/`)
+            }
+
             const resolver = GithubResolver()
             const raw = await resolver(content, { resolver: "" }) || ""
 
@@ -38,7 +44,7 @@ export function MarkdownViewer({ className }: MarkdownViewerProps) {
             const text = await response.text()
             setContent(text)
         })()
-    }, [selectedQuest])
+    }, [selectedQuest, selectedLocale])
 
     return <div className={cn("container", className)}>
         {content
