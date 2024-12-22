@@ -53,6 +53,29 @@ const loadData = async (): Promise<QuestPagination> => {
                     "image": "https://avatars.githubusercontent.com/u/183878506?v=4",
                     "preview": true
                 }
+            },
+            {
+                "result": {
+                    "owner": "POLearn",
+                    "name": "staking-ape-coin",
+                    "title": "Pratical guide to staking BAYC and Ape Coin",
+                    "description": "A comprehensive guide on how to stake your BAYC and ApeCoin, unlocking rewards and enhancing your participation in the ApeCoin ecosystem.",
+                    "image": "https://raw.githubusercontent.com/POLearn/staking-ape-coin/refs/heads/master/content/assets/cover.png",
+                    "tokenId": 3,
+                    "quests": [
+                        "0x832dfd72f0eb507351f09add8585dfa85979e038ddf2e04244966028010236d0",
+                        "0xbdf7ff5aa60e31fc422a17a842167785ee37b1fa6d06dc154dbede4c03cdf2ab",
+                        "0x5e1ea88dbaa6465a4103b12aa442a98ff6e4f571cd47061d38b841846239084b",
+                        "0x528e4bcbe9a5c439adc88805ba9a417e348ada0a0f606dee7c8b5c7ff0491b29",
+                        "0xb73d971bf30ed3644c8e9a8022c17fb5a166b02693dbd66b2e86c33190e547f2",
+                        "0x177367850d7290a48e45d5e3b078c84c6f428267119f4bbcbee922090ada1a40",
+                        "0xf5536b3254cc6ae0dc69c2183b2c67d57c14bee4dd7ae39e9e89d5b385f9a36b"
+                    ]
+                },
+                "user": {
+                    "image": "https://avatars.githubusercontent.com/u/183878506?v=4",
+                    "preview": true,
+                }
             }
         ]
     }
