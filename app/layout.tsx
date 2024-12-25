@@ -8,7 +8,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 import "./globals.css";
-import '@mysten/dapp-kit/dist/index.css';
 import { Banner } from "@/components/core/home/banner";
 
 export const metadata: Metadata = {
@@ -31,9 +30,12 @@ export default function RootLayout({
       >
         <TooltipProvider delayDuration={0}>
           <Provider>
-            <Banner />
+            <Banner
+              message={"Live on Mainnet 🎉, Earn EduChain Yuzu rewards with PoL. ₍ᐢ-(ｪ)-ᐢ₎"} />
             <NavBar />
             {children}
+
+            <div className="hidden p-5 max-w-80 w-80 bg-grayscale-000 cursor-not-allowed bg-green-100 text-green-800"></div>
             <Toaster />
           </Provider>
         </TooltipProvider>

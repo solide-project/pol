@@ -8,6 +8,7 @@ import { upload } from "@/lib/util/ipfs";
 import { NextRequest, NextResponse } from "next/server";
 import { createWalletClient, http, keccak256, encodePacked, toBytes } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
+import { VerificationSchema } from "@/lib/poap/verification";
 
 // Requires Github owner and name
 export async function POST(request: NextRequest) {
@@ -61,24 +62,24 @@ export async function POST(request: NextRequest) {
         }, {} as Record<string, Deployment | Transaction>);
 
 
-        const verification: any = {
+        const verification: VerificationSchema = {
             quest: {
                 version: "1.0.0",
                 owner,
                 name,
                 completed: Math.floor(new Date().getTime() / 1000),
             },
-            proof: []
+            verification: []
         }
 
         quest.quests.forEach(quest => {
             const userSub = usersSubDict[quest]
             const sub = subDict[quest]
-            verification.proof.push({
+            verification.verification.push({
                 id: sub.id,
                 chain: sub.chain,
                 type: sub.type,
-                hash: userSub.txHash
+                hash: userSub.txHash as `0x${string}`
             })
         })
 

@@ -76,8 +76,8 @@ function sortStringNumbers(arr: string[]): string[] {
     });
 }
 
-export const mask = (address: string): string => {
-    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
+export const mask = (address: string, depth: number = 8): string => {
+    return `${address.substring(0, depth)}...${address.substring(address.length - Math.ceil(depth/2))}`
 }
 
 export const removeMetadata = (bytecode: `0x${string}`): `0x${string}` => {
@@ -117,4 +117,19 @@ export const replacePushData = (bytecode: `0x${string}`) => {
     const replacedBytecode = bytecode.replace(addressPattern, 'PUSH32_DATA');
 
     return replacedBytecode as `0x${string}`;
+}
+
+export const epochToFormattedDate = (epochTime: number): string => {
+    const date = new Date(epochTime * 1000);
+
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    };
+
+    return new Intl.DateTimeFormat('en-US', options).format(date);
 }

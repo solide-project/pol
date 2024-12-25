@@ -1,6 +1,5 @@
 import { PublicClient, WalletClient, createPublicClient, http, Account, Abi } from "viem";
 import { abi } from "./abi";
-import { eduChain } from "./chain";
 import { getChain, getContractAddress, getRPC } from "./utils";
 import { selectedNetwork } from ".";
 
@@ -9,6 +8,10 @@ interface POLPoapContractConfig {
     wallet?: WalletClient
 }
 
+/**
+ * Note when building, viem will throw Mismatch on totalSupply as there is overload function.
+ * Use the one that accepts one argument.
+ */
 export class POLPoapContract {
     // contract: GetContractReturnType<typeof abi, PublicClient | WalletClient> = {} as any;
     contract: {
@@ -91,5 +94,13 @@ export class POLPoapContract {
             functionName: 'mint',
             args: [account, tokenId, data, verification, signature]
         })
+    }
+
+    async getVerification(account: `0x${string}`, id: number) {
+        return await this.publicClient.readContract({
+            ...this.contractParams,
+            functionName: 'getVerification',
+            args: [account, id]
+        }) as string
     }
 } 

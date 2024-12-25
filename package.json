@@ -4,15 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build:wallet": "cd lib/wallet && bun i && npm run build && cd ../..",
+    "build": "npm run build:wallet && next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@mysten/dapp-kit": "^0.14.24",
-    "@mysten/sui": "^1.9.0",
+    "@mysten/sui": "^1.18.0",
     "@next/third-parties": "^14.2.14",
-    "@opencampus/ocid-connect-js": "^1.0.1",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-collapsible": "^1.1.0",
     "@radix-ui/react-context-menu": "^2.2.1",

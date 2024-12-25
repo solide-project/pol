@@ -5,9 +5,10 @@ import { ArrowRight, X } from "lucide-react"
 import { useState } from "react"
 
 interface BannerCardProps extends React.HTMLAttributes<HTMLDivElement> {
+    message: string
 }
 
-export function Banner({ }: BannerCardProps) {
+export function Banner({ message }: BannerCardProps) {
     const [isHovered, setIsHovered] = useState(false)
 
     return <div className={cn(
@@ -16,7 +17,7 @@ export function Banner({ }: BannerCardProps) {
     )}>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 cursor-pointer">
             <div className="font-medium text-white">
-                Live on Mainnet 🎉, Earn EduChain Yuzu rewards with PoL. ₍ᐢ-(ｪ)-ᐢ₎
+                {message}
             </div>
             <ArrowRight />
         </div>

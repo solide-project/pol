@@ -3,6 +3,7 @@ export interface Poap {
     timestamp: BigInt;
     uri: string;
     metadata: PoapMetadata;
+    verification: string; // IPFS
 }
 
 export interface PoapMetadata {

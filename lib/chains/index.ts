@@ -2,11 +2,11 @@
  * No dependencies
  */
 
-export { ChainID } from "./chain-id"
-export * from "./lib"
-export { getIconByChainId } from "./icon"
-export { getAPIKey } from "./key"
-export { getTronRPC } from "./tron"
+export { ChainID } from "./evm/chain-id"
+export * from "./evm/lib"
+export { getIconByChainId } from "./evm/icon"
+export { getAPIKey } from "./evm/key"
+export { getTronRPC } from "./evm/tron"
 
 
 

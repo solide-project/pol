@@ -1,21 +1,17 @@
 "use client"
 
-import * as React from "react"
-import { useState } from "react"
-
 import { Copy } from "lucide-react"
+import { cn } from "@/lib/utils"
 import toast from "react-hot-toast"
 
 interface CopyTextProps extends React.HTMLAttributes<HTMLDivElement> {
     payload: string,
     copyIcon?: string,
-    height?: number,
 }
 
 export function CopyText({
     payload,
     className,
-    height = 24,
 }: CopyTextProps) {
     const copyText = () => {
         navigator.clipboard.writeText(payload)
@@ -23,7 +19,7 @@ export function CopyText({
     }
 
     return <Copy
-        className="cursor-pointer"
+        className={cn(className, "cursor-pointer")}
         onClick={copyText}
     />
 }

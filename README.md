@@ -51,4 +51,7 @@ After configuring the environment variables, start the POL Platform:
 bun run start
 ```
 
+### Change environment.
+See "@/lib/poap" folder. This will required you add contractAddress and also chain.
+
 This command will launch the POL in your default web browser.

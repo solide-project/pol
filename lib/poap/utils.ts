@@ -4,10 +4,11 @@ export const contracts: Record<string, `0x${string}`> = {
     [eduChain.id]: "0x7aEb202a1568a80d78A68aA51211cFE3BCD315F9",
 
     /**
-     *  "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54"
-     *  "0x4DB78091c718F7a3E2683c2D730Fc86DfF322235""
+     * "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54"
+     * "0x4DB78091c718F7a3E2683c2D730Fc86DfF322235"
+     * "0xB10999282d0DD5990DB97b6EEa2F07b6ca9275D0"
      * */
-    [eduChainTestnet.id]: "0xB10999282d0DD5990DB97b6EEa2F07b6ca9275D0",
+    [eduChainTestnet.id]: "0x6F5CCf043Bd6F7D1339085CfB1d53946A3323382",
 
 }
 
@@ -26,6 +27,5 @@ export const getChain = (chain: string) => {
 
     return eduChain
 }
-
 
 export const getContractAddress = (chain: string) => contracts[chain] || "0x"

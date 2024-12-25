@@ -1,4 +1,4 @@
-import { RedirctCallBack } from "@/components/ocid/redirect";
+import { RedirctCallBack } from "@/lib/wallet/src";
 
 export default async function Page() {
     return <RedirctCallBack />

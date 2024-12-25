@@ -7,7 +7,6 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
@@ -18,26 +17,15 @@ import Image from 'next/image';
 import { createWalletClient, custom } from 'viem'
 import confetti from "canvas-confetti";
 import { retrieve, ipfsGateway } from "@/lib/util/ipfs";
-import { useOCAuth } from "@opencampus/ocid-connect-js";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
-
-const getWallet = async () => {
-    const [account] = await window.ethereum.request({
-        method: 'eth_requestAccounts'
-    })
-
-    return createWalletClient({
-        account,
-        transport: custom(window.ethereum!)
-    })
-}
+import { useWallet } from "@/lib/wallet/src";
 
 interface MintingQuestProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function MintingQuest({ className }: MintingQuestProps) {
     const { questPoap } = useQuest()
-    const { ocAuth, authState } = useOCAuth();
+    const wallet = useWallet()
 
     const [metadata, setMetadata] = useState("")
     const [poapMetadata, setPoapMetadata] = useState<PoapMetadata | undefined>()
@@ -60,11 +48,13 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 setPoapMetadata(data)
                 setMetadata(metadata)
 
-                if (authState.isAuthenticated) {
-                    const address = ocAuth?.getAuthInfo()?.eth_address
-                    const timeStamp = await contract.mintTracker(questPoap.tokenId.toString(), address)
-                    if (timeStamp !== BigInt(0)) {
-                        setHasMinted(Number(timeStamp) * 1000)
+                if (!await wallet.isConnected()) {
+                    const address = await wallet.getAccount()
+                    if (address) {
+                        const timeStamp = await contract.mintTracker(questPoap.tokenId.toString(), address)
+                        if (timeStamp !== BigInt(0)) {
+                            setHasMinted(Number(timeStamp) * 1000)
+                        }
                     }
                 }
             }
@@ -82,11 +72,14 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 return;
             }
 
-            if (!authState.isAuthenticated) {
-                toast.error("Not logged to OCID")
+            if (!await wallet.isConnected()) {
+                toast.error("Please connect to a wallet")
             }
 
-            const address = ocAuth.getAuthInfo().eth_address
+            const address = await wallet.getAccount()
+            if (!address) {
+                toast.error("Couldn't found an account")
+            }
 
             const response = await fetch("/api/mint-v2", {
                 method: "POST",
@@ -97,7 +90,6 @@ export function MintingQuest({ className }: MintingQuestProps) {
             })
 
             const result = await response.json()
-
             if (!response.ok) {
                 toast.error(result.message)
                 return
@@ -114,22 +106,19 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 return
             }
 
-            const [account] = await window.ethereum.request({
-                method: 'eth_requestAccounts'
-            })
-
-            const wallet = createWalletClient({
-                account,
+            const walletClient = createWalletClient({
+                account: address as `0x${string}`,
                 chain: selectedNetwork,
                 transport: custom(window.ethereum!)
             })
 
-            await wallet.switchChain({ id: selectedNetwork.id })
+            await walletClient.switchChain({ id: selectedNetwork.id })
 
             setIsMinting("Minting ...")
 
-            const poapContract = new POLPoapContract({ wallet })
-            const hash = await poapContract.mint(address, result.tokenId, "0x", result.verificationHash, result.signature)
+            const poapContract = new POLPoapContract({ wallet: walletClient })
+            const hash = await poapContract.mint(address as `0x${string}`,
+                result.tokenId, "0x", result.verificationHash, result.signature)
 
             triggerConfetti()
             triggerConfetti()

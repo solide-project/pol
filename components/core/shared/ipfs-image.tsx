@@ -7,6 +7,6 @@ interface IPFSImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     src: `ipfs://${string}`;
 }
 
-export function IPFSImage({ className, src, alt, ...props }: IPFSImageProps) {
-    return <Image className={className} src={src.replace("ipfs://", ipfsGateway)} alt={alt || ""} {...props} />
+export function IPFSImage({ src, alt = "", ...props }: IPFSImageProps) {
+    return <Image src={src.replace("ipfs://", ipfsGateway)} alt={alt} {...props} />
 }

@@ -19,7 +19,6 @@
     --secondary: 119 87% 76%;
     --secondary-foreground: 360 0% 100%;
     --accent: 142 21% 93%;
-    /* 150 19% 75%; */
     --accent-foreground: 183 58% 18%;
     --destructive: 5.37 86% 54%;
     --destructive-foreground: 5 100% 96%;
@@ -82,6 +81,12 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  *,
+  ::before,
+  ::after {
+    @apply dark:border-border;
   }
 }
 

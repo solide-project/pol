@@ -13,19 +13,17 @@ import {
 } from "@/components/ui/dialog"
 import { fetchSubmission, fetchUserSubmission, SubmissionResponse, UserSubmissionResponse } from "@/lib/util/mongo-service";
 import { Input } from "@/components/ui/input";
-import { useAccount } from "wagmi";
 import toast from 'react-hot-toast';
 import { Pickaxe } from "lucide-react";
 import confetti from "canvas-confetti";
-import { useOCAuth } from "@opencampus/ocid-connect-js";
+import { useWallet } from "@/lib/wallet/src";
 
 interface SubmissionButtonProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function SubmissionButton({ className }: SubmissionButtonProps) {
     const { selectedQuest } = useQuest()
-    // const { address } = useAccount()    
-    const { ocAuth, authState } = useOCAuth();
+    const wallet = useWallet()
 
     const [submissionResponse, setSubmissionResponse] = useState<SubmissionResponse>({} as SubmissionResponse)
     const [userSubmissionResponse, setUserSubmissionResponse] = useState<UserSubmissionResponse>({} as UserSubmissionResponse)
@@ -42,8 +40,8 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
             setSubmissionResponse({} as SubmissionResponse)
             setJustSubmitted(false)
 
-            if (!authState.isAuthenticated) return;
-            const address = ocAuth?.getAuthInfo()?.eth_address
+            if (!await wallet.isConnected()) return;
+            const address = await wallet.getAccount()
 
             if (!address) return
             if (selectedQuest?.name.id === undefined) return
@@ -63,7 +61,7 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
                 console.error(error)
             }
         })()
-    }, [selectedQuest, authState.isAuthenticated])
+    }, [selectedQuest, wallet.walletProvider])
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [justSubmitted, setJustSubmitted] = useState(false)
@@ -80,9 +78,15 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
 
         setIsSubmitting(true)
         try {
+            const address = await wallet.getAccount()
+            if (!address) {
+                toast.error("Couldn't found account")
+                return
+            }
+
             const response = await fetch("/api/db/submission/submit", {
                 method: "POST",
-                body: JSON.stringify({ id: selectedQuest?.name.id, payload: data, address: ocAuth.getAuthInfo().eth_address }),
+                body: JSON.stringify({ id: selectedQuest?.name.id, payload: data, address }),
             })
 
             if (!response.ok) {
@@ -139,7 +143,7 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
         setTimeout(shoot, 200);
     };
 
-    if (!authState.isAuthenticated)
+    if (!wallet.walletProvider)
         return <Button disabled={true} size="sm" variant="ghost">Connect Wallet to Submit Quest</Button>
 
     if (userSubmissionResponse.result?.completed || justSubmitted) return <Button disabled={true} size="sm" variant="ghost">Quest Completed 🎉</Button>
