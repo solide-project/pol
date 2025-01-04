@@ -1,8 +1,11 @@
 import { eduChain, eduChainTestnet } from "./chain";
 
 export const contracts: Record<string, `0x${string}`> = {
-    [eduChain.id]: "0x7aEb202a1568a80d78A68aA51211cFE3BCD315F9",
-
+    /**
+     * "0x7aEb202a1568a80d78A68aA51211cFE3BCD315F9"
+     */
+    [eduChain.id]: "0xe5F6f93aBbaeb1391f67Bb0eA5727aCD1DD74d91",
+    
     /**
      * "0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54"
      * "0x4DB78091c718F7a3E2683c2D730Fc86DfF322235"

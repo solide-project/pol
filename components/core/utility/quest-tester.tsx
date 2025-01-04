@@ -58,6 +58,11 @@ export function QuestTester({ type }: QuestTesterProps) {
             transport: http(rpc),
         })
 
+        const transaction = await client.getTransactionReceipt({
+            hash: body.transactionHash
+        })
+        console.log(transaction)
+
         let reciept: SubmissionReceipt = {
             result: false
         }

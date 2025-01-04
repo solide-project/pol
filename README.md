@@ -23,7 +23,7 @@ To get started with creating a resource:
 ## POL POAP
 
 Contract implementation can be found with this contract deployed on Open Campus Codex:
-[0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54] (https://opencampus-codex.blockscout.com/token/0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54)
+[0xe5F6f93aBbaeb1391f67Bb0eA5727aCD1DD74d91] (https://educhain.blockscout.com/address/0xe5F6f93aBbaeb1391f67Bb0eA5727aCD1DD74d91)
 
 ## Getting Started
 

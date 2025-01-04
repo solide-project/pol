@@ -68,7 +68,6 @@ export const loadData = async (): Promise<QuestPagination> => {
                 },
                 "user": {
                     "image": "https://avatars.githubusercontent.com/u/183878506?v=4",
-                    "preview": true,
                 }
             }
         ]

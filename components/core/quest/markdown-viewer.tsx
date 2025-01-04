@@ -55,7 +55,7 @@ export function MarkdownViewer({ className }: MarkdownViewerProps) {
                     h1: ({ className, ...props }) => (
                         <h1
                             className={cn(
-                                "mb-6 text-[1.5rem] leading-8 font-semibold tracking-tight first:mt-0",
+                                "mt-2 scroll-m-20 text-4xl font-bold tracking-tight",
                                 className
                             )}
                             {...props}
@@ -64,7 +64,7 @@ export function MarkdownViewer({ className }: MarkdownViewerProps) {
                     h2: ({ className, ...props }) => (
                         <h2
                             className={cn(
-                                "mb-6 text-[1.25rem] leading-7 font-semibold tracking-tight first:mt-0",
+                                "mt-10 scroll-m-20 pb-1 text-3xl font-semibold tracking-tight first:mt-0",
                                 className
                             )}
                             {...props}
@@ -73,7 +73,7 @@ export function MarkdownViewer({ className }: MarkdownViewerProps) {
                     h3: ({ className, ...props }) => (
                         <h3
                             className={cn(
-                                "mb-6 text-[1.125rem] leading-7 font-semibold tracking-tight",
+                                "mt-8 scroll-m-20 text-2xl font-semibold tracking-tight",
                                 className
                             )}
                             {...props}
@@ -82,7 +82,7 @@ export function MarkdownViewer({ className }: MarkdownViewerProps) {
                     h4: ({ className, ...props }) => (
                         <h4
                             className={cn(
-                                "mb-6 text-[1.0625rem] font-semibold tracking-tight",
+                                "mt-8 scroll-m-20 text-xl font-semibold tracking-tight",
                                 className
                             )}
                             {...props}
@@ -91,7 +91,7 @@ export function MarkdownViewer({ className }: MarkdownViewerProps) {
                     h5: ({ className, ...props }) => (
                         <h5
                             className={cn(
-                                "mb-6 text-[1rem] font-semibold tracking-tight",
+                                "mt-8 scroll-m-20 text-lg font-semibold tracking-tight",
                                 className
                             )}
                             {...props}
@@ -100,7 +100,7 @@ export function MarkdownViewer({ className }: MarkdownViewerProps) {
                     h6: ({ className, ...props }) => (
                         <h6
                             className={cn(
-                                "mb-6 text-base font-semibold tracking-tight",
+                                "mt-8 scroll-m-20 text-base font-semibold tracking-tight",
                                 className
                             )}
                             {...props}
@@ -108,7 +108,7 @@ export function MarkdownViewer({ className }: MarkdownViewerProps) {
                     ),
                     p: ({ className, ...props }) => (
                         <p
-                            className={cn("leading-6 mb-6 [&:not(:first-child)]:mt-6", className)}
+                            className={cn("leading-7 [&:not(:first-child)]:mt-6", className)}
                             {...props}
                         />
                     ),
@@ -169,6 +169,26 @@ export function MarkdownViewer({ className }: MarkdownViewerProps) {
                                 {...props}
                             />)
                     },
+                    img: ({ className, ...props }) => (
+                        <div className="w-full flex items-center justify-center py-1">
+                            <img
+                                className={cn(
+                                    "rounded-md",
+                                    className
+                                )}
+                                {...props}
+                            />
+                        </div>
+                    ),
+                    blockquote: ({ className, ...props }) => (
+                        <blockquote className="w-full mt-4" {...props} />
+                    ),
+                    a: ({ className, ...props }) => (
+                        <a className={cn(
+                            "hover:underline text-secondary",
+                            className
+                        )} {...props} target="_blank" />
+                    ),
                 }}>
                 {content}
             </Markdown>
