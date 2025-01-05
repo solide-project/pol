@@ -88,7 +88,7 @@ function sortStringNumbers(arr: string[]): string[] {
 }
 
 export const mask = (address: string, depth: number = 8): string => {
-    return `${address.substring(0, depth)}...${address.substring(address.length - Math.ceil(depth/2))}`
+    return `${address.substring(0, depth)}...${address.substring(address.length - Math.ceil(depth / 2))}`
 }
 
 export const removeMetadata = (bytecode: `0x${string}`): `0x${string}` => {

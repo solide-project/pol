@@ -1,6 +1,6 @@
 "use client"
 
-import { PoapMetadata } from "@/lib/poap";
+import { getContractAddress, PoapMetadata, selectedNetwork } from "@/lib/poap";
 import { ipfsGateway } from "@/lib/util/ipfs";
 import {
     Dialog,
@@ -13,7 +13,7 @@ import Image from 'next/image';
 import { Course } from "@/lib/db/course";
 import { useRouter } from "next/navigation"
 import { useState } from "react";
-
+import { getExplorer } from "@/lib/chains";
 
 interface PoapItemProps extends React.HTMLAttributes<HTMLDivElement> {
     tokenId: number
@@ -72,7 +72,7 @@ export function PoapItem({ tokenId, poap, supply, className }: PoapItemProps) {
                         {supply.toString()} students have earned this Poap
                     </div>
 
-                    <a href={`https://opencampus-codex.blockscout.com/token/0x9B6089b63BEb5812c388Df6cb3419490b4DF4d54/instance/${tokenId.toString()}`}
+                    <a href={`${getExplorer(selectedNetwork.id.toString())}/token/${getContractAddress(selectedNetwork.id.toString())}/instance/${tokenId.toString()}`}
                         target="_blank" rel="noopener noreferrer"
                         className={buttonVariants({ variant: "default" })}>
                         View on Explorer
