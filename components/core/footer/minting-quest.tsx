@@ -93,6 +93,10 @@ export function MintingQuest({ className }: MintingQuestProps) {
             const result = await response.json()
             if (!response.ok) {
                 toast.error(result.message)
+
+                if (result.message.contains("POAP already minted")) {
+                    setHasMinted(0)
+                }
                 return
             }
 
