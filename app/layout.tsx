@@ -31,7 +31,7 @@ export default function RootLayout({
         <TooltipProvider delayDuration={0}>
           <Provider>
             <Banner
-              message={"Live on Mainnet 🎉, Earn EduChain Yuzu rewards with PoL. ₍ᐢ-(ｪ)-ᐢ₎"} />
+              message={"Live on Mainnet 🎉 Earn Yuzu Point 🍊 with PoL! ₍ᐢ-(ｪ)-ᐢ₎"} />
             <NavBar />
             {children}
 

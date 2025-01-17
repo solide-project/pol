@@ -76,10 +76,10 @@ export function VerificationContent({ cid }: VerificationContentProps) {
         {verification &&
             <div>
                 {verification.verification.map((proof, index) => {
-                    return <>{
+                    return <div key={index}>{
                         !proof.chain
                             ? <div>Unknown Verification</div>
-                            : <div className="rounded-lg border p-3 my-4 flex items-center justify-between truncate" key={index}>
+                            : <div className="rounded-lg border p-3 my-4 flex items-center justify-between truncate">
                                 <div className="flex items-center gap-2">
                                     <img src={getIconByChainId(proof.chain)} alt="chain" className="h-10 w-10" />
 
@@ -107,7 +107,7 @@ export function VerificationContent({ cid }: VerificationContentProps) {
                                 </div>
                             </div>
                     }
-                    </>
+                    </div>
                 })}
             </div>}
     </div>

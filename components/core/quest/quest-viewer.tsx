@@ -85,7 +85,7 @@ export function QuestViewer({ tree, owner, name, metadata, locales = [] }: Quest
             </div>
             <div className={cn(quest.showIDE ? "sticky top-0 col-span-12 lg:col-span-7 h-screen flex items-center justify-between" : "invisible")}>
                 {owner && name &&
-                    <IDEViewer uri={`https://solide0x.tech?url=https://github.com/${owner}/${name}/blob/master/contracts/Import.sol`} />}
+                    <IDEViewer uri={`https://solide0x.tech`} />}
             </div>
         </div>
         <QuestFooter className="sticky bottom-2 mx-4" />

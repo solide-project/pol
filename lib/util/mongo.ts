@@ -8,6 +8,7 @@ export const defaultConfig: POLMongoConfig = {
         userSubmission: process.env.USER_SUBMISSION_COLLECTION_NAME || "",
         course: process.env.QUEST_COLLECTION_NAME || "",
         user: process.env.QUEST_USER_NAME || "",
+        analytics: process.env.ANALYTICS_COLLECTION_NAME || "",
     }
 }
 

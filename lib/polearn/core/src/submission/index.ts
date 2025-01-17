@@ -1,27 +1,14 @@
 import { decodeFunctionData, encodeFunctionData, isAddressEqual, PublicClient, sha256 } from "viem";
-import { Deployment, Transaction } from "../db/submission";
-import { removeMetadata, replaceAddresses, replacePushData } from "./utils";
-
-export interface SubmissionOpt {
-    /**
-     * Note for testing the quest, we ignore the owner of submission 
-     * */
-    testing?: boolean
-}
-
-export const defaultOpts: SubmissionOpt = {
-    testing: false
-}
-
-export interface SubmissionBody {
-    id: `0x${string}`
-    transactionHash: `0x${string}`
-    user: `0x${string}`
-}
-
-export interface SubmissionReceipt {
-    result: boolean
-}
+import {
+    ContractData, Deployment, NativeValue,
+    SubmissionBody,
+    SubmissionOpt,
+    Transaction,
+    SubmissionReceipt,
+    defaultOpts
+} from "./interface";
+import { cleanBytecode } from "../utils";
+import { generateDataHashFromContract } from "../main";
 
 export const processDeploymentSubmission = async (
     client: PublicClient,
@@ -41,9 +28,7 @@ export const processDeploymentSubmission = async (
     let bytecode = await client.getCode({
         address: transaction.contractAddress
     }) as `0x${string}`
-    bytecode = removeMetadata(bytecode)
-    bytecode = replaceAddresses(bytecode)
-    bytecode = replacePushData(bytecode)
+    bytecode = cleanBytecode(bytecode)
 
     const bytehash = sha256(bytecode as `0x${string}`)
     if (bytehash !== submission.bytecode)
@@ -109,10 +94,87 @@ export const processDeployTransaction = async (client: PublicClient,
     return { result: true };
 }
 
+export const processNativeValueTransaction = async (client: PublicClient,
+    payload: SubmissionBody,
+    submission: NativeValue,
+    opts: SubmissionOpt = defaultOpts): Promise<SubmissionReceipt> => {
+    const transaction = await client.getTransaction({
+        hash: payload.transactionHash
+    })
+
+    if (!transaction.to)
+        throw new Error("Invalid to from user")
+
+    if (!opts.testing && !isAddressEqual(payload.user, transaction.to))
+        throw new Error("Transaction not from user")
+
+    if (!isAddressEqual(submission.from, transaction.from))
+        throw new Error("Incorrect Transaction")
+
+    let symbol = "eq"
+    if (submission.symbol)
+        symbol = submission.symbol
+
+    let isValid = false
+    let value = BigInt(submission.value)
+    switch (symbol) {
+        case "eq":
+            if (transaction.value === value)
+                isValid = true
+            break;
+        case "lt":
+            if (transaction.value < value)
+                isValid = true
+            break;
+        case "gt":
+            if (transaction.value > value)
+                isValid = true
+            break;
+        case "lte":
+            if (transaction.value <= value)
+                isValid = true
+            break;
+        case "gte":
+            if (transaction.value >= value)
+                isValid = true
+            break;
+    }
+
+    if (!isValid)
+        throw new Error("Incorrect Transaction")
+
+    return { result: true };
+}
+
+export const processContractData = async (client: PublicClient,
+    payload: SubmissionBody,
+    submission: ContractData,
+    opts: SubmissionOpt = defaultOpts): Promise<SubmissionReceipt> => {
+    const data = await client.readContract({
+        address: submission.contract as `0x${string}`,
+        abi: submission.abi,
+        functionName: submission.variable,
+        args: submission.args || [],
+    })
+
+    const contractData = generateDataHashFromContract(data);
+
+    if (payload.transactionHash !== contractData) {
+        throw new Error("Incorrect Data")
+    }
+    return { result: true };
+}
+
 function arraysEqual(arr1: any[], arr2: any[]): boolean {
+    console.log(arr1, arr2)
     if (arr1.length !== arr2.length) return false;
 
     for (let i = 0; i < arr1.length; i++) {
+        // "_" meaning we can skip
+        if (arr1[i].toString() === '_') {
+            continue;
+        }
+
         if (Array.isArray(arr1[i]) && Array.isArray(arr2[i])) {
             if (!arraysEqual(arr1[i], arr2[i])) return false;
         } else if (typeof arr2[i] === "bigint") {

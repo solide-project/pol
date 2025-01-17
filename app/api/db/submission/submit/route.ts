@@ -1,7 +1,13 @@
 import { generateErrorResponse, validateSubmitRequest } from "@/lib/api";
 import { getRPC } from "@/lib/chains";
 import { POLMongoService } from "@/lib/util/mongo";
-import { processDeploymentSubmission, processDeployTransaction, SubmissionBody, SubmissionReceipt } from "@/lib/quest/api";
+import {
+    processContractData,
+    processDeploymentSubmission,
+    processDeployTransaction,
+    processNativeValueTransaction,
+    SubmissionReceipt
+} from "@/lib/polearn/core";
 import { NextRequest, NextResponse } from "next/server";
 import { createPublicClient, http } from "viem";
 
@@ -38,6 +44,14 @@ export async function POST(request: NextRequest) {
                 reciept = await processDeploymentSubmission(client, body, submission)
                 if (!reciept.result) throw new Error("Invalid Deployment")
                 break;
+            case "value":
+                reciept = await processNativeValueTransaction(client, body, submission)
+                if (!reciept.result) throw new Error("Invalid Deployment")
+                break;
+            case "data":
+                reciept = await processContractData(client, body, submission)
+                if (!reciept.result) throw new Error("Invalid Contract Value")
+                break;
             default:
                 reciept = await processDeployTransaction(client, body, submission)
                 if (!reciept.result) throw new Error("Invalid Transaction")
@@ -53,7 +67,6 @@ export async function POST(request: NextRequest) {
             txHash: body.transactionHash,
         })
 
-        console.log("User Submission", result)
         return NextResponse.json({ result: body, submission })
     } catch (error: any) {
         console.error(error.message)

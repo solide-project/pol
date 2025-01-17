@@ -1,8 +1,9 @@
 import { MongoClient, } from 'mongodb'
 import { Course, CourseCollection } from './course';
-import { Deployment, Transaction, SubmissionCollection } from './submission';
+import { SubmissionType, SubmissionCollection } from './submission';
 import { UserSubmission, UserSubmissionCollection } from './user-submission';
 import { User, UserCollection } from './user';
+import { AnalyticData, AnalyticsCollection } from './analytic';
 
 export interface POLMongoConfig {
     connectionString: string
@@ -12,6 +13,7 @@ export interface POLMongoConfig {
         userSubmission: string
         course: string
         user: string
+        analytics: string
     }
 }
 
@@ -23,6 +25,7 @@ export class POLMongo {
     public submissions?: SubmissionCollection
     public userSubmissions?: UserSubmissionCollection
     public users?: UserCollection
+    public analytics?: AnalyticsCollection
 
     constructor(config: POLMongoConfig = {} as POLMongoConfig) {
         this.config = config;
@@ -35,6 +38,7 @@ export class POLMongo {
         await this.client.connect();
         await this.connectSubmission();
         await this.connectUserSubmission();
+        await this.connectCourse();
         await this.connectCourse();
         // await this.connectUser();
     }
@@ -56,7 +60,7 @@ export class POLMongo {
 
     async connectSubmission() {
         const collection = this.db()
-            .collection<Deployment | Transaction>(this.config.collections.submission);
+            .collection<SubmissionType>(this.config.collections.submission);
         await collection.createIndex({ id: 1 }, { unique: true });
 
         this.submissions = new SubmissionCollection(collection)
@@ -84,5 +88,13 @@ export class POLMongo {
         await collection.createIndex({ suiAddress: 1 }, { unique: true });
 
         this.users = new UserCollection(collection)
+    }
+
+    async connectAnalytics() {
+        const collection = this.db()
+            .collection<AnalyticData>(this.config.collections.user);
+        await collection.createIndex({ key: 1 }, { unique: true });
+
+        this.analytics = new AnalyticsCollection(collection)
     }
 }

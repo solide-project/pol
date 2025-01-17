@@ -1,6 +1,6 @@
 
 import { generateErrorResponse } from "@/lib/api";
-import { Deployment, Transaction } from "@/lib/db/submission";
+import { SubmissionType } from "@/lib/polearn/core";
 import { UserSubmission } from "@/lib/db/user-submission";
 import { getRPC, selectedNetwork } from "@/lib/poap";
 import { POLMongoService } from "@/lib/util/mongo";
@@ -59,8 +59,7 @@ export async function POST(request: NextRequest) {
         const subDict = submissions?.reduce((acc, item) => {
             acc[item.id] = item; // Use the `id` field as the key
             return acc;
-        }, {} as Record<string, Deployment | Transaction>);
-
+        }, {} as Record<string, SubmissionType>);
 
         const verification: VerificationSchema = {
             quest: {
@@ -87,7 +86,7 @@ export async function POST(request: NextRequest) {
             data: verification,
             name: "verification"
         });
-        console.log(verifcationResponse.IpfsHash)
+        // console.log(verifcationResponse.IpfsHash)
 
         if (!verifcationResponse.IpfsHash)
             return generateErrorResponse("Fail to publish verification, please open dicussion")

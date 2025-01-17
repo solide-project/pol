@@ -80,13 +80,14 @@ export function MintingQuest({ className }: MintingQuestProps) {
             if (!address) {
                 toast.error("Couldn't found an account")
             }
+            const requestBody = {
+                owner: questPoap.owner, name: questPoap.name,
+                address,
+            }
 
             const response = await fetch("/api/mint-v2", {
                 method: "POST",
-                body: JSON.stringify({
-                    owner: questPoap.owner, name: questPoap.name,
-                    address,
-                }),
+                body: JSON.stringify(requestBody),
             })
 
             const result = await response.json()
@@ -129,6 +130,11 @@ export function MintingQuest({ className }: MintingQuestProps) {
             toast.success(`Poap minted successfully. Hash ${hash}`)
 
             setHasMinted(Date.now())
+
+            fetch("/api/mint-v2/analytics", {
+                method: "POST",
+                body: JSON.stringify(requestBody),
+            })
         } catch (e) {
             console.error(e)
         } finally {

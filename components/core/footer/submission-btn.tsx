@@ -17,6 +17,8 @@ import toast from 'react-hot-toast';
 import { Pickaxe } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useWallet } from "@/lib/wallet/src";
+import { generateDataHash } from "@/lib/polearn/core";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface SubmissionButtonProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -29,8 +31,8 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
     const [userSubmissionResponse, setUserSubmissionResponse] = useState<UserSubmissionResponse>({} as UserSubmissionResponse)
     const [open, setOpen] = useState(false);
 
-    // Sample: 0x2776655a8d810840286d75abfae2c083107bdc1978712ec0c8cb4aadcbc6968c
     const [data, setData] = useState<string>("")
+    const [nonTransaction, setNonTransaction] = useState(false)
 
     // We can cache the response for submission as we will be getting from API every time
     useEffect(() => {
@@ -63,6 +65,14 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
         })()
     }, [selectedQuest, wallet.walletProvider])
 
+    const generateBody = () => {
+        if (nonTransaction || !data.startsWith("0x")) {
+            return generateDataHash(data) as `0x${string}`
+        }
+
+        return data as `0x${string}`
+    }
+
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [justSubmitted, setJustSubmitted] = useState(false)
     const handleSubmission = async () => {
@@ -86,7 +96,7 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
 
             const response = await fetch("/api/db/submission/submit", {
                 method: "POST",
-                body: JSON.stringify({ id: selectedQuest?.name.id, payload: data, address }),
+                body: JSON.stringify({ id: selectedQuest?.name.id, payload: generateBody(), address }),
             })
 
             if (!response.ok) {
@@ -161,6 +171,12 @@ export function SubmissionButton({ className }: SubmissionButtonProps) {
                     <DialogDescription>
                         <Input placeholder={submissionResponse?.result.type}
                             onChange={(e) => setData(e.target.value)} value={data} />
+
+                        <div className="flex items-center gap-2 my-2">
+                            <div>Non Transaction</div>
+                            <Checkbox checked={nonTransaction}
+                                onCheckedChange={(e) => setNonTransaction(!nonTransaction)} />
+                        </div>
                     </DialogDescription>
                 </DialogHeader>
 

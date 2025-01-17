@@ -1,4 +1,4 @@
-import { Submission } from "../db/submission"
+import { Submission } from "@/lib/polearn/core"
 import { UserSubmission } from "../db/user-submission"
 
 export interface SubmissionResponse {
