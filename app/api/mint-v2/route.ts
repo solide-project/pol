@@ -2,7 +2,7 @@
 import { generateErrorResponse } from "@/lib/api";
 import { SubmissionType } from "@/lib/polearn/core";
 import { UserSubmission } from "@/lib/db/user-submission";
-import { getRPC, selectedNetwork } from "@/lib/poap";
+import { getRPC, POLPoapContract, selectedNetwork } from "@/lib/poap";
 import { POLMongoService } from "@/lib/util/mongo";
 import { upload } from "@/lib/util/ipfs";
 import { NextRequest, NextResponse } from "next/server";
@@ -33,6 +33,11 @@ export async function POST(request: NextRequest) {
         // Get the Course from Mongo
         const quest = await service.courses?.getByRepo(owner, name);
         if (!quest) return generateErrorResponse("Error fetching quests")
+
+        // Check if user has the POAP minted
+        const poapContract = new POLPoapContract({})
+        const verificationId = await poapContract.getVerification(address, quest.tokenId)
+        if (verificationId) return generateErrorResponse("POAP already minted")
 
         // From the quests ids in Course, see if users has them
         const query = {
