@@ -4,6 +4,7 @@ import { SubmissionType, SubmissionCollection } from './submission';
 import { UserSubmission, UserSubmissionCollection } from './user-submission';
 import { User, UserCollection } from './user';
 import { AnalyticData, AnalyticsCollection } from './analytic';
+import { YuzuCollection, YuzuUserData } from './yuzu';
 
 export interface POLMongoConfig {
     connectionString: string
@@ -14,6 +15,7 @@ export interface POLMongoConfig {
         course: string
         user: string
         analytics: string
+        yuzu: string
     }
 }
 
@@ -26,6 +28,7 @@ export class POLMongo {
     public userSubmissions?: UserSubmissionCollection
     public users?: UserCollection
     public analytics?: AnalyticsCollection
+    public yuzu?: YuzuCollection
 
     constructor(config: POLMongoConfig = {} as POLMongoConfig) {
         this.config = config;
@@ -39,7 +42,8 @@ export class POLMongo {
         await this.connectSubmission();
         await this.connectUserSubmission();
         await this.connectCourse();
-        await this.connectCourse();
+        await this.connectAnalytics();
+        await this.connectYuzu();
         // await this.connectUser();
     }
 
@@ -96,5 +100,12 @@ export class POLMongo {
         await collection.createIndex({ key: 1 }, { unique: true });
 
         this.analytics = new AnalyticsCollection(collection)
+    }
+
+    async connectYuzu() {
+        const collection = this.db()
+            .collection<YuzuUserData>(this.config.collections.yuzu);
+
+        this.yuzu = new YuzuCollection(collection)
     }
 }

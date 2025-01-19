@@ -9,6 +9,7 @@ export const defaultConfig: POLMongoConfig = {
         course: process.env.QUEST_COLLECTION_NAME || "",
         user: process.env.QUEST_USER_NAME || "",
         analytics: process.env.ANALYTICS_COLLECTION_NAME || "",
+        yuzu: process.env.YUZU_COLLECTION_NAME || "",
     }
 }
 

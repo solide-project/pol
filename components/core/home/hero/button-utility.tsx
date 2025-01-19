@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface UtilityButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
     text?: string
@@ -9,7 +9,10 @@ interface UtilityButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 }
 
 export function UtilityButton({ className, variant, text = "For Creators" }: UtilityButtonProps) {
-    const router = useRouter()
-
-    return <Button className={className} variant={variant} onClick={() => router.push(`/utility`)} >{text}</Button>
+    return (
+        <a className={cn(buttonVariants({ variant }), className)}
+            href="https://creator.solide0x.tech">
+            {text}
+        </a>
+    )
 }

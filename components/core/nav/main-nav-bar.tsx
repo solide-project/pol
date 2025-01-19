@@ -5,20 +5,24 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { ConnectWallet, useWallet } from '@/lib/wallet/src';
 import { Button } from '@/components/ui/button';
+import { NavMenu } from './nav-menu';
 
-interface NavBarProps extends React.HTMLAttributes<HTMLDivElement> {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
 }
 
-export function NavBar({ }: NavBarProps) {
+export function MainNavBar({ }: Props) {
     const router = useRouter();
 
     return (
-        <div className="flex items-center justify-between sticky top-6 mx-4 px-8 h-[64px] z-50 rounded-lg bg-grayscale-025">
+        <div className="flex items-center justify-between h-[64px] px-8 rounded-lg bg-grayscale-025">
             <div className="flex items-center space-x-4 hover:cursor-pointer hover:text-primary" onClick={() => router.push("/")}>
                 <div>
                     <Image src="/badge.svg" height={18} width={18} alt="logo" />
                 </div>
                 <div className="text-xl font-semibold hidden sm:block">Proof of Learn</div>
+            </div>
+            <div>
+                <NavMenu />
             </div>
             <div className="flex items-center gap-2">
                 <ThemeToggle />

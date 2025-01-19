@@ -6,9 +6,10 @@ import { useState } from "react"
 
 interface BannerCardProps extends React.HTMLAttributes<HTMLDivElement> {
     message: string
+    href?: string
 }
 
-export function Banner({ message }: BannerCardProps) {
+export function Banner({ message, href }: BannerCardProps) {
     const [isHovered, setIsHovered] = useState(false)
 
     return <div className={cn(
@@ -19,7 +20,10 @@ export function Banner({ message }: BannerCardProps) {
             <div className="font-medium text-white">
                 {message}
             </div>
-            <ArrowRight />
+            {href &&
+                <a href={href}>
+                    <ArrowRight className="hover:text-accent"/>
+                </a>}
         </div>
         <div className="flex flex-1 justify-end px-2">
             <X className="cursor-pointer text-white" size={18} onClick={() => setIsHovered(true)} />

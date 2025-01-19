@@ -30,7 +30,9 @@ export function IDEViewer({ uri, className }: IDEViewerProps) {
     // }, []);
 
     return <div className={cn("container", className)}>
-        <a href={url} target="_blank">Load IDE on new tab</a>
+        <a className="text-center" href={url} target="_blank">
+            If you&apos;re experiencing issues with the IDE, click here to open it in a new tab.
+        </a>
         <iframe
             className="rounded-lg"
             ref={iframeRef}

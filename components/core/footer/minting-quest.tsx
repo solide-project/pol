@@ -74,12 +74,15 @@ export function MintingQuest({ className }: MintingQuestProps) {
 
             if (!await wallet.isConnected()) {
                 toast.error("Please connect to a wallet")
+                return;
             }
 
             const address = await wallet.getAccount()
             if (!address) {
                 toast.error("Couldn't found an account")
+                return;
             }
+            
             const requestBody = {
                 owner: questPoap.owner, name: questPoap.name,
                 address,

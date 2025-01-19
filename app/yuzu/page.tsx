@@ -1,10 +1,15 @@
-import { Definition } from "@/components/core/yuzu/definition";
+import { Footer } from "@/components/core/shared/footer";
+import { YuzuPage } from "@/components/core/yuzu";
+import { POLMongoService } from "@/lib/util/mongo";
 
 export default async function Page() {
-    return <div>
-        Yuzu
+    const service = new POLMongoService();
+    await service.connectYuzu();
 
+    const total = await service.yuzu?.getTotal()
 
-        <Definition />
-    </div>
+    return <>
+        <YuzuPage total={total} />
+        <Footer />
+    </>
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { NavBar } from "@/components/core/nav/nav-bar";
+import { NavBar } from "@/components/core/nav";
 import { aeonik } from "@/lib/fonts";
 import { Provider } from "@/components/provider";
 import { Toaster } from 'react-hot-toast';
@@ -31,7 +31,8 @@ export default function RootLayout({
         <TooltipProvider delayDuration={0}>
           <Provider>
             <Banner
-              message={"Live on Mainnet 🎉 Earn Yuzu Point 🍊 with PoL! ₍ᐢ-(ｪ)-ᐢ₎"} />
+              message={"Live on Mainnet 🎉 Earn Yuzu Point 🍊 with PoL! ₍ᐢ-(ｪ)-ᐢ₎"}
+              href="/yuzu" />
             <NavBar />
             {children}
 
