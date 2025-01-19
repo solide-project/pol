@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAddress } from "viem";
 import { YuzuUserData } from "@/lib/db/yuzu";
 import { YUZU_POINTS } from "@/lib/util/constants";
+import { POLPoapContract } from "@/lib/poap/contract";
 
 // Requires Github owner and name
 export async function POST(request: NextRequest) {
@@ -20,6 +21,10 @@ export async function POST(request: NextRequest) {
         const point = YUZU_POINTS[tokenId]
         if (!point) throw new Error("Invalid Token")
 
+        const poapContract = new POLPoapContract({})
+        const verification = poapContract.getVerification(address, tokenId)
+        if (!verification) throw new Error("Haven't completed the course. Get learning :)")
+
         const hasClaimed = await service.yuzu?.hasClaimed(address, tokenId.toString())
         if (hasClaimed) throw new Error("Already Claimed")
 
@@ -27,7 +32,7 @@ export async function POST(request: NextRequest) {
             address: address,
             reason: tokenId.toString(),
             points: point.points,
-            timestamp: new Date().getTime() / 1000
+            timestamp: Math.floor(new Date().getTime() / 1000)
         }
         if (point.multiply) data.multiply = point.multiply
 
