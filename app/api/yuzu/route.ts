@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
         if (!point) throw new Error("Invalid Token")
 
         const poapContract = new POLPoapContract({})
-        const verification = poapContract.getVerification(address, tokenId)
+        const verification = await poapContract.getVerification(address, tokenId)
         if (!verification) throw new Error("Haven't completed the course. Get learning :)")
 
         const hasClaimed = await service.yuzu?.hasClaimed(address, tokenId.toString())
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 
         await service.yuzu?.insert(data)
         return NextResponse.json({
-            result: true
+            result: point.points || 0
         })
     } catch (error: any) {
         console.error(error.message)
