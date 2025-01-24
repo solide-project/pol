@@ -14,10 +14,10 @@ export async function GET(
     const service = new POLMongoService();
     await service.connectYuzu();
     try {
-        const history = await service.yuzu?.getHistory(address)
         const total = await service.yuzu?.getTotalAddress(address)
 
-        const data = await history?.toArray() as YuzuUserData[]
+        // const history = await service.yuzu?.getHistory(address)
+        const data: YuzuUserData[]  = [] // await history?.toArray() as YuzuUserData[]
 
         return NextResponse.json({
             result: {

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MarkdownViewer } from "@/components/core/quest/markdown-viewer";
 import { GithubTreeInfo } from "@/lib/git";
 import { useQuest } from "@/components/providers/quest-provider";
@@ -21,6 +21,7 @@ interface QuestViewerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function QuestViewer({ tree, owner, name, metadata, locales = [] }: QuestViewerProps) {
+    const [ide, setIDE] = useState("https://solide0x.tech")
     const quest = useQuest()
     const locale = useLocale()
     const searchParams = useSearchParams();
@@ -38,6 +39,12 @@ export function QuestViewer({ tree, owner, name, metadata, locales = [] }: Quest
         (async () => {
             console.log("QuestViewer mounted")
 
+            if (metadata?.type === "stylus") {
+                setIDE("https://stylus.solide0x.tech")
+            } else if (metadata?.type === "move") {
+                setIDE("https://move.solide0x.tech")
+            }
+            
             // Setup locale
             locale.setQuestLocales(locales)
             const queryLocale = searchParams.get("l")
@@ -85,7 +92,7 @@ export function QuestViewer({ tree, owner, name, metadata, locales = [] }: Quest
             </div>
             <div className={cn(quest.showIDE ? "sticky top-0 col-span-12 lg:col-span-7 h-screen flex items-center justify-between" : "invisible")}>
                 {owner && name &&
-                    <IDEViewer uri={`https://solide0x.tech`} />}
+                    <IDEViewer uri={ide} />}
             </div>
         </div>
         <QuestFooter className="sticky bottom-2 mx-4" />

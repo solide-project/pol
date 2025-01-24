@@ -95,7 +95,9 @@ export function ClaimButton({ token, disabled, ...props }: ClaimButtonProps) {
         setTimeout(shoot, 200);
     };
 
-    return <Button onClick={handleOnClick} {...props} disabled={isClaimDisabled()} size="xl">
+    return <Button onClick={handleOnClick} {...props} size="xl"
+    disabled={isClaimDisabled()} 
+    >
         {disabled ? "Coming Soon" :
             <>
                 {isClaim ? "Claiming ..." : "Claim"}

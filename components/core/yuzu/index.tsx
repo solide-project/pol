@@ -30,7 +30,6 @@ const tokens: {
             token: 1,
             title: "Pratical guide to staking BAYC and Ape Coin",
             image: "ipfs://QmV62cSfT9HZXqQMv2QPatKWG2d2WWaRE1ss4iFGW8QAwW",
-            disabled: true
         },
         {
             token: 2,
@@ -51,27 +50,45 @@ export function YuzuPage({ total }: YuzuPageProps) {
 
         <Definition />
         <UserYuzu />
-        {tokens.map((token, index) => {
-            return (
-                <div key={index} className="flex items-center justify-between gap-4 my-2">
-                    <div className="flex items-center gap-4">
-                        {token.image &&
-                            <IPFSImage src={token.image} alt="poap" width={164} height={164} />}
-                        <div className="text-2xl font-bold text-center flex">
-                            <div className="hidden lg:block">
-                                {token.title} -
+
+        <div className="scroll-m-20 text-4xl font-bold tracking-tight">
+            Daily Claim
+        </div>
+        <div className="grid grid-cols-12 gap-3">
+            {tokens.map((token, index) => {
+                return (
+                    <div key={index} className="col-span-12 lg:col-span-4 border rounded-lg p-4">
+                        <div className="flex items-center justify-center">
+                            {token.image &&
+                                <IPFSImage src={token.image} alt="poap" width={164} height={164} />}
+                        </div>
+                        <div className="my-6 flex w-full items-stretch text-center text-xl">
+                            <div className="flex-1">
+                                <div className="font-semibold flex items-center justify-center h-full">
+                                    {token.title}
+                                </div>
                             </div>
-                            <div>
-                                {"  "}{YUZU_POINTS[token.token].points} Points
+                            <div className="w-[1px] bg-neutral-200" />
+                            <div className="flex-1">
+                                <div className="flex items-center justify-center h-full">
+                                    <div>
+                                        <div className="flex items-center justify-center gap-4">
+                                            <img className="h-12" src="/yuzu/coin.svg" alt="logo" />
+                                        </div>
+                                        <div>{YUZU_POINTS[token.token].points} Yuzu Points</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+
+                        <div className="flex items-center justify-center">
+                            <ClaimButton token={token.token} disabled={token.disabled} />
+                        </div>
                     </div>
-
-                    <ClaimButton token={token.token} disabled={token.disabled} />
-                </div>
-            )
-        })}
-
+                )
+            })}
+        </div>
         <Faq />
     </div>
 }

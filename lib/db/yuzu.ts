@@ -32,9 +32,32 @@ export class YuzuCollection {
         return await this.collection.insertOne(data);
     }
 
-    async hasClaimed(address: `0x${string}`, tokenId: string) {
-        const cursor = await this.collection.find({ address, reason: tokenId })
-        return cursor.hasNext()
+    getStartOfToday(): number {
+        const now = new Date();
+        now.setUTCHours(0, 0, 0, 0);
+        return Math.floor(now.getTime()/1000);
+    }
+
+    async canClaimDaily(address: `0x${string}`, tokenId: string): Promise<boolean> {
+        const startOfToday = this.getStartOfToday();
+
+        const existingRecord = await this.collection.findOne({
+          address,
+          reason: tokenId,
+          timestamp: { $gte: startOfToday }, // Record must be from the start of today onwards
+        });
+      
+        return !existingRecord;
+    }
+
+    async latest(address: `0x${string}`, tokenId: string) {
+        const latestData = await this.collection.findOne(
+            { address, reason: tokenId },
+            {
+                sort: { timestamp: -1 },
+            }
+        );
+        return latestData;
     }
 
     async getTotalAddress(address: `0x${string}`) {

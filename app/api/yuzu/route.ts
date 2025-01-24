@@ -24,9 +24,9 @@ export async function POST(request: NextRequest) {
         const poapContract = new POLPoapContract({})
         const verification = await poapContract.getVerification(address, tokenId)
         if (!verification) throw new Error("Haven't completed the course. Get learning :)")
-
-        const hasClaimed = await service.yuzu?.hasClaimed(address, tokenId.toString())
-        if (hasClaimed) throw new Error("Already Claimed")
+        
+        const canClaim = await service.yuzu?.canClaimDaily(address, tokenId.toString())
+        if (!canClaim) throw new Error("Already Claimed")
 
         const data: YuzuUserData = {
             address: address,

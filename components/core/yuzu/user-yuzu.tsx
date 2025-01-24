@@ -1,7 +1,5 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Definition } from "./definition"
 import { useEffect, useState } from "react"
 import { useWallet } from "@/lib/wallet/src"
 import { YuzuUserData } from "@/lib/db/yuzu"
@@ -30,15 +28,15 @@ export function UserYuzu({ }: UserYuzuProps) {
 
     // Will add in future
     useEffect(() => {
-        // (async () => {
-        //     await handleUserPoints()
-        // })()
+        (async () => {
+            await handleUserPoints()
+        })()
     }, [wallet.walletProvider])
 
     useEffect(() => {
-        // (async () => {
-        //     await handleUserPoints()
-        // })()
+        (async () => {
+            await handleUserPoints()
+        })()
     }, [])
 
     return <div className="flex items-center justify-between gap-2 font-semibold text-2xl my-1">
