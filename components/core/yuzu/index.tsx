@@ -35,7 +35,6 @@ const tokens: {
             token: 2,
             title: "Your Ape-proach to Web3 - Building on ApeChain",
             image: "ipfs://QmRzDLGzMLQ31LAArN1mhf2QaBeJcPdbJoVXZ9vQ1FkEdV",
-            disabled: true
         },
     ];
 
