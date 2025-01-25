@@ -10,6 +10,14 @@ import {
 import { useRouter } from "next/navigation"
 
 const localeToCountryCode = (code: string) => {
+    switch (code.toLocaleLowerCase()) {
+        case "hi":
+            return "in"
+        case "ko":
+            return "kr"
+        case "ja":
+            return "jp"
+    }
     if (code.toLocaleLowerCase() === "hi") {
         return "in"
     }
