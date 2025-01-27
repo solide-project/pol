@@ -47,7 +47,8 @@ export default async function Page({ params, }: SearchParams) {
 
     const ghBranches = await branches(owner, name)
     const locales = findLocales(ghBranches.map(b => b.name))
-
+    console.log(course)
+    
     return <QuestProvider>
         <LocaleProvider>
             <QuestViewer tree={tree} owner={owner} name={name} metadata={course || undefined} locales={locales} />

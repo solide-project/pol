@@ -49,14 +49,13 @@ export function WalletProvider({ children }: WalletProviderProps) {
         const handleAccountsChanged = (accounts: any) => {
             if (walletProvider !== WalletConnectorEnum.METAMASK) return
 
-            console.log("Account Changed", accounts)
+            // console.log("Account Changed", accounts)
             const account = accounts[0] as `0x${string}`;
             setSelectedAccount(account);
         };
 
         if (!window.ethereum) return;
         window.ethereum.on('accountsChanged', handleAccountsChanged);
-        console.log("add accountsChanged")
 
         return () => {
             window?.ethereum?.removeListener('accountsChanged', handleAccountsChanged);

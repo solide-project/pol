@@ -21,7 +21,7 @@ interface QuestViewerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function QuestViewer({ tree, owner, name, metadata, locales = [] }: QuestViewerProps) {
-    const [ide, setIDE] = useState("https://solide0x.tech")
+    const [ide, setIDE] = useState("")
     const quest = useQuest()
     const locale = useLocale()
     const searchParams = useSearchParams();
@@ -40,11 +40,12 @@ export function QuestViewer({ tree, owner, name, metadata, locales = [] }: Quest
             console.log("QuestViewer mounted")
 
             if (metadata?.type === "stylus") {
+                console.log("https://stylus.solide0x.tech")
                 setIDE("https://stylus.solide0x.tech")
             } else if (metadata?.type === "move") {
                 setIDE("https://move.solide0x.tech")
             }
-            
+
             // Setup locale
             locale.setQuestLocales(locales)
             const queryLocale = searchParams.get("l")
@@ -90,8 +91,8 @@ export function QuestViewer({ tree, owner, name, metadata, locales = [] }: Quest
             <div className={cn("col-span-12 mt-8", quest.showIDE ? "lg:col-span-5" : "")}>
                 <MarkdownViewer />
             </div>
-            <div className={cn(quest.showIDE ? "sticky top-0 col-span-12 lg:col-span-7 h-screen flex items-center justify-between" : "invisible")}>
-                {owner && name &&
+            <div className={cn(quest.showIDE ? "sticky top-0 col-span-12 lg:col-span-7 h-screen flex items-center justify-between -mt-16" : "invisible")}>
+                {owner && name && ide &&
                     <IDEViewer uri={ide} />}
             </div>
         </div>
