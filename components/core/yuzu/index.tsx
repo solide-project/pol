@@ -10,6 +10,7 @@ import { POLPoapContract } from "@/lib/poap/contract";
 import { IPFSImage } from "../shared/ipfs-image";
 import { YUZU_POINTS } from "@/lib/util/constants";
 import { Faq } from "./faq";
+import { LimitedYuzu } from "./limited-yuzu";
 
 interface YuzuPageProps extends React.HTMLAttributes<HTMLDivElement> {
     total: number
@@ -49,6 +50,7 @@ export function YuzuPage({ total }: YuzuPageProps) {
 
         <Definition />
         <UserYuzu />
+        <LimitedYuzu />
 
         <div className="scroll-m-20 text-4xl font-bold tracking-tight">
             Daily Claim
