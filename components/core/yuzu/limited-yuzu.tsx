@@ -9,6 +9,7 @@ import {
 import { cn } from "@/lib/utils"
 import { useWallet } from "@/lib/wallet/src"
 import { useTheme } from "next-themes"
+import { useState } from "react"
 import toast from "react-hot-toast"
 
 interface LimitedYuzuProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -16,11 +17,14 @@ interface LimitedYuzuProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function LimitedYuzu({ }: LimitedYuzuProps) {
     const wallet = useWallet()
+    const [isClaim, setIsClaiming] = useState(false)
 
     const handleClaim = async () => {
         try {
+            setIsClaiming(true)
             await doClaim()
             toast.success("Congratz. You claimed 10000 Yuzu")
+            setIsClaiming(false)
         } catch (error: any) {
             toast.error(error.message)
         }
@@ -45,17 +49,19 @@ export function LimitedYuzu({ }: LimitedYuzuProps) {
         }
 
         const data = await response.json()
-        
+
         return data
     }
 
     return (
         <section className="rounded-lg w-full border my-8">
-            <div className="text-4xl font-semibold leading-tight tracking-tighter md:text-6xl lg:leading-[1.1] text-center">
-                Be the first 50
+            <div className="my-8 text-4xl font-semibold leading-tight tracking-tighter md:text-6xl lg:leading-[1.1] text-center">
+                Be the first 50 to claim 10,000 Yuzu!🍊
             </div>
-
-            <Button onClick={handleClaim}>Claim</Button>
+            <div className="text-center my-4">Complete all 3 course below to earn enough Yuzu for EDULand NFT and earn $EDU</div>
+            <div className="flex items-center justify-center my-8">
+                <Button onClick={handleClaim} size="xl" disabled={isClaim}>Claim</Button>
+            </div>
         </section>
     )
 }
