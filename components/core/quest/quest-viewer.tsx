@@ -39,6 +39,7 @@ export function QuestViewer({ tree, owner, name, metadata, locales = [] }: Quest
         (async () => {
             console.log("QuestViewer mounted")
 
+            setIDE("https://solide0x.tech")
             if (metadata?.type === "stylus") {
                 console.log("https://stylus.solide0x.tech")
                 setIDE("https://stylus.solide0x.tech")
