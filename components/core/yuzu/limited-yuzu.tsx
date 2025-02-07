@@ -58,9 +58,9 @@ export function LimitedYuzu({ }: LimitedYuzuProps) {
             <div className="my-8 text-4xl font-semibold leading-tight tracking-tighter md:text-6xl lg:leading-[1.1] text-center">
                 Be the first 50 to claim 10,000 Yuzu!🍊
             </div>
-            <div className="text-center my-4">Complete all 3 course below to earn enough Yuzu for EDULand NFT and earn $EDU</div>
+            <div className="text-center my-4">Complete all 3 course below to earn enough Yuzu for EDULand NFT and earn $EDU. Thanks everyone for contributing.</div>
             <div className="flex items-center justify-center my-8">
-                <Button onClick={handleClaim} size="xl" disabled={isClaim}>Claim</Button>
+                <Button onClick={handleClaim} size="xl" disabled={true}>Completed. Remember keep learing!</Button>
             </div>
         </section>
     )

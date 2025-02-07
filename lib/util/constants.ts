@@ -7,13 +7,13 @@ export const YUZU_POINTS: {
     }
 } = {
     0: {
-        points: 100,
+        points: 25,
     },
     1: {
-        points: 50,
+        points: 5,
     },
     2: {
-        points: 100,
+        points: 25,
     },
     3: {
         points: 100,
