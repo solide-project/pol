@@ -11,6 +11,7 @@ import { IPFSImage } from "../shared/ipfs-image";
 import { YUZU_POINTS } from "@/lib/util/constants";
 import { Faq } from "./faq";
 import { LimitedYuzu } from "./limited-yuzu";
+import { VictionYuzu } from "./viction-yuzu";
 
 interface YuzuPageProps extends React.HTMLAttributes<HTMLDivElement> {
     total: number
@@ -37,6 +38,11 @@ const tokens: {
             title: "Your Ape-proach to Web3 - Building on ApeChain",
             image: "ipfs://QmRzDLGzMLQ31LAArN1mhf2QaBeJcPdbJoVXZ9vQ1FkEdV",
         },
+        {
+            token: 3,
+            title: "Victionary - Everything about Viction",
+            image: "ipfs://QmbJAFHRPfF6fUc33abfccYAkdz3L8MLDtRNdgXvDUQQhp",
+        },
     ];
 
 export function YuzuPage({ total }: YuzuPageProps) {
@@ -51,7 +57,8 @@ export function YuzuPage({ total }: YuzuPageProps) {
         <Definition />
         <UserYuzu />
         <LimitedYuzu />
-
+        <VictionYuzu />
+        
         <div className="scroll-m-20 text-4xl font-bold tracking-tight">
             Daily Claim
         </div>
