@@ -42,7 +42,7 @@ export interface NativeValue extends Submission {
 }
 
 /**
- * Represents getting a value
+ * Represents getting a contract property value
  */
 export interface ContractData extends Submission {
     type: "data";

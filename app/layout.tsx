@@ -31,8 +31,8 @@ export default function RootLayout({
         <TooltipProvider delayDuration={0}>
           <Provider>
             <Banner
-              message={"Live on Mainnet 🎉 Earn Yuzu Point 🍊 with PoL! ₍ᐢ-(ｪ)-ᐢ₎"}
-              href="/yuzu" />
+              message={"📣 New Course Live as it wins Arbitrum hackathon 🎉. Stylish Course to Stylus. Start learning now!"}
+              href="/q/polearn/stylish-guide-to-stylus" />
             <NavBar />
             {children}
 
