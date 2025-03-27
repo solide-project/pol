@@ -10,26 +10,34 @@ export const data: NavItemData[] = [
     },
     {
         title: "Creator Platform",
-        items: "https://creator.solide0x.tech"
+        items: "https://creator.polearn.xyz"
     },
     {
         title: "IDE",
         items: [
             {
                 title: "Solidity",
-                items: "https://solide0x.tech"
+                items: "https://evm.polearn.xyz"
             },
             {
                 title: "Stylus",
-                items: "https://stylus.solide0x.tech"
+                items: "https://stylus.polearn.xyz"
             },
             {
                 title: "Move",
-                items: "https://move.solide0x.tech"
+                items: "https://move.polearn.xyz"
+            },
+            {
+                title: "Soroban",
+                items: "https://soroban.polearn.xyz"
             },
             {
                 title: "Sway",
-                items: "https://sway.solide0x.tech"
+                items: "https://sway.polearn.xyz"
+            },
+            {
+                title: "Claride",
+                items: "https://clarity.polearn.xyz"
             },
         ]
     },
