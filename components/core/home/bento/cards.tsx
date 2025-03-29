@@ -2,20 +2,20 @@ import React from "react";
 
 const cards = [
     {
-        title: 'Deploy with Proof of Learn',
-        image: "https://api.universalprofile.cloud/ipfs/QmStw2E79stkmBH9kjjRYHVoPNztrbQsxXchfxTnmRVh3h",
+        title: 'Deploy Your First Smart Contract on EDU Chain',
+        image: "https://api.universalprofile.cloud/ipfs/QmNzhFeiYXRtAiczXg35EcUSvzeADKQgi4MgHfMzNHzu8c",
     },
     {
-        title: 'Ape Coin Staking',
-        image: "https://api.universalprofile.cloud/ipfs/QmaFtQ4LTHcCb1BhPRTrKe1gVnsK9tZiXrLnzUwxB6Piag",
+        title: 'Your Ape-proach to Web3 - Building on ApeChain',
+        image: "https://api.universalprofile.cloud/ipfs/QmRzDLGzMLQ31LAArN1mhf2QaBeJcPdbJoVXZ9vQ1FkEdV",
+    },
+    {
+        title: 'Stylish course to Stylus smart contract development',
+        image: "https://api.universalprofile.cloud/ipfs/QmaQHLoWPcEPKk388VgmX4QCctKkdyGefcvnY6ydtx11yB",
     },
     {
         title: 'Victionary - Everything about Viction',
-        image: "https://api.universalprofile.cloud/ipfs/QmeuovPSUK2JpK6SYnCSkGsQ9Pduo1U4ZMvEwRELbjzPgw",
-    },
-    {
-        title: 'Coming Soon!',
-        image: "./icons/eth.svg",
+        image: "https://api.universalprofile.cloud/ipfs/QmbJAFHRPfF6fUc33abfccYAkdz3L8MLDtRNdgXvDUQQhp",
     },
 ];
 
@@ -33,7 +33,7 @@ const Cards = () => {
 
     return (
         <div className="cards">
-            {cards.reverse().map((card, index) => (
+            {cards.map((card, index) => (
                 <div key={index} className="card">
                     <div className="card-face"
                         style={{
