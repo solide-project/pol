@@ -1,8 +1,11 @@
 import { Collection } from 'mongodb'
 
 export interface User {
-    evmAddress: `0x${string}`;
-    suiAddress: string;
+    connectedAddress: {
+        evm: `0x${string}`;
+        sui?: string;  
+        xlm?: string;          
+    }
 }
 
 type UserNullable = User | null
