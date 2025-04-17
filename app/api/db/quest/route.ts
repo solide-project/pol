@@ -4,6 +4,7 @@ import { QuestInformation, QuestPagination } from "@/lib/api/pagination";
 import { POLMongoService } from "@/lib/util/mongo";
 import { getUserInfo } from "@/lib/git/user";
 import { NextRequest, NextResponse } from "next/server";
+import { POLPoapContract } from "@/lib/poap/contract";
 
 export async function GET(request: NextRequest) {
     const page = request.nextUrl.searchParams.get("page")
@@ -19,14 +20,20 @@ export async function GET(request: NextRequest) {
         const total = await service.courses?.collection.countDocuments()
         const quests = await service.courses?.getQuests(pageNumber) || [];
 
+        const poapContract = new POLPoapContract({})
+        const totalSupplyPromises = quests.map(poap => poapContract.totalSupply(poap.tokenId.toString()))
+        const totalSupplies = await Promise.all(totalSupplyPromises)
+
         const result: QuestInformation[] = []
-        for (const quest of quests) {
+        for (let i = 0; i < quests.length; i++) {
+            const quest = quests[i];
             const user = await getUserInfo(quest.owner);
             const { _id, ...rest } = quest as any; // Exclude _id from mongo
             result.push({
                 result: { ...rest },
                 user: {
-                    image: user?.avatar_url || ""
+                    image: user?.avatar_url || "",
+                    minted: totalSupplies[i]?.toString() ?? "0"
                 }
             })
         }

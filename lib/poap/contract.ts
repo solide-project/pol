@@ -1,7 +1,9 @@
-import { PublicClient, WalletClient, createPublicClient, http, Account, Abi } from "viem";
+import { PublicClient, WalletClient, createPublicClient, http, Account, Abi, parseAbiItem } from "viem";
 import { abi } from "./abi";
 import { getChain, getContractAddress, getRPC } from "./utils";
 import { selectedNetwork } from ".";
+import { getAPI } from "../chains";
+import { TransferLogData } from "./interface";
 
 interface POLPoapContractConfig {
     chain?: string
@@ -83,6 +85,28 @@ export class POLPoapContract {
         }) as BigInt
     }
 
+    async totalSupplyAll() {
+        return await this.publicClient.readContract({
+            address: this.contract.address,
+            abi: [
+                {
+                    "inputs": [],
+                    "name": "totalSupply",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ],
+            functionName: 'totalSupply',
+        }) as BigInt
+    }
+
     async mint(account: string, tokenId: string, data: `0x${string}` = "0x", verification: string = "", signature: string = "") {
         if (!this.walletClient)
             throw new Error("Wallet is not provided")
@@ -102,5 +126,41 @@ export class POLPoapContract {
             functionName: 'getVerification',
             args: [account, id]
         }) as string
+    }
+
+    async getAllTransfers(limit: number = 5) {
+        // const logs = await this.publicClient.getLogs({
+        //     ...this.contractParams,
+        //     event: parseAbiItem('event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value)'),
+        // });
+
+        // const transfer = [...logs].sort(
+        //     (a, b) => Number(b.blockNumber) - Number(a.tim) || b.logIndex - a.logIndex
+        // );
+
+        const response = await fetch(`${getAPI(this.chain)}/api/v2/addresses/${this.contract.address}/logs`)
+        const logs = await response.json()
+        const transfer: TransferLogData[] = await Promise.all(logs.items
+            .filter((x: any) => x.decoded.method_id === `c3d58168`)
+            .slice(0, limit)
+            .map(async (x: any) => {
+                const args: any = {};
+                (x.decoded.parameters as any[]).forEach((param: any) => {
+                    args[param.name] = param.value
+                });
+                const block = await this.publicClient.getBlock({
+                    blockNumber: BigInt(x.block_number)
+                })
+                return {
+                    eventName: `TransferSingle`,
+                    blockNumber: BigInt(x.block_number),
+                    timestamp: block.timestamp,
+                    transactonHash: x.transaction_hash,
+                    logIndex: BigInt(x.index),
+                    args,
+                }
+            }))
+
+        return transfer
     }
 } 

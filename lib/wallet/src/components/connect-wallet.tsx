@@ -2,8 +2,6 @@
 
 import "./globals.css";
 
-import React, { useState } from 'react';
-import { WalletModal } from './wallet-modal';
 import { useWallet } from "./wallet-provider";
 import { ModalConnect } from "./modal-connect";
 import { ModalDisconnect } from "./modal-disconnect";

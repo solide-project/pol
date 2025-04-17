@@ -11,6 +11,6 @@ export interface QuestInformation {
     result: Course
     user: {
         image: string
-        preview?: boolean
+        minted: string
     }
 }

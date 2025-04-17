@@ -144,3 +144,23 @@ export const epochToFormattedDate = (epochTime: number): string => {
 
     return new Intl.DateTimeFormat('en-US', options).format(date);
 }
+
+export const epochToDaysAgo = (timestamp?: bigint): string => {
+    if (timestamp === undefined) return "N/A";
+
+    const now = Date.now();
+    const past = Number(timestamp) * 1000;
+    const diffInSeconds = Math.floor((now - past) / 1000);
+
+    if (diffInSeconds < 0) return "in the future";
+
+    const minutes = Math.floor(diffInSeconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) return `${days} day${days !== 1 ? "s" : ""} ago`;
+    if (hours > 0) return `${hours} hr${hours !== 1 ? "s" : ""} ago`;
+    if (minutes > 0) return `${minutes} min${minutes !== 1 ? "s" : ""} ago`;
+
+    return "just now";
+};

@@ -42,8 +42,8 @@ export const WalletModal = ({ title, isOpen = false, onClose, children }: Wallet
 
   return (
     <>
-      <div className="fixed full-screen top-0 right-0 backdrop-blur-sm bg-background/80" style={modalStyle}></div>
-      <div ref={modalRef} className="fixed bg-grayscale-000 rounded-lg shadow-lg p-4 inset-x-1/2 pwc-modal" style={modalStyle} onClick={handleOverlayClick}>
+      <div className="fixed full-screen top-0" style={modalStyle}></div>
+      <div ref={modalRef} className="fixed bg-grayscale-000 rounded-[16px] shadow-lg p-4 inset-x-1/2 pwc-modal" style={modalStyle} onClick={handleOverlayClick}>
         <div onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
           <div className='flex items-center justify-between px-2'>
             <div className="font-semibold">{title}</div>

@@ -8,7 +8,7 @@ interface ProviderProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Provider({ ocredirectUri, children }: ProviderProps) {
-    return <OCConnect opts={{ redirectUri: ocredirectUri || "" }} sandboxMode={true}>
+    return <OCConnect opts={{ redirectUri: ocredirectUri || "" }} sandboxMode={false}>
         <WalletProvider>
             {children}
         </WalletProvider>

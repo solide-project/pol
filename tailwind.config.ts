@@ -81,11 +81,17 @@ module.exports = {
           "0%": { transform: "translateY(-50%)" },
           "100%": { transform: "translateY(0)" },
         },
+        hover: {
+          "0%": { transform: "translateY(-10%)" },
+          "50%": { transform: "none" },
+          "100%": { transform: "translateY(-10%)"},
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "grid": "grid 15s linear infinite",
+        "hover": "hover 2s linear infinite",
       },
     },
   },

@@ -1,53 +1,49 @@
-interface NavItemData {
-    title: string | JSX.Element
-    items: NavItemData[] | string
+import { MOVIDE_DOMAIN, SOLIDE_DOMAIN, SOROBAN_DOMAIN, STYLIDE_DOMAIN } from "@/lib/constants"
+
+export interface NavItemData {
+    title: string
+    href?: string
+    description?: string
+    icon: string
 }
 
-export const data: NavItemData[] = [
+export const components: NavItemData[] = [
     {
-        title: "Courses",
-        items: "/p"
+        title: "Solide",
+        icon: "ide/evm.svg",
+        href: SOLIDE_DOMAIN,
+        description: "Solidity IDE",
     },
     {
-        title: "Creator Platform",
-        items: "https://creator.polearn.xyz"
+        title: "Movide",
+        icon: "ide/move.svg",
+        href: MOVIDE_DOMAIN,
+        description: "Move IDE",
     },
     {
-        title: "IDE",
-        items: [
-            {
-                title: "Solidity",
-                items: "https://evm.polearn.xyz"
-            },
-            {
-                title: "Stylus",
-                items: "https://stylus.polearn.xyz"
-            },
-            {
-                title: "Move",
-                items: "https://move.polearn.xyz"
-            },
-            {
-                title: "Soroban",
-                items: "https://soroban.polearn.xyz"
-            },
-            {
-                title: "Sway",
-                items: "https://sway.polearn.xyz"
-            },
-            {
-                title: "Claride",
-                items: "https://clarity.polearn.xyz"
-            },
-        ]
+        title: "Soride",
+        icon: "ide/soroban.svg",
+        href: SOROBAN_DOMAIN,
+        description: "Soroban IDE",
     },
     {
-        title: (
-            <div className="flex items-center gap-1">
-                <img className="h-5" src="/yuzu/coin.svg" alt="logo" />
-                <span className="text-primary">Yuzu</span>
-            </div>
-        ),
-        items: "/yuzu"
+        title: "Stylide",
+        icon: "ide/stylus.svg",
+        href: STYLIDE_DOMAIN,
+        description: "Stylus IDE",
     },
+    {
+        title: "Claride",
+        icon: "ide/clarity.svg",
+        href: "https://clarity.polearn.xyz/",
+        description: "Clarity IDE",
+    }
 ]
+
+export const navigationBarStyle = () => {
+    return {
+        backgroundColor: "rgb(0 0 0 / 0.2)",
+        backgroundImage: "linear-gradient(45deg, rgb(255 255 255 / 0.16), rgb(255 255 255 / 0.16))",
+        backdropFilter: "blur(40px)",
+    }
+}

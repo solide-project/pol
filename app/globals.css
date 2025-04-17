@@ -124,7 +124,6 @@
 
 .sliding-text {
   display: flex;
-  font-size: 24px;
   opacity: 0;
   transform: translateY(-100%);
   transition: transform 0.5s ease, opacity 0.5s ease;

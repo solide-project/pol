@@ -36,10 +36,10 @@ const items = [
     }
 ];
 
-interface MediaProps extends React.HTMLAttributes<HTMLDivElement> {
+interface MediaSectionProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
-export function Media({ }: MediaProps) {
+export function MediaSection({ }: MediaSectionProps) {
     return (
         <div className="rounded-lg bg-secondary lg:px-24 lg:py-16 px-4 py-14">
             <div className="grid grid-cols-12 w-full gap-8">
@@ -54,7 +54,7 @@ export function Media({ }: MediaProps) {
                         It empowers learners to gain real-world skills, earn NFT achievements, and truly
                         own their accomplishments.
                     </div>
-                    <Button>Read Docs</Button>
+                    <Button variant="primary">Read Docs</Button>
                 </div>
             </div>
 

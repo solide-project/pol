@@ -13,7 +13,6 @@ export const loadData = async (): Promise<QuestPagination> => {
     //     "result": [
     //         {
     //             "result": {
-    //                 // "_id": "67458da00b3e479e5e28d34f",
     //                 "owner": "polearn",
     //                 "name": "pol-template",
     //                 "title": "Deploy Your First Smart Contract on Open Campus",
@@ -27,7 +26,8 @@ export const loadData = async (): Promise<QuestPagination> => {
     //                 ]
     //             },
     //             "user": {
-    //                 "image": "https://avatars.githubusercontent.com/u/183878506?v=4"
+    //                 "image": "https://avatars.githubusercontent.com/u/183878506?v=4",
+    //                 "minted": "35235"
     //             }
     //         },
     //         {
@@ -50,7 +50,8 @@ export const loadData = async (): Promise<QuestPagination> => {
     //             },
     //             "user": {
     //                 "image": "https://avatars.githubusercontent.com/u/183878506?v=4",
-    //                 "preview": true
+    //                 "minted": "35235",
+    //                 // "preview": true
     //             }
     //         },
     //         {
@@ -73,6 +74,7 @@ export const loadData = async (): Promise<QuestPagination> => {
     //             },
     //             "user": {
     //                 "image": "https://avatars.githubusercontent.com/u/183878506?v=4",
+    //                 "minted": "35235"
     //             }
     //         }
     //     ]
