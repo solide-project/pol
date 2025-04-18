@@ -25,7 +25,7 @@ export const useWCOCID = (): IWalletConnector => {
         //     isAuthenticated: false,
         //     error: "",
         // });
-        await ocAuth.logout('http://localhost:3000/');
+        await ocAuth.logout(process.env.NEXT_PUBLIC_OC_CONNECT);
     }
 
     const getAccount = async () => {
