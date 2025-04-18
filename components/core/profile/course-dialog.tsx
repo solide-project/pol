@@ -10,14 +10,14 @@ import {
 } from "@/components/ui/dialog";
 import { Poap } from "@/lib/poap";
 import { cn } from "@/lib/utils";
-import { CoursePage } from "../../home/poap/course-page";
+import { CoursePage } from "../home/poap/course-page";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
-interface PoapDialogProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CourseDialogProps {
     poap: Poap;
 }
 
-export function PoapDialog({ poap }: PoapDialogProps) {
+export function CourseDialog({ poap }: CourseDialogProps) {
     return (
         <Dialog>
             <DialogTrigger
@@ -34,6 +34,7 @@ export function PoapDialog({ poap }: PoapDialogProps) {
                         <DialogTitle></DialogTitle>
                     </DialogHeader>
                 </VisuallyHidden>
+
                 <CoursePage
                     tokenId={Number(poap.tokenId)}
                     poap={poap.metadata}

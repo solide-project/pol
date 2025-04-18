@@ -11,7 +11,6 @@ import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { Banner } from "@/components/core/home/banner";
-import { WalletProvider } from "@/components/core/wallet/provider";
 
 export const metadata: Metadata = {
   title: "Proof of Learn | Earn NFTs by Mastering Blockchain Skills",
@@ -31,20 +30,18 @@ export default function RootLayout({
         enableSystem
         disableTransitionOnChange
       >
-        <WalletProvider>
-          <TooltipProvider delayDuration={0}>
-            <Provider>
-              <Banner
-                message={"📣 New Course Live as it wins Arbitrum hackathon 🎉. Stylish Course to Stylus. Start learning now!"}
-                href="/q/polearn/stylish-guide-to-stylus" />
-              <NavBar />
-              {children}
+        <TooltipProvider delayDuration={0}>
+          <Provider>
+            <Banner
+              message={"📣 New Course Live as it wins Arbitrum hackathon 🎉. Stylish Course to Stylus. Start learning now!"}
+              href="/q/polearn/stylish-guide-to-stylus" />
+            <NavBar />
+            {children}
 
-              <div className="hidden p-5 max-w-80 w-80 bg-grayscale-000 cursor-not-allowed bg-green-100 text-green-800"></div>
-              <Toaster />
-            </Provider>
-          </TooltipProvider>
-        </WalletProvider>
+            <div className="hidden p-5 max-w-80 w-80 bg-grayscale-000 cursor-not-allowed bg-green-100 text-green-800"></div>
+            <Toaster />
+          </Provider>
+        </TooltipProvider>
       </ThemeProvider>
     </body>
     <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS || ""} />

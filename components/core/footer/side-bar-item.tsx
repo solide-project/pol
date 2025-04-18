@@ -24,7 +24,7 @@ export function SideBarItem({ quest, isExpanded = false, depth = 1, main }: Side
 
     return <>
         <li className="mb-4 ms-6">
-            <span className="absolute flex items-center justify-center w-6 h-6 bg-grayscale-025 rounded-full -start-3">
+            <span className="absolute flex items-center justify-center w-6 h-6 bg-grayscale-025 rounded-[16px] -start-3">
                 <div className="text-sm">{main ? `${main}.${quest.name.number}` : `${quest.name.number}.0`}</div>
             </span>
             <h3 className="flex items-center space-x-2 mb-1">

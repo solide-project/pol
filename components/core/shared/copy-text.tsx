@@ -19,7 +19,7 @@ export function CopyText({
     }
 
     return <Copy
-        className={cn(className, "cursor-pointer")}
+        className={cn(className, "h-6 w-6 cursor-pointer shrink-0")}
         onClick={copyText}
     />
 }

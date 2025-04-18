@@ -1,0 +1,11 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M200 49.6655L77.5299 120.336L200 190.943L322.406 120.336L200 49.6655Z" fill="#00FF94"/>
+<path d="M200 72.4521L77.5299 143.123L200 213.729L322.406 143.123L200 72.4521Z" fill="#E3E7E3"/>
+<path d="M200 189.273V330.551L322.406 259.944V118.667L200 189.273Z" fill="#00FF94"/>
+<path d="M200 190.943V332.22L77.5299 261.549V120.336L200 190.943Z" fill="#00FF94"/>
+<path d="M345 105.637L200 22L55 105.637V223.935" stroke="#003D2E" stroke-width="5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M345 272.974L200 356.61L55 272.974V154.676" stroke="#003D2E" stroke-width="5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M304.305 296.467L200 356.611V189.274" stroke="#003D2E" stroke-width="5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M200 189.273L345 105.637V223.935" stroke="#003D2E" stroke-width="5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M55 105.636L200 189.273L322.406 118.666L200 49.0869L77.5298 118.666" stroke="#003D2E" stroke-width="5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

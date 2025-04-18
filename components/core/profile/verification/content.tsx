@@ -74,7 +74,7 @@ export function VerificationContent({ cid, name }: VerificationContentProps) {
         <div>
             <div className="flex flex-wrap items-center gap-2">
                 <ProfileBadge icon={<Calendar />}>
-                    Completed on:{" "}
+                    {/* Completed on:{" "} */}
                     {epochToFormattedDate(verification?.quest?.completed || 0)}
                 </ProfileBadge>
                 {/* {verification?.quest.version && (
@@ -104,7 +104,10 @@ export function VerificationContent({ cid, name }: VerificationContentProps) {
                                                 className="h-10 w-10"
                                             />
 
-                                            <div className="truncate w-full">
+                                            <div className="max-w-[100%]">
+                                                {/* <div className="flex items-center gap-2">
+                                                    <div className="text-ellipsis text-sm text-muted-foreground">Quest ID {proof.id}</div>
+                                                </div> */}
                                                 <PopoverMask text={proof.id} />
                                                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-0 sm:gap-2 truncate">
                                                     <PopoverMask
@@ -113,6 +116,11 @@ export function VerificationContent({ cid, name }: VerificationContentProps) {
                                                             proof.hash,
                                                         )}
                                                         text={proof.hash}
+                                                    />
+
+                                                    <CopyText
+                                                        className="h-4 w-4"
+                                                        payload={proof.hash}
                                                     />
 
                                                     <div className="flex items-center gap-1">

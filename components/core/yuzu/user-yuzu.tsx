@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useWallet } from "@/lib/wallet/src"
+import { useWallet } from "@/components/core/wallet/wallet-provider"
 import { YuzuUserData } from "@/lib/db/yuzu"
 
 interface UserYuzuProps extends React.HTMLAttributes<HTMLDivElement> {

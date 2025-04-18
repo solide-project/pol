@@ -7,7 +7,7 @@ export function CourseCardOwner({ owner, image }: CourseCardOwnerProps) {
     return (
         <div className="flex items-center gap-4">
             <img
-                src={image}
+                src={image || "https://avatars.githubusercontent.com/u/183878506?v=4"}
                 alt="owner"
                 className="rounded-full object-cover h-8 w-8"
             />

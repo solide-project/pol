@@ -2,7 +2,7 @@
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { useWallet } from "@/lib/wallet/src"
+import { useWallet } from "@/components/core/wallet/wallet-provider"
 import { useTheme } from "next-themes"
 import { useState } from "react"
 import toast from "react-hot-toast"

@@ -12,7 +12,7 @@ import { useState } from "react";
 import { getExplorer } from "@/lib/chains";
 import { GridPattern } from "../home/poap/shared/grid-pattern";
 import { VerificationDialog } from "./verification/dialog";
-import { PoapDialog } from "./poap/dialog";
+import { CourseDialog } from "./course-dialog";
 
 interface PoapUserCardProps {
     poap: Poap;
@@ -66,7 +66,7 @@ export function PoapUserCard({
 
                 <div className="flex items-center justify-center gap-2">
                     <VerificationDialog poap={poap} />
-                    <PoapDialog poap={poap} />
+                    <CourseDialog poap={poap} />
                 </div>
             </div>
         </div>

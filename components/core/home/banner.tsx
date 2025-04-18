@@ -14,7 +14,7 @@ export function Banner({ message, href }: BannerCardProps) {
 
     return <div className={cn(
         "relative isolate flex items-center gap-x-6 overflow-hidden bg-primary py-[5px] sm:before:flex-1 sticky top-0 z-50",
-        isHovered ? "invisible" : ""
+        isHovered ? "hidden" : ""
     )}>
         <div className="flex flex-wrap items-center gap-x-2 cursor-pointer">
             <div className="font-sm text-white">

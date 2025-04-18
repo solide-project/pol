@@ -18,7 +18,7 @@ import { createWalletClient, custom } from 'viem'
 import confetti from "canvas-confetti";
 import { retrieve, ipfsGateway } from "@/lib/util/ipfs";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
-import { useWallet } from "@/lib/wallet/src";
+import { useWallet } from "@/components/core/wallet/wallet-provider";
 
 interface MintingQuestProps extends React.HTMLAttributes<HTMLDivElement> {
 }

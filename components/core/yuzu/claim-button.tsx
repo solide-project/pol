@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { useWallet } from "@/lib/wallet/src"
+import { useWallet } from "@/components/core/wallet/wallet-provider"
 import confetti from "canvas-confetti"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"

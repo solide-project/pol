@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import toast from 'react-hot-toast';
 import { Pickaxe } from "lucide-react";
 import confetti from "canvas-confetti";
-import { useWallet } from "@/lib/wallet/src";
+import { useWallet } from "@/components/core/wallet/wallet-provider";
 import { generateDataHash } from "@/lib/polearn/core";
 import { Checkbox } from "@/components/ui/checkbox";
 

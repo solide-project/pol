@@ -21,11 +21,14 @@ export function VerificationDialog({ poap }: VerificationDialogProps) {
         <DialogTrigger className={cn(buttonVariants({ variant: "secondary" }), "w-full font-medium")}>
             View Verification
         </DialogTrigger>
-        <DialogContent className="max-h-[720px] max-w-[800px] overflow-auto">
+        <DialogContent className="max-h-[80%] !max-w-3xl overflow-auto">
             <DialogHeader>
                 <DialogTitle className="font-bold text-2xl">Verification</DialogTitle>
             </DialogHeader>
-            <VerificationContent name={poap.metadata.name} cid={poap.verification} />
+
+            <div className="max-w-full">
+                <VerificationContent name={poap.metadata.name} cid={poap.verification} />
+            </div>
         </DialogContent>
     </Dialog>
 }

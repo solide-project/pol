@@ -2,7 +2,7 @@ import { useOCAuth } from "@opencampus/ocid-connect-js";
 import { IWalletConnector } from "./wallet-connector";
 
 export const useWCOCID = (): IWalletConnector => {
-    const { authState, ocAuth, updateAuthState } = useOCAuth();
+    const { authState, ocAuth } = useOCAuth();
 
     const connect = async () => {
         try {
@@ -25,12 +25,12 @@ export const useWCOCID = (): IWalletConnector => {
         //     isAuthenticated: false,
         //     error: "",
         // });
-        await ocAuth.logout('/');
+        await ocAuth.logout('http://localhost:3000/');
     }
 
     const getAccount = async () => {
         try {
-            const account: string = ocAuth?.getAuthInfo()?.eth_address
+            const account: string = ocAuth?.ethAddress
             return account as `0x${string}`
         } catch (e: any) {
             console.error(e)
@@ -40,7 +40,7 @@ export const useWCOCID = (): IWalletConnector => {
 
     const getNSAccount = async () => {
         try {
-            const account: string = ocAuth?.getAuthInfo()?.eth_address
+            const account: string = ocAuth?.ethAddress
             return account as `0x${string}`
         } catch (e: any) {
             console.error(e)
