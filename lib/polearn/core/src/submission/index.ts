@@ -108,8 +108,9 @@ export const processNativeValueTransaction = async (client: PublicClient,
     if (!opts.testing && !isAddressEqual(payload.user, transaction.to))
         throw new Error("Transaction not from user")
 
-    if (!isAddressEqual(submission.from, transaction.from))
-        throw new Error("Incorrect Transaction")
+    if (submission.from)
+        if (!isAddressEqual(submission.from, transaction.from))
+            throw new Error("Incorrect Transaction")
 
     let symbol = "eq"
     if (submission.symbol)

@@ -16,9 +16,10 @@ interface CoursePageProps {
     poap: PoapMetadata;
     supply?: BigInt;
     uri: string;
+    displayStartLearning?: boolean
 }
 
-export function CoursePage({ tokenId, poap, supply, uri }: CoursePageProps) {
+export function CoursePage({ tokenId, poap, supply, uri, displayStartLearning = true }: CoursePageProps) {
     const router = useRouter();
     const [isRedirecting, setIsRedirecting] = useState(false);
 
@@ -46,9 +47,9 @@ export function CoursePage({ tokenId, poap, supply, uri }: CoursePageProps) {
     return (
         <div className="flex flex-col md:flex-row rounded-lg">
             <div className="order-first">
-                <div className="flex items-center justify-center bg-primary py-16 rounded-lg min-w-[360px]">
+                <div className="flex items-center justify-center bg-primary py-2 sm:py-16 rounded-lg min-w-[360px]">
                     <Image
-                        className="h-[256px] w-[256px]"
+                        className="h-[196px] w-[196px] sm:h-[256px] sm:w-[256px]"
                         src={`${poap.image.replace("ipfs://", ipfsGateway)}`}
                         alt="badge"
                         width={256}
@@ -100,7 +101,8 @@ export function CoursePage({ tokenId, poap, supply, uri }: CoursePageProps) {
                             <ExternalLink size={16} />
                         </Link>
                     </div>
-                    <Button onClick={redirectToQuest}>{"Start Learning"}</Button>
+                    {displayStartLearning &&
+                        <Button onClick={redirectToQuest}>{"Start Learning"}</Button>}
                 </div>
             </div>
         </div>

@@ -36,7 +36,7 @@ export interface Transaction extends Submission {
  */
 export interface NativeValue extends Submission {
     type: "value";
-    from: `0x${string}`;
+    from?: `0x${string}`;
     value: string;      // should be a number value
     symbol?: "eq" | "lt" | "gt" | "lte" | "gte"
 }

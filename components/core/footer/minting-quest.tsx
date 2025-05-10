@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -9,146 +9,157 @@ import {
     DialogDescription,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import { Award } from "lucide-react";
 import { PoapMetadata, POLPoapContract, selectedNetwork } from "@/lib/poap";
 import toast from "react-hot-toast";
-import Image from 'next/image';
-import { createWalletClient, custom } from 'viem'
+import { createWalletClient, custom } from "viem";
 import confetti from "canvas-confetti";
-import { retrieve, ipfsGateway } from "@/lib/util/ipfs";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
+import { retrieve } from "@/lib/util/ipfs";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useWallet } from "@/components/core/wallet/wallet-provider";
+import { CoursePage } from "../home/poap/course-page";
 
-interface MintingQuestProps extends React.HTMLAttributes<HTMLDivElement> {
-}
+interface MintingQuestProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function MintingQuest({ className }: MintingQuestProps) {
-    const { questPoap } = useQuest()
-    const wallet = useWallet()
+    const { questPoap } = useQuest();
+    const wallet = useWallet();
 
-    const [metadata, setMetadata] = useState("")
-    const [poapMetadata, setPoapMetadata] = useState<PoapMetadata | undefined>()
+    const [metadata, setMetadata] = useState("");
+    const [poapMetadata, setPoapMetadata] = useState<
+        PoapMetadata | undefined
+    >();
 
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
         (async () => {
             if (questPoap) {
-                const contract = new POLPoapContract({})
-                const metadata = await contract.uri(questPoap.tokenId.toString())
-                setHasMinted(0)
+                const contract = new POLPoapContract({});
+                const metadata = await contract.uri(
+                    questPoap.tokenId.toString(),
+                );
+                setHasMinted(0);
 
                 if (!metadata) {
-                    toast.error("Error getting metadata for POAP")
+                    toast.error("Error getting metadata for POAP");
                     return;
                 }
 
-                const data: PoapMetadata = await retrieve(metadata)
-                setPoapMetadata(data)
-                setMetadata(metadata)
+                const data: PoapMetadata = await retrieve(metadata);
+                setPoapMetadata(data);
+                setMetadata(metadata);
 
-                if (!await wallet.isConnected()) {
-                    const address = await wallet.getAccount()
+                if (!(await wallet.isConnected())) {
+                    const address = await wallet.getAccount();
                     if (address) {
-                        const timeStamp = await contract.mintTracker(questPoap.tokenId.toString(), address)
+                        const timeStamp = await contract.mintTracker(
+                            questPoap.tokenId.toString(),
+                            address,
+                        );
                         if (timeStamp !== BigInt(0)) {
-                            setHasMinted(Number(timeStamp) * 1000)
+                            setHasMinted(Number(timeStamp) * 1000);
                         }
                     }
                 }
             }
-        })()
-    }, [questPoap])
+        })();
+    }, [questPoap]);
 
-    const [isMinting, setIsMinting] = useState("")
-    const [hasMinted, setHasMinted] = useState(0)
+    const [isMinting, setIsMinting] = useState("");
+    const [hasMinted, setHasMinted] = useState(0);
     const handleMinting = async () => {
-        console.log("Minting")
-        setIsMinting("Validating ...")
+        console.log("Minting");
+        setIsMinting("Validating ...");
 
         try {
             if (!questPoap) {
                 return;
             }
 
-            if (!await wallet.isConnected()) {
-                toast.error("Please connect to a wallet")
+            if (!(await wallet.isConnected())) {
+                toast.error("Please connect to a wallet");
                 return;
             }
 
-            const address = await wallet.getAccount()
+            const address = await wallet.getAccount();
             if (!address) {
-                toast.error("Couldn't found an account")
+                toast.error("Couldn't found an account");
                 return;
             }
-            
+
             const requestBody = {
-                owner: questPoap.owner, name: questPoap.name,
+                owner: questPoap.owner,
+                name: questPoap.name,
                 address,
-            }
+            };
 
             const response = await fetch("/api/mint-v2", {
                 method: "POST",
                 body: JSON.stringify(requestBody),
-            })
+            });
 
-            const result = await response.json()
+            const result = await response.json();
             if (!response.ok) {
-                toast.error(result.message)
+                toast.error(result.message);
 
                 if (result.message.contains("POAP already minted")) {
-                    setHasMinted(0)
+                    setHasMinted(0);
                 }
-                return
+                return;
             }
 
-            console.log(result)
+            console.log(result);
             if (!result.signature) {
-                toast.error("API Error, please contact the PoL team")
-                return
+                toast.error("API Error, please contact the PoL team");
+                return;
             }
 
             if (!result.verificationHash) {
-                toast.error("Verification, please contact the PoL team")
-                return
+                toast.error("Verification, please contact the PoL team");
+                return;
             }
 
             const walletClient = createWalletClient({
                 account: address as `0x${string}`,
                 chain: selectedNetwork,
-                transport: custom(window.ethereum!)
-            })
+                transport: custom(window.ethereum!),
+            });
 
-            await walletClient.switchChain({ id: selectedNetwork.id })
+            await walletClient.switchChain({ id: selectedNetwork.id });
 
-            setIsMinting("Minting ...")
+            setIsMinting("Minting ...");
 
-            const poapContract = new POLPoapContract({ wallet: walletClient })
-            const hash = await poapContract.mint(address as `0x${string}`,
-                result.tokenId, "0x", result.verificationHash, result.signature)
+            const poapContract = new POLPoapContract({ wallet: walletClient });
+            const hash = await poapContract.mint(
+                address as `0x${string}`,
+                result.tokenId,
+                "0x",
+                result.verificationHash,
+                result.signature,
+            );
 
-            triggerConfetti()
-            triggerConfetti()
-            triggerConfetti()
+            triggerConfetti();
+            triggerConfetti();
+            triggerConfetti();
 
             // setOpen(false)
-            console.log("transactionHash", hash)
-            toast.success(`Poap minted successfully. Hash ${hash}`)
+            console.log("transactionHash", hash);
+            toast.success(`Poap minted successfully. Hash ${hash}`);
 
-            setHasMinted(Date.now())
+            setHasMinted(Date.now());
 
             fetch("/api/mint-v2/analytics", {
                 method: "POST",
                 body: JSON.stringify(requestBody),
-            })
+            });
         } catch (e) {
-            console.error(e)
+            console.error(e);
         } finally {
-            setIsMinting("")
+            setIsMinting("");
         }
-    }
-
+    };
 
     const triggerConfetti = () => {
         const defaults = {
@@ -181,46 +192,64 @@ export function MintingQuest({ className }: MintingQuestProps) {
         setTimeout(shoot, 200);
     };
 
-    return <>
-        {questPoap !== undefined && <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger className={buttonVariants({ variant: "default" })}>
-                <div className="hidden md:block">Poap</div>
-                <Award />
-            </DialogTrigger>
-            <DialogContent>
-                {hasMinted ? <VisuallyHidden>
-                    <DialogTitle></DialogTitle>
-                    <DialogDescription></DialogDescription>
-                </VisuallyHidden>
-                    : <>
-                        <DialogTitle>Complete all the quests for this resource?</DialogTitle>
-                        <DialogDescription>
-                            Earn yourself a POL Poap for completing all the quests in this resource.
-                        </DialogDescription>
-                    </>}
-                <div>
-                    {/* {questPoap.tokenId}
-                    {metadata} */}
-                    {poapMetadata && <>
-                        <div className="text-2xl font-extrabold text-center">{poapMetadata.name}</div>
-                        <div className="my-2">{poapMetadata.description}</div>
-                        <div className="flex items-center justify-center">
-                            <Image src={`${poapMetadata.image.replace("ipfs://", ipfsGateway)}`} alt="badge"
-                                width={245} height={245} />
+    return (
+        <>
+            {questPoap !== undefined && (
+                <Dialog open={open} onOpenChange={setOpen}>
+                    <DialogTrigger
+                        className={buttonVariants({ variant: "default" })}
+                    >
+                        <div className="hidden md:block">Poap</div>
+                        <Award />
+                    </DialogTrigger>
+                    <DialogContent className="max-h-[90%] overflow-auto">
+                        <VisuallyHidden>
+                            <DialogTitle></DialogTitle>
+                            <DialogDescription></DialogDescription>
+                        </VisuallyHidden>
+                        <div>
+                            {poapMetadata && (
+                                <CoursePage
+                                    tokenId={questPoap.tokenId}
+                                    poap={poapMetadata}
+                                    uri={metadata}
+                                    displayStartLearning={false}
+                                />
+                            )}
                         </div>
-                    </>}
-                </div>
-                {hasMinted
-                    ? <Button disabled={true}>Congratz! You completed this course {new Date(hasMinted).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} </Button>
-                    : <Button onClick={handleMinting} disabled={!!isMinting} className="my-2">
-                        {!isMinting
-                            ? <>
-                                <div className="hidden md:block">Mint POL Poap</div>
-                                <Award />
-                            </>
-                            : <div>{isMinting ? isMinting : ""}</div>}
-                    </Button>}
-            </DialogContent>
-        </Dialog>}
-    </>
+                        {hasMinted ? (
+                            <Button disabled={true}>
+                                Congratz! You completed this course{" "}
+                                {new Date(hasMinted).toLocaleDateString(
+                                    "en-US",
+                                    {
+                                        month: "short",
+                                        day: "numeric",
+                                        year: "numeric",
+                                    },
+                                )}{" "}
+                            </Button>
+                        ) : (
+                            <Button
+                                onClick={handleMinting}
+                                disabled={!!isMinting}
+                                className="my-2"
+                            >
+                                {!isMinting ? (
+                                    <>
+                                        <div className="hidden md:block">
+                                            Mint POL Poap
+                                        </div>
+                                        <Award />
+                                    </>
+                                ) : (
+                                    <div>{isMinting ? isMinting : ""}</div>
+                                )}
+                            </Button>
+                        )}
+                    </DialogContent>
+                </Dialog>
+            )}
+        </>
+    );
 }
