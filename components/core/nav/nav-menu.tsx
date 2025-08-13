@@ -15,6 +15,7 @@ import {
 import Image from "next/image"
 import { components } from "./shared"
 import { CREATOR_DOMAIN, DOC_DOMAIN } from "@/lib/constants"
+import { Badge } from "@/components/ui/badge"
 
 export function NavMenu() {
     return (
@@ -88,7 +89,7 @@ export function NavMenu() {
                         <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "bg-transparent hover:bg-transparent rounded-[16px]")}>
                             <div className="flex items-center gap-1">
                                 <img className="h-5" src="/yuzu/coin.svg" alt="logo" />
-                                <span className="text-primary">Yuzu</span>
+                                <span className="text-primary dark:text-secondary">Yuzu <Badge variant="secondary" className="ml-2">NEW</Badge></span>
                             </div>
                         </NavigationMenuLink>
                     </Link>

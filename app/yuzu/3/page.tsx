@@ -1,0 +1,16 @@
+import { Footer } from "@/components/core/shared/footer";
+import { YuzuPage } from "@/components/core/yuzu";
+import { YuzuPageSeason3 } from "@/components/core/yuzu/3";
+import { POLMongoService } from "@/lib/util/mongo";
+
+export default async function Page() {
+  const service = new POLMongoService();
+  await service.connectYuzu();
+
+  const total = await service.yuzu?.getTotal()
+
+  return <>
+    <YuzuPageSeason3 total={total} />
+    <Footer />
+  </>
+}

@@ -1,4 +1,5 @@
 export const TOTAL_YUZU_POINTS = 1_500_000
+export const TOTAL_YUZU_S3_POINTS = 356_047
 
 export const YUZU_POINTS: {
     [id: number]: {
