@@ -85,7 +85,7 @@ export function NavMenu() {
                     </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/yuzu" legacyBehavior passHref>
+                    <Link href="/yuzu/3" legacyBehavior passHref>
                         <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "bg-transparent hover:bg-transparent rounded-[16px]")}>
                             <div className="flex items-center gap-1">
                                 <img className="h-5" src="/yuzu/coin.svg" alt="logo" />
