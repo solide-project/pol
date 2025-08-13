@@ -1,5 +1,4 @@
 import { Footer } from "@/components/core/shared/footer";
-import { YuzuPage } from "@/components/core/yuzu";
 import { YuzuPageSeason3 } from "@/components/core/yuzu/3";
 import { POLMongoService } from "@/lib/util/mongo";
 

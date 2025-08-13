@@ -6,7 +6,7 @@ export default async function Page() {
     const service = new POLMongoService();
     await service.connectYuzu();
 
-    const total = await service.yuzu?.getTotal()
+    const total = 1738040; // await service.yuzu?.getTotal()
 
     return <>
         <YuzuPage total={total} />
